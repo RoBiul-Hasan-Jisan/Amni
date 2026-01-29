@@ -10,7 +10,7 @@ const _jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-je
 export const metadata: Metadata = {
   title: 'CSE Learn - Master Computer Science',
   description: 'Interactive learning platform for Computer Science & Engineering. Learn Data Structures, Algorithms, Operating Systems, and more with visualizations and interview prep.',
-  generator: 'v0.app',
+  generator: 'CSE',
   keywords: ['computer science', 'data structures', 'algorithms', 'interview preparation', 'programming'],
   icons: {
     icon: [
