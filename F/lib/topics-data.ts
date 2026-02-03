@@ -25,6 +25,12 @@ export const topics: Topic[] = [
       { id: "queues", title: "Queues", slug: "queues" },
       { id: "trees", title: "Trees", slug: "trees" },
       { id: "graphs", title: "Graphs", slug: "graphs" },
+      { id: "bfsandbfs", title: "BFS and DFS", slug: "bfsandbfs" },
+      { id: "cycles", title: "Cycles", slug: "cycles" },
+      { id: "shortestpath", title: "Shortest Path", slug: "shortestpath" },
+      { id: "spanningtree", title: "Minimum Spanning Tree", slug: "spanningtree" },
+      { id: "topologicalsorting", title: "Topological Sorting", slug: "topologicalsorting" },
+      
       { id: "hash-tables", title: "Hash Tables", slug: "hash-tables" },
       { id: "sorting", title: "Sorting Algorithms", slug: "sorting" },
       { id: "searching", title: "Searching Algorithms", slug: "searching" },
