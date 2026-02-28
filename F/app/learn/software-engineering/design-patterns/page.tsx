@@ -1,4 +1,3 @@
-// app/topics/software-engineering/design-patterns/page.tsx
 import { TopicContent } from "@/components/topic-content";
 import { CodeBlock, MultiLanguageCode } from "@/components/code-block";
 import { Quiz, QuizQuestion } from "@/components/quiz";
