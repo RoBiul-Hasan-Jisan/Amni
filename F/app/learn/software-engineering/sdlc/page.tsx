@@ -571,7 +571,7 @@ export default function SoftwareLifeCyclePage() {
                       
                       <div className="p-3 bg-muted rounded-lg sm:ml-auto sm:max-w-xs">
                         <p className="text-sm font-medium text-foreground mb-1">Key Role:</p>
-                        <p className="text-sm text-muted-foreground break-words">{phase.keyRole}</p>
+                        <p className="text-sm text-muted-foreground wrap-break-word">{phase.keyRole}</p>
                       </div>
                     </div>
                     
@@ -589,7 +589,7 @@ export default function SoftwareLifeCyclePage() {
                             {phase.activities.map((activity, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm">
                                 <div className="h-2 w-2 rounded-full bg-primary mt-2 shrink-0" />
-                                <span className="text-muted-foreground break-words">{activity}</span>
+                                <span className="text-muted-foreground wrap-break-word">{activity}</span>
                               </li>
                             ))}
                           </ul>
@@ -601,7 +601,7 @@ export default function SoftwareLifeCyclePage() {
                             {phase.deliverables.map((deliverable, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm">
                                 <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
-                                <span className="text-muted-foreground break-words">{deliverable}</span>
+                                <span className="text-muted-foreground wrap-break-word">{deliverable}</span>
                               </li>
                             ))}
                           </ul>
@@ -632,7 +632,7 @@ export default function SoftwareLifeCyclePage() {
                       {reqType.icon}
                     </div>
                     <div className="min-w-0">
-                      <h3 className="font-bold text-lg sm:text-xl text-foreground break-words">{reqType.type}</h3>
+                      <h3 className="font-bold text-lg sm:text-xl text-foreground wrap-break-word">{reqType.type}</h3>
                       <p className="text-sm text-muted-foreground mt-1">{reqType.description}</p>
                     </div>
                   </div>
@@ -644,7 +644,7 @@ export default function SoftwareLifeCyclePage() {
                         {reqType.examples.map((example, i) => (
                           <div key={i} className="flex items-start gap-2 text-sm p-2 bg-muted rounded">
                             <div className={`h-2 w-2 rounded-full mt-2 shrink-0 ${idx === 0 ? 'bg-blue-500' : 'bg-purple-500'}`} />
-                            <span className="text-muted-foreground break-words">{example}</span>
+                            <span className="text-muted-foreground wrap-break-word">{example}</span>
                           </div>
                         ))}
                       </div>
@@ -653,11 +653,11 @@ export default function SoftwareLifeCyclePage() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
                         <h4 className="font-semibold text-foreground mb-2">Format</h4>
-                        <p className="text-sm text-muted-foreground break-words">{reqType.format}</p>
+                        <p className="text-sm text-muted-foreground wrap-break-word">{reqType.format}</p>
                       </div>
                       <div>
                         <h4 className="font-semibold text-foreground mb-2">Verification</h4>
-                        <p className="text-sm text-muted-foreground break-words">{reqType.verification}</p>
+                        <p className="text-sm text-muted-foreground wrap-break-word">{reqType.verification}</p>
                       </div>
                     </div>
                   </div>
@@ -675,16 +675,16 @@ export default function SoftwareLifeCyclePage() {
                   <div className="space-y-3">
                     <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
                       <h5 className="font-medium text-blue-700 dark:text-blue-400 mb-1">Functional Requirement</h5>
-                      <p className="text-sm text-blue-600 dark:text-blue-300 break-words">
+                      <p className="text-sm text-blue-600 dark:text-blue-300 wrap-break-word">
                         <strong>User Story:</strong> As a registered user, I want to reset my password 
                         so that I can regain access to my account if I forget it.
                       </p>
                       <div className="mt-2 text-xs text-blue-500">
                         <strong>Acceptance Criteria:</strong> 
                         <ul className="mt-1 space-y-1 ml-2">
-                          <li className="break-words">• Password reset link sent to registered email</li>
-                          <li className="break-words">• Link expires after 24 hours</li>
-                          <li className="break-words">• Password must meet security requirements</li>
+                          <li className="wrap-break-word">• Password reset link sent to registered email</li>
+                          <li className="wrap-break-word">• Link expires after 24 hours</li>
+                          <li className="wrap-break-word">• Password must meet security requirements</li>
                         </ul>
                       </div>
                     </div>
@@ -693,16 +693,16 @@ export default function SoftwareLifeCyclePage() {
                   <div className="space-y-3">
                     <div className="p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
                       <h5 className="font-medium text-purple-700 dark:text-purple-400 mb-1">Non-Functional Requirement</h5>
-                      <p className="text-sm text-purple-600 dark:text-purple-300 break-words">
+                      <p className="text-sm text-purple-600 dark:text-purple-300 wrap-break-word">
                         <strong>Performance Requirement:</strong> The password reset page must 
                         load within 2 seconds for 95% of users under normal load conditions.
                       </p>
                       <div className="mt-2 text-xs text-purple-500">
                         <strong>Quality Attributes:</strong> 
                         <ul className="mt-1 space-y-1 ml-2">
-                          <li className="break-words">• Response time: {"<"} 2 seconds</li>
-                          <li className="break-words">• Availability: 99.9% uptime</li>
-                          <li className="break-words">• Security: HTTPS encryption required</li>
+                          <li className="wrap-break-word">• Response time: {"<"} 2 seconds</li>
+                          <li className="wrap-break-word">• Availability: 99.9% uptime</li>
+                          <li className="wrap-break-word">• Security: HTTPS encryption required</li>
                         </ul>
                       </div>
                     </div>
@@ -744,7 +744,7 @@ export default function SoftwareLifeCyclePage() {
                         {model.icon}
                       </div>
                       <div className="min-w-0">
-                        <h3 className="font-bold text-xl sm:text-2xl text-foreground break-words">{model.name}</h3>
+                        <h3 className="font-bold text-xl sm:text-2xl text-foreground wrap-break-word">{model.name}</h3>
                         <p className="text-muted-foreground mt-1 text-sm sm:text-base">{model.description}</p>
                       </div>
                     </div>
@@ -758,7 +758,7 @@ export default function SoftwareLifeCyclePage() {
                               <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center shrink-0">
                                 <span className="font-bold text-primary">{i + 1}</span>
                               </div>
-                              <span className="font-medium text-sm sm:text-base break-words">{phase}</span>
+                              <span className="font-medium text-sm sm:text-base wrap-break-word">{phase}</span>
                             </div>
                           ))}
                         </div>
@@ -768,8 +768,8 @@ export default function SoftwareLifeCyclePage() {
                         <div>
                           <h4 className="font-semibold text-foreground mb-3">When to Use</h4>
                           <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                            <p className="text-green-700 dark:text-green-400 text-sm sm:text-base break-words">{model.whenToUse}</p>
-                            <p className="text-sm text-green-600 dark:text-green-300 mt-2 break-words">
+                            <p className="text-green-700 dark:text-green-400 text-sm sm:text-base wrap-break-word">{model.whenToUse}</p>
+                            <p className="text-sm text-green-600 dark:text-green-300 mt-2 wrap-break-word">
                               <strong>Example:</strong> {model.example}
                             </p>
                           </div>
@@ -782,7 +782,7 @@ export default function SoftwareLifeCyclePage() {
                               {model.advantages.map((adv, i) => (
                                 <li key={i} className="flex items-start gap-2 text-sm">
                                   <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
-                                  <span className="text-muted-foreground break-words">{adv}</span>
+                                  <span className="text-muted-foreground wrap-break-word">{adv}</span>
                                 </li>
                               ))}
                             </ul>
@@ -794,7 +794,7 @@ export default function SoftwareLifeCyclePage() {
                               {model.disadvantages.map((disadv, i) => (
                                 <li key={i} className="flex items-start gap-2 text-sm">
                                   <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 shrink-0" />
-                                  <span className="text-muted-foreground break-words">{disadv}</span>
+                                  <span className="text-muted-foreground wrap-break-word">{disadv}</span>
                                 </li>
                               ))}
                             </ul>
@@ -824,7 +824,7 @@ export default function SoftwareLifeCyclePage() {
                 {scrumFramework.roles.map((role, idx) => (
                   <Card key={idx}>
                     <CardContent className="p-6">
-                      <h4 className="font-bold text-lg text-foreground mb-2 break-words">{role.role}</h4>
+                      <h4 className="font-bold text-lg text-foreground mb-2 wrap-break-word">{role.role}</h4>
                       <p className="text-sm text-muted-foreground mb-4">{role.description}</p>
                       
                       <div className="space-y-3">
@@ -834,7 +834,7 @@ export default function SoftwareLifeCyclePage() {
                             {role.responsibilities.map((resp, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm">
                                 <div className="h-2 w-2 rounded-full bg-primary mt-2 shrink-0" />
-                                <span className="text-muted-foreground break-words">{resp}</span>
+                                <span className="text-muted-foreground wrap-break-word">{resp}</span>
                               </li>
                             ))}
                           </ul>
@@ -862,18 +862,18 @@ export default function SoftwareLifeCyclePage() {
                 {scrumFramework.artifacts.map((artifact, idx) => (
                   <Card key={idx}>
                     <CardContent className="p-6">
-                      <h4 className="font-bold text-lg text-foreground mb-2 break-words">{artifact.name}</h4>
+                      <h4 className="font-bold text-lg text-foreground mb-2 wrap-break-word">{artifact.name}</h4>
                       <p className="text-sm text-muted-foreground mb-4">{artifact.description}</p>
                       
                       <div className="space-y-3">
                         <div>
                           <h5 className="font-semibold text-sm text-foreground mb-1">Content</h5>
-                          <p className="text-sm text-muted-foreground break-words">{artifact.content}</p>
+                          <p className="text-sm text-muted-foreground wrap-break-word">{artifact.content}</p>
                         </div>
                         
                         <div>
                           <h5 className="font-semibold text-sm text-foreground mb-1">Management</h5>
-                          <p className="text-sm text-muted-foreground break-words">{artifact.management}</p>
+                          <p className="text-sm text-muted-foreground wrap-break-word">{artifact.management}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -890,24 +890,24 @@ export default function SoftwareLifeCyclePage() {
                   <Card key={idx}>
                     <CardContent className="p-6">
                       <div className="flex flex-col sm:flex-row items-start justify-between gap-2 mb-3">
-                        <h4 className="font-bold text-base sm:text-lg text-foreground break-words">{event.name}</h4>
+                        <h4 className="font-bold text-base sm:text-lg text-foreground wrap-break-word">{event.name}</h4>
                         <Badge variant="outline" className="text-xs whitespace-nowrap shrink-0">{event.duration}</Badge>
                       </div>
                       
                       <div className="space-y-3">
                         <div>
                           <h5 className="font-semibold text-sm text-foreground mb-1">Purpose</h5>
-                          <p className="text-sm text-muted-foreground break-words">{event.purpose}</p>
+                          <p className="text-sm text-muted-foreground wrap-break-word">{event.purpose}</p>
                         </div>
                         
                         <div>
                           <h5 className="font-semibold text-sm text-foreground mb-1">Participants</h5>
-                          <p className="text-sm text-muted-foreground break-words">{event.participants}</p>
+                          <p className="text-sm text-muted-foreground wrap-break-word">{event.participants}</p>
                         </div>
                         
                         <div>
                           <h5 className="font-semibold text-sm text-foreground mb-1">Output</h5>
-                          <p className="text-sm text-muted-foreground break-words">{event.output}</p>
+                          <p className="text-sm text-muted-foreground wrap-break-word">{event.output}</p>
                         </div>
                       </div>
                     </CardContent>
@@ -929,7 +929,7 @@ export default function SoftwareLifeCyclePage() {
                 {category.tools.map((tool, toolIdx) => (
                   <Card key={toolIdx} className="hover:shadow-lg transition-shadow">
                     <CardContent className="p-6">
-                      <h4 className="font-bold text-lg text-foreground mb-2 break-words">{tool.name}</h4>
+                      <h4 className="font-bold text-lg text-foreground mb-2 wrap-break-word">{tool.name}</h4>
                       <p className="text-sm text-muted-foreground mb-4">{tool.description}</p>
                       
                       <div className="space-y-3">
@@ -939,7 +939,7 @@ export default function SoftwareLifeCyclePage() {
                             {tool.features.map((feature, i) => (
                               <li key={i} className="flex items-start gap-2 text-sm">
                                 <CheckCircle2 className="h-4 w-4 text-green-500 mt-0.5 shrink-0" />
-                                <span className="text-muted-foreground break-words">{feature}</span>
+                                <span className="text-muted-foreground wrap-break-word">{feature}</span>
                               </li>
                             ))}
                           </ul>
@@ -948,11 +948,11 @@ export default function SoftwareLifeCyclePage() {
                         <div className="grid grid-cols-1 gap-3">
                           <div>
                             <h5 className="font-semibold text-sm text-foreground mb-1">Pricing</h5>
-                            <p className="text-sm text-muted-foreground break-words">{tool.pricing}</p>
+                            <p className="text-sm text-muted-foreground wrap-break-word">{tool.pricing}</p>
                           </div>
                           <div>
                             <h5 className="font-semibold text-sm text-foreground mb-1">Best For</h5>
-                            <p className="text-sm text-muted-foreground break-words">{tool.bestFor}</p>
+                            <p className="text-sm text-muted-foreground wrap-break-word">{tool.bestFor}</p>
                           </div>
                         </div>
                       </div>
@@ -968,7 +968,7 @@ export default function SoftwareLifeCyclePage() {
             <CardContent className="p-6">
               <h3 className="text-xl font-bold mb-4 text-foreground">Jira vs ClickUp: Comparison</h3>
               <div className="overflow-x-auto -mx-6 px-6">
-                <table className="w-full border-collapse min-w-[600px]">
+                <table className="w-full border-collapse min-w-150">
                   <thead>
                     <tr className="bg-muted">
                       <th className="border border-border p-3 text-left text-foreground text-sm">Aspect</th>
@@ -1034,7 +1034,7 @@ export default function SoftwareLifeCyclePage() {
               <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
               <div className="min-w-0">
                 <h4 className="font-semibold text-foreground mb-1">Skipping Requirements Phase</h4>
-                <p className="text-sm text-muted-foreground break-words">
+                <p className="text-sm text-muted-foreground wrap-break-word">
                   Jumping straight to coding without proper requirements leads to 
                   scope creep, rework, and unsatisfied stakeholders.
                 </p>
@@ -1045,7 +1045,7 @@ export default function SoftwareLifeCyclePage() {
               <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
               <div className="min-w-0">
                 <h4 className="font-semibold text-foreground mb-1">Ignoring Non-Functional Requirements</h4>
-                <p className="text-sm text-muted-foreground break-words">
+                <p className="text-sm text-muted-foreground wrap-break-word">
                   Focusing only on what the system does (functional) while ignoring 
                   how it performs (non-functional) leads to poor user experience and system failures.
                 </p>
@@ -1056,7 +1056,7 @@ export default function SoftwareLifeCyclePage() {
               <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
               <div className="min-w-0">
                 <h4 className="font-semibold text-foreground mb-1">Wrong Process Model Selection</h4>
-                <p className="text-sm text-muted-foreground break-words">
+                <p className="text-sm text-muted-foreground wrap-break-word">
                   Using Waterfall for rapidly changing requirements or Agile for 
                   highly regulated, fixed-scope projects leads to project failure.
                 </p>
@@ -1067,7 +1067,7 @@ export default function SoftwareLifeCyclePage() {
               <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
               <div className="min-w-0">
                 <h4 className="font-semibold text-foreground mb-1">Poor Tool Selection</h4>
-                <p className="text-sm text-muted-foreground break-words">
+                <p className="text-sm text-muted-foreground wrap-break-word">
                   Choosing complex tools for simple projects or simple tools for 
                   complex projects reduces productivity and increases frustration.
                 </p>
@@ -1085,7 +1085,7 @@ export default function SoftwareLifeCyclePage() {
                 <Users className="h-5 w-5 text-primary shrink-0" />
                 <h4 className="font-semibold text-foreground">Stakeholder Involvement</h4>
               </div>
-              <p className="text-sm text-muted-foreground break-words">
+              <p className="text-sm text-muted-foreground wrap-break-word">
                 Involve stakeholders throughout the process. Regular communication 
                 and feedback prevent misunderstandings and ensure the final product meets needs.
               </p>
@@ -1096,7 +1096,7 @@ export default function SoftwareLifeCyclePage() {
                 <FileText className="h-5 w-5 text-primary shrink-0" />
                 <h4 className="font-semibold text-foreground">Clear Requirements</h4>
               </div>
-              <p className="text-sm text-muted-foreground break-words">
+              <p className="text-sm text-muted-foreground wrap-break-word">
                 Document both functional and non-functional requirements clearly. 
                 Use user stories, acceptance criteria, and measurable quality attributes.
               </p>
@@ -1107,7 +1107,7 @@ export default function SoftwareLifeCyclePage() {
                 <GitBranch className="h-5 w-5 text-primary shrink-0" />
                 <h4 className="font-semibold text-foreground">Right Process Model</h4>
               </div>
-              <p className="text-sm text-muted-foreground break-words">
+              <p className="text-sm text-muted-foreground wrap-break-word">
                 Choose the process model based on project characteristics: 
                 Waterfall for stable requirements, Agile for changing requirements, 
                 Hybrid for mixed scenarios.
@@ -1119,7 +1119,7 @@ export default function SoftwareLifeCyclePage() {
                 <Settings className="h-5 w-5 text-primary shrink-0" />
                 <h4 className="font-semibold text-foreground">Appropriate Tools</h4>
               </div>
-              <p className="text-sm text-muted-foreground break-words">
+              <p className="text-sm text-muted-foreground wrap-break-word">
                 Select tools that match your team size, process, and complexity. 
                 Don't over-complicate with enterprise tools for small projects.
               </p>
