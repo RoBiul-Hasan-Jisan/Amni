@@ -179,6 +179,35 @@ export const topics: Topic[] = [
       { id: "neural-networks", title: "Neural Networks", slug: "neural-networks" },
     ],
   },
+  {
+    id: "deep-learning",
+    title: "Deep Learning",
+    description: "Advanced neural networks and deep learning architectures",
+    icon: "sparkles",
+    subtopics: [
+      { id: "dl-intro", title: "Introduction to Deep Learning", slug: "dl-intro" },
+      { id: "ann", title: "Artificial Neural Networks (ANN)", slug: "ann" },
+      { id: "cnn", title: "Convolutional Neural Networks (CNN)", slug: "cnn" },
+      { id: "rnn", title: "Recurrent Neural Networks (RNN)", slug: "rnn" },
+      { id: "lstm", title: "LSTM & GRU Networks", slug: "lstm" },
+      { id: "transformers", title: "Transformers & Attention Mechanism", slug: "transformers" },
+      { id: "activation-functions", title: "Activation Functions", slug: "activation-functions" },
+      { id: "optimizers", title: "Optimizers (Adam, SGD, RMSprop)", slug: "optimizers" },
+      { id: "backpropagation", title: "Backpropagation", slug: "backpropagation" },
+      { id: "regularization", title: "Regularization (Dropout, BatchNorm)", slug: "regularization" },
+      { id: "transfer-learning", title: "Transfer Learning", slug: "transfer-learning" },
+      { id: "gan", title: "Generative Adversarial Networks (GANs)", slug: "gan" },
+      { id: "autoencoders", title: "Autoencoders", slug: "autoencoders" },
+      { id: "reinforcement", title: "Deep Reinforcement Learning", slug: "reinforcement" },
+      { id: "nlp", title: "NLP with Deep Learning", slug: "nlp" },
+      { id: "cv", title: "Computer Vision", slug: "cv" },
+      { id: "frameworks", title: "Frameworks (TensorFlow, PyTorch, Keras)", slug: "frameworks" },
+      { id: "model-deployment", title: "Model Deployment", slug: "model-deployment" },
+
+    
+  
+],
+  },
 ];
 
 export function getTopicBySlug(slug: string): Topic | undefined {

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react"
+import React from "react";
 
 import Link from "next/link";
 import {
@@ -19,9 +19,11 @@ import {
   Target,
   Zap,
 } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
+import { Sidebar } from "@/components/sidebar";
 import { topics } from "@/lib/topics-data";
 
 const iconMap: Record<string, React.ReactNode> = {
@@ -38,6 +40,19 @@ const iconMap: Record<string, React.ReactNode> = {
 };
 
 export default function HomePage() {
+  // =========================
+  // MOBILE MENU STATE
+  // =========================
+  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
   return (
     <ThemeProvider
       attribute="class"
@@ -46,32 +61,56 @@ export default function HomePage() {
       disableTransitionOnChange
     >
       <div className="min-h-screen bg-background">
-        <Header />
+        {/* HEADER */}
+        <Header
+          isMenuOpen={isMenuOpen}
+          onMenuToggle={toggleMenu}
+        />
 
-        <main>
-          {/* Hero Section */}
+        {/* MOBILE SIDEBAR */}
+        <Sidebar
+          isMobileOpen={isMenuOpen}
+          onMobileClose={closeMenu}
+        />
+
+        {/* MAIN CONTENT */}
+        <main className="relative z-0">
+          {/* HERO SECTION */}
           <section className="py-20 px-4 lg:px-6">
             <div className="max-w-4xl mx-auto text-center">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-sm mb-6">
                 <Zap className="h-4 w-4" />
                 Interactive Learning Platform
               </div>
+
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 text-balance">
                 Master Computer Science with Interactive Learning
               </h1>
+
               <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto text-pretty">
-                Learn Data Structures, Algorithms, Operating Systems, and more with 
-                visual explanations, code examples, and interview preparation materials.
+                Learn Data Structures, Algorithms, Operating
+                Systems, and more with visual explanations,
+                code examples, and interview preparation
+                materials.
               </p>
+
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link href="/learn/data-structures/arrays">
-                  <Button size="lg" className="w-full sm:w-auto">
+                  <Button
+                    size="lg"
+                    className="w-full sm:w-auto"
+                  >
                     Start Learning
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
+
                 <Link href="/learn">
-                  <Button variant="outline" size="lg" className="w-full sm:w-auto bg-transparent">
+                  <Button
+                    variant="outline"
+                    size="lg"
+                    className="w-full sm:w-auto bg-transparent"
+                  >
                     Browse Topics
                   </Button>
                 </Link>
@@ -79,23 +118,26 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Features Section */}
+          {/* FEATURES SECTION */}
           <section className="py-16 px-4 lg:px-6 bg-muted/30">
             <div className="max-w-6xl mx-auto">
               <h2 className="text-2xl md:text-3xl font-bold text-center mb-12 text-foreground">
                 Why Learn With Us?
               </h2>
+
               <div className="grid md:grid-cols-3 gap-8">
                 <FeatureCard
                   icon={<BookOpen className="h-8 w-8" />}
                   title="Simple Explanations"
                   description="Complex concepts broken down into easy-to-understand lessons with real-world examples."
                 />
+
                 <FeatureCard
                   icon={<Layers className="h-8 w-8" />}
                   title="Interactive Visualizations"
                   description="See algorithms in action with step-by-step animations and interactive controls."
                 />
+
                 <FeatureCard
                   icon={<Target className="h-8 w-8" />}
                   title="Interview Ready"
@@ -105,16 +147,19 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* Topics Section */}
+          {/* TOPICS SECTION */}
           <section className="py-16 px-4 lg:px-6">
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-12">
                 <h2 className="text-2xl md:text-3xl font-bold mb-4 text-foreground">
                   Core CSE Topics
                 </h2>
+
                 <p className="text-muted-foreground max-w-2xl mx-auto">
-                  Comprehensive coverage of fundamental Computer Science and Engineering topics,
-                  structured for students and interview preparation.
+                  Comprehensive coverage of fundamental
+                  Computer Science and Engineering topics,
+                  structured for students and interview
+                  preparation.
                 </p>
               </div>
 
@@ -127,15 +172,20 @@ export default function HomePage() {
                   >
                     <div className="flex items-start gap-4">
                       <div className="p-3 rounded-lg bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                        {iconMap[topic.icon] || <Layers className="h-6 w-6" />}
+                        {iconMap[topic.icon] || (
+                          <Layers className="h-6 w-6" />
+                        )}
                       </div>
+
                       <div className="flex-1">
                         <h3 className="font-semibold mb-1 text-foreground group-hover:text-primary transition-colors">
                           {topic.title}
                         </h3>
+
                         <p className="text-sm text-muted-foreground line-clamp-2">
                           {topic.description}
                         </p>
+
                         <div className="mt-3 text-xs text-muted-foreground">
                           {topic.subtopics.length} lessons
                         </div>
@@ -147,16 +197,20 @@ export default function HomePage() {
             </div>
           </section>
 
-          {/* CTA Section */}
+          {/* CTA SECTION */}
           <section className="py-20 px-4 lg:px-6 bg-primary text-primary-foreground">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="text-2xl md:text-3xl font-bold mb-4">
                 Ready to Start Learning?
               </h2>
+
               <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">
-                Begin with Arrays - the fundamental building block of all data structures,
-                and progress through increasingly complex topics.
+                Begin with Arrays — the fundamental
+                building block of all data structures,
+                and progress through increasingly complex
+                topics.
               </p>
+
               <Link href="/learn/data-structures/arrays">
                 <Button
                   size="lg"
@@ -170,20 +224,6 @@ export default function HomePage() {
             </div>
           </section>
         </main>
-
-        <footer className="py-8 px-4 lg:px-6 border-t border-border">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <div className="flex h-6 w-6 items-center justify-center rounded bg-primary">
-                <BookOpen className="h-3 w-3 text-primary-foreground" />
-              </div>
-              <span className="font-semibold text-foreground">CSE Learn</span>
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Built for students, by educators. Learn Computer Science the right way.
-            </p>
-          </div>
-        </footer>
       </div>
     </ThemeProvider>
   );
@@ -203,8 +243,14 @@ function FeatureCard({
       <div className="p-3 rounded-lg bg-primary/10 text-primary w-fit mb-4">
         {icon}
       </div>
-      <h3 className="font-semibold text-lg mb-2 text-foreground">{title}</h3>
-      <p className="text-muted-foreground">{description}</p>
+
+      <h3 className="font-semibold text-lg mb-2 text-foreground">
+        {title}
+      </h3>
+
+      <p className="text-muted-foreground">
+        {description}
+      </p>
     </div>
   );
 }
