@@ -59,12 +59,8 @@ export function Header({
     topics.forEach((topic) => {
       topic.subtopics.forEach((subtopic) => {
         if (
-          subtopic.title
-            .toLowerCase()
-            .includes(query.toLowerCase()) ||
-          topic.title
-            .toLowerCase()
-            .includes(query.toLowerCase())
+          subtopic.title.toLowerCase().includes(query.toLowerCase()) ||
+          topic.title.toLowerCase().includes(query.toLowerCase())
         ) {
           results.push({
             topic: topic.title,
@@ -87,14 +83,6 @@ export function Header({
     setSearchResults([]);
   };
 
-  // =========================
-  // MOBILE LINK CLICK
-  // =========================
-  const handleMobileLinkClick = () => {
-    onMenuToggle?.();
-    closeSearch();
-  };
-
   return (
     <>
       {/* SEARCH OVERLAY */}
@@ -107,15 +95,14 @@ export function Header({
 
       <header className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60">
         <div className="flex h-14 items-center px-4 lg:px-6">
-          {/* MOBILE MENU BUTTON */}
+
+          {/* MOBILE MENU BUTTON (FIXED) */}
           <Button
             variant="ghost"
             size="icon"
             className="mr-2 lg:hidden"
-            onClick={() => onMenuToggle?.()}
-            aria-label={
-              isMenuOpen ? "Close menu" : "Open menu"
-            }
+            onClick={onMenuToggle}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMenuOpen ? (
               <X className="h-5 w-5" />
@@ -128,7 +115,6 @@ export function Header({
           <Link
             href="/"
             className="flex items-center gap-2 mr-6"
-            onClick={handleMobileLinkClick}
           >
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
               <BookOpen className="h-4 w-4 text-primary-foreground" />
@@ -139,7 +125,7 @@ export function Header({
             </span>
           </Link>
 
-          {/* DESKTOP NAVIGATION */}
+          {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center gap-6 text-sm">
             <Link
               href="/learn"
@@ -156,41 +142,17 @@ export function Header({
             </Link>
           </nav>
 
-          {/* MOBILE NAVIGATION */}
-          {isMenuOpen && (
-            <div className="fixed top-14 left-0 z-50 w-full border-b border-border bg-background shadow-lg lg:hidden">
-              <nav className="flex flex-col p-4 gap-2">
-                <Link
-                  href="/learn"
-                  onClick={handleMobileLinkClick}
-                  className="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors"
-                >
-                  Topics
-                </Link>
-
-                <Link
-                  href="/learn/data-structures/arrays"
-                  onClick={handleMobileLinkClick}
-                  className="rounded-lg px-3 py-3 text-sm font-medium text-foreground hover:bg-muted transition-colors"
-                >
-                  Get Started
-                </Link>
-              </nav>
-            </div>
-          )}
-
           <div className="flex-1" />
 
           {/* RIGHT SIDE */}
           <div className="flex items-center gap-2">
+
             {/* SEARCH */}
             <div className="relative z-50">
               <div
                 className={cn(
                   "flex items-center transition-all duration-200",
-                  searchOpen
-                    ? "w-55 sm:w-64"
-                    : "w-auto"
+                  searchOpen ? "w-55 sm:w-64" : "w-auto"
                 )}
               >
                 {searchOpen ? (
@@ -202,9 +164,7 @@ export function Header({
                       placeholder="Search topics..."
                       className="pl-8 pr-8 h-9"
                       value={searchQuery}
-                      onChange={(e) =>
-                        handleSearch(e.target.value)
-                      }
+                      onChange={(e) => handleSearch(e.target.value)}
                       autoFocus
                     />
 
@@ -220,24 +180,21 @@ export function Header({
                     {/* SEARCH RESULTS */}
                     {searchResults.length > 0 && (
                       <div className="absolute top-full left-0 right-0 mt-1 overflow-hidden rounded-lg border border-border bg-popover shadow-lg">
-                        {searchResults.map(
-                          (result, index) => (
-                            <Link
-                              key={index}
-                              href={result.slug}
-                              className="block px-3 py-2 hover:bg-muted transition-colors"
-                              onClick={closeSearch}
-                            >
-                              <div className="text-sm font-medium text-foreground">
-                                {result.subtopic}
-                              </div>
-
-                              <div className="text-xs text-muted-foreground">
-                                {result.topic}
-                              </div>
-                            </Link>
-                          )
-                        )}
+                        {searchResults.map((result, index) => (
+                          <Link
+                            key={index}
+                            href={result.slug}
+                            className="block px-3 py-2 hover:bg-muted transition-colors"
+                            onClick={closeSearch}
+                          >
+                            <div className="text-sm font-medium text-foreground">
+                              {result.subtopic}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {result.topic}
+                            </div>
+                          </Link>
+                        ))}
                       </div>
                     )}
                   </div>
@@ -259,19 +216,15 @@ export function Header({
               variant="ghost"
               size="icon"
               onClick={() =>
-                setTheme(
-                  theme === "dark"
-                    ? "light"
-                    : "dark"
-                )
+                setTheme(theme === "dark" ? "light" : "dark")
               }
               aria-label="Toggle theme"
               className="relative"
             >
               <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-
               <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
             </Button>
+
           </div>
         </div>
       </header>
