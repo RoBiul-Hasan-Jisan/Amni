@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   LineChart,
   Line,
@@ -41,6 +41,28 @@ interface ArchitectureCard {
 }
 
 const DeepLearningPage: React.FC = () => {
+  // State for window width to handle responsive charts
+  const [isMounted, setIsMounted] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(1024); // Default desktop width
+
+  useEffect(() => {
+    setIsMounted(true);
+    setWindowWidth(window.innerWidth);
+    
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // Helper function to get responsive font size
+  const getResponsiveFontSize = () => {
+    if (!isMounted) return 12;
+    return windowWidth < 640 ? 10 : 12;
+  };
+
   // Data for visualizations
   const accuracyEvolutionData: AccuracyData[] = [
     { year: 2010, accuracy: 72, model: "Traditional ML" },
@@ -136,6 +158,20 @@ const DeepLearningPage: React.FC = () => {
     { industry: "Entertainment", impact: 90, adoption: 85 },
   ];
 
+  // Don't render charts during SSR to avoid hydration mismatches
+  if (!isMounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+          <div className="animate-pulse">
+            <div className="h-8 bg-gray-200 rounded w-3/4 mb-4"></div>
+            <div className="h-64 bg-gray-200 rounded mb-6"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Navigation Bar */}
@@ -173,12 +209,12 @@ const DeepLearningPage: React.FC = () => {
             Deep Learning is a specialized subfield that exists within the broader domains of Artificial Intelligence and Machine Learning.
           </p>
           <div className="flex justify-center items-center min-h-75 sm:min-h-100 overflow-x-auto">
-           <svg
-  width="100%"
-  height="300"
-  viewBox="0 0 500 400"
-  className="mx-auto max-w-125"
->
+            <svg
+              width="100%"
+              height="300"
+              viewBox="0 0 500 400"
+              className="mx-auto max-w-125"
+            >
               <circle cx="250" cy="200" r="160" fill="#E0E7FF" opacity="0.6" />
               <text
                 x="250"
@@ -267,7 +303,7 @@ const DeepLearningPage: React.FC = () => {
                   textAnchor="end"
                   height={80}
                   interval={0}
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
+                  tick={{ fontSize: getResponsiveFontSize() }}
                   stroke="#9CA3AF"
                 />
                 <YAxis
@@ -275,24 +311,24 @@ const DeepLearningPage: React.FC = () => {
                     value: "Intensity (%)",
                     angle: -90,
                     position: "insideLeft",
-                    style: { fill: "#9CA3AF", fontSize: window.innerWidth < 640 ? 10 : 12 }
+                    style: { fill: "#9CA3AF", fontSize: getResponsiveFontSize() }
                   }}
                   stroke="#9CA3AF"
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
+                  tick={{ fontSize: getResponsiveFontSize() }}
                 />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: "#1F2937",
                     border: "none",
                     borderRadius: "8px",
-                    fontSize: window.innerWidth < 640 ? 10 : 12
+                    fontSize: getResponsiveFontSize()
                   }}
                 />
                 <Legend
                   verticalAlign="bottom"
                   wrapperStyle={{
                     paddingTop: "20px",
-                    fontSize: window.innerWidth < 640 ? 10 : 12
+                    fontSize: getResponsiveFontSize()
                   }}
                 />
                 <Bar
@@ -349,7 +385,6 @@ const DeepLearningPage: React.FC = () => {
           {/* Header */}
           <div className="relative z-10">
             <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-             
               <div>
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
                   Neural Network Architecture
@@ -383,15 +418,14 @@ const DeepLearningPage: React.FC = () => {
           </div>
 
           {/* Neural Network SVG - Responsive */}
-          
-         <div className="relative z-10 flex justify-center overflow-x-auto py-2 sm:py-4">
-  <svg
-    width="100%"
-    height="auto"
-    viewBox="0 0 720 340"
-    className="drop-shadow-xl max-w-180"
-    preserveAspectRatio="xMidYMid meet"
-  >
+          <div className="relative z-10 flex justify-center overflow-x-auto py-2 sm:py-4">
+            <svg
+              width="100%"
+              height="auto"
+              viewBox="0 0 720 340"
+              className="drop-shadow-xl max-w-180"
+              preserveAspectRatio="xMidYMid meet"
+            >
               {/* Connection Lines */}
               <g stroke="#94A3B8" strokeWidth="1.5" opacity="0.5">
                 {/* Input -> Hidden 1 */}
@@ -519,8 +553,6 @@ const DeepLearningPage: React.FC = () => {
               </p>
             </div>
           </div>
-
-          
         </div>
 
         {/* Biological Inspiration */}
@@ -533,19 +565,15 @@ const DeepLearningPage: React.FC = () => {
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
             <div className="text-center p-2 sm:p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-             
               <div className="font-semibold text-gray-800 dark:text-gray-200 text-xs sm:text-sm">Interconnected Neurons</div>
             </div>
             <div className="text-center p-2 sm:p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-              
               <div className="font-semibold text-gray-800 dark:text-gray-200 text-xs sm:text-sm">Layer-wise Processing</div>
             </div>
             <div className="text-center p-2 sm:p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-          
               <div className="font-semibold text-gray-800 dark:text-gray-200 text-xs sm:text-sm">Pattern Recognition</div>
             </div>
             <div className="text-center p-2 sm:p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
-            
               <div className="font-semibold text-gray-800 dark:text-gray-200 text-xs sm:text-sm">Improves with Experience</div>
             </div>
           </div>
@@ -597,7 +625,7 @@ const DeepLearningPage: React.FC = () => {
                 <XAxis 
                   dataKey="year" 
                   stroke="#9CA3AF" 
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
+                  tick={{ fontSize: getResponsiveFontSize() }}
                 />
                 <YAxis 
                   domain={[60, 100]} 
@@ -605,26 +633,26 @@ const DeepLearningPage: React.FC = () => {
                     value: "Top-5 Accuracy (%)", 
                     angle: -90, 
                     position: "insideLeft", 
-                    style: { fill: "#9CA3AF", fontSize: window.innerWidth < 640 ? 10 : 12 }
+                    style: { fill: "#9CA3AF", fontSize: getResponsiveFontSize() }
                   }} 
                   stroke="#9CA3AF"
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
+                  tick={{ fontSize: getResponsiveFontSize() }}
                 />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: "#1F2937", 
                     border: "none", 
                     borderRadius: "8px",
-                    fontSize: window.innerWidth < 640 ? 10 : 12
+                    fontSize: getResponsiveFontSize()
                   }} 
                 />
-                <Legend wrapperStyle={{ fontSize: window.innerWidth < 640 ? 10 : 12 }} />
+                <Legend wrapperStyle={{ fontSize: getResponsiveFontSize() }} />
                 <Line
                   type="monotone"
                   dataKey="accuracy"
                   stroke="#8884d8"
                   strokeWidth={3}
-                  dot={{ r: window.innerWidth < 640 ? 4 : 6 }}
+                  dot={{ r: windowWidth < 640 ? 4 : 6 }}
                   name="Top-5 Accuracy"
                 />
               </LineChart>
@@ -665,10 +693,10 @@ const DeepLearningPage: React.FC = () => {
                 <XAxis 
                   dataKey="industry" 
                   stroke="#9CA3AF"
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
-                  angle={window.innerWidth < 640 ? -30 : 0}
-                  textAnchor={window.innerWidth < 640 ? "end" : "middle"}
-                  height={window.innerWidth < 640 ? 60 : 30}
+                  tick={{ fontSize: getResponsiveFontSize() }}
+                  angle={windowWidth < 640 ? -30 : 0}
+                  textAnchor={windowWidth < 640 ? "end" : "middle"}
+                  height={windowWidth < 640 ? 60 : 30}
                 />
                 <YAxis 
                   yAxisId="left" 
@@ -676,10 +704,10 @@ const DeepLearningPage: React.FC = () => {
                     value: "Impact (%)", 
                     angle: -90, 
                     position: "insideLeft", 
-                    style: { fill: "#9CA3AF", fontSize: window.innerWidth < 640 ? 10 : 12 }
+                    style: { fill: "#9CA3AF", fontSize: getResponsiveFontSize() }
                   }} 
                   stroke="#9CA3AF"
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
+                  tick={{ fontSize: getResponsiveFontSize() }}
                 />
                 <YAxis 
                   yAxisId="right" 
@@ -688,20 +716,20 @@ const DeepLearningPage: React.FC = () => {
                     value: "Adoption (%)", 
                     angle: 90, 
                     position: "insideRight", 
-                    style: { fill: "#9CA3AF", fontSize: window.innerWidth < 640 ? 10 : 12 }
+                    style: { fill: "#9CA3AF", fontSize: getResponsiveFontSize() }
                   }} 
                   stroke="#9CA3AF"
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
+                  tick={{ fontSize: getResponsiveFontSize() }}
                 />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: "#1F2937", 
                     border: "none", 
                     borderRadius: "8px",
-                    fontSize: window.innerWidth < 640 ? 10 : 12
+                    fontSize: getResponsiveFontSize()
                   }} 
                 />
-                <Legend wrapperStyle={{ fontSize: window.innerWidth < 640 ? 10 : 12 }} />
+                <Legend wrapperStyle={{ fontSize: getResponsiveFontSize() }} />
                 <Bar yAxisId="left" dataKey="impact" name="Business Impact" fill="#8884d8" />
                 <Line yAxisId="right" type="monotone" dataKey="adoption" name="Adoption Rate" stroke="#82ca9d" strokeWidth={3} />
               </ComposedChart>
@@ -721,27 +749,27 @@ const DeepLearningPage: React.FC = () => {
                 <XAxis 
                   dataKey="year" 
                   stroke="#9CA3AF"
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
-                  angle={window.innerWidth < 640 ? -30 : 0}
-                  textAnchor={window.innerWidth < 640 ? "end" : "middle"}
-                  height={window.innerWidth < 640 ? 50 : 30}
+                  tick={{ fontSize: getResponsiveFontSize() }}
+                  angle={windowWidth < 640 ? -30 : 0}
+                  textAnchor={windowWidth < 640 ? "end" : "middle"}
+                  height={windowWidth < 640 ? 50 : 30}
                 />
                 <YAxis 
                   label={{ 
                     value: "Impact →", 
                     angle: -90, 
                     position: "insideLeft", 
-                    style: { fill: "#9CA3AF", fontSize: window.innerWidth < 640 ? 10 : 12 }
+                    style: { fill: "#9CA3AF", fontSize: getResponsiveFontSize() }
                   }} 
                   stroke="#9CA3AF"
-                  tick={{ fontSize: window.innerWidth < 640 ? 10 : 12 }}
+                  tick={{ fontSize: getResponsiveFontSize() }}
                 />
                 <Tooltip 
                   contentStyle={{ 
                     backgroundColor: "#1F2937", 
                     border: "none", 
                     borderRadius: "8px",
-                    fontSize: window.innerWidth < 640 ? 10 : 12
+                    fontSize: getResponsiveFontSize()
                   }} 
                 />
                 <Bar dataKey="impact" fill="#82ca9d">
@@ -776,7 +804,6 @@ const DeepLearningPage: React.FC = () => {
           <h2 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4 text-gray-900 dark:text-white">Key Takeaways</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
             <div className="flex items-start space-x-2 sm:space-x-3">
-              
               <div>
                 <strong className="text-gray-800 dark:text-gray-200 text-sm sm:text-base">Deep Learning = Neural networks with multiple layers</strong>
                 <br />
@@ -786,7 +813,6 @@ const DeepLearningPage: React.FC = () => {
               </div>
             </div>
             <div className="flex items-start space-x-2 sm:space-x-3">
-              
               <div>
                 <strong className="text-gray-800 dark:text-gray-200 text-sm sm:text-base">Success driven by:</strong>
                 <br />
@@ -796,7 +822,6 @@ const DeepLearningPage: React.FC = () => {
               </div>
             </div>
             <div className="flex items-start space-x-2 sm:space-x-3">
-            
               <div>
                 <strong className="text-gray-800 dark:text-gray-200 text-sm sm:text-base">When to use DL:</strong>
                 <br />
@@ -806,7 +831,6 @@ const DeepLearningPage: React.FC = () => {
               </div>
             </div>
             <div className="flex items-start space-x-2 sm:space-x-3">
-              
               <div>
                 <strong className="text-gray-800 dark:text-gray-200 text-sm sm:text-base">Challenges:</strong>
                 <br />
