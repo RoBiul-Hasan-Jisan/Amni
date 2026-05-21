@@ -27,20 +27,10 @@ export default function LearnLayout({
         />
 
         <div className="flex">
-          {/* Mobile Sidebar Overlay */}
-          {sidebarOpen && (
-            <div
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
-
           {/* Sidebar */}
           <Sidebar
-            className={cn(
-              "fixed left-0 top-14 h-[calc(100vh-3.5rem)] z-50 transition-transform duration-300 lg:translate-x-0 lg:sticky",
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            )}
+            isMobileOpen={sidebarOpen}
+            onMobileClose={() => setSidebarOpen(false)}
             onNavigate={() => setSidebarOpen(false)}
           />
 
