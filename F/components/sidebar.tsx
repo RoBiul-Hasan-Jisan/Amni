@@ -26,6 +26,7 @@ import {
 import { cn } from "@/lib/utils";
 import { topics, Topic } from "@/lib/topics-data";
 import { Button } from "@/components/ui/button";
+import { useEffect } from "react";
 
 const iconMap: Record<string, React.ReactNode> = {
   layers: <Layers className="h-4 w-4" />,
@@ -111,17 +112,6 @@ export function Sidebar({
 
   return (
     <>
-      {/* MOBILE OVERLAY */}
-      <div
-        onClick={onMobileClose}
-        className={cn(
-          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden",
-          isMobileOpen
-            ? "opacity-100 pointer-events-auto"
-            : "opacity-0 pointer-events-none"
-        )}
-      />
-
       {/* SIDEBAR */}
       <aside
         className={cn(

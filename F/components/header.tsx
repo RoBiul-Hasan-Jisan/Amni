@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import {
   Search,
-  Menu,
+  MoreVertical, // Meatball menu (3 dots)
   Moon,
   Sun,
   X,
@@ -103,6 +103,12 @@ export function Header({
     setSearchResults([]);
   };
 
+  // Handle menu toggle
+  const handleMenuClick = () => {
+    console.log("Meatball clicked, calling onMenuToggle"); // Debug log
+    onMenuToggle?.();
+  };
+
   return (
     <>
       {/* =========================
@@ -121,17 +127,17 @@ export function Header({
       {/* =========================
           HEADER
       ========================= */}
-      <header className="sticky top-0 z-[60] w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-[45] w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex h-14 items-center px-4 lg:px-6">
 
           {/* =========================
-              MOBILE MENU BUTTON
+              MOBILE MEATBALL MENU BUTTON (3 DOTS)
           ========================= */}
           <Button
             variant="ghost"
             size="icon"
             className="mr-2 lg:hidden"
-            onClick={onMenuToggle}
+            onClick={handleMenuClick} // Use the handler
             aria-label={
               isMenuOpen
                 ? "Close menu"
@@ -141,31 +147,31 @@ export function Header({
             {isMenuOpen ? (
               <X className="h-5 w-5" />
             ) : (
-              <Menu className="h-5 w-5" />
+              <MoreVertical className="h-5 w-5" />
             )}
           </Button>
 
-          {/* =========================
-              LOGO
-          ========================= */}
-          <Link
-            href="/"
-            className="mr-6 flex items-center gap-2 shrink-0"
-          >
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <BookOpen className="h-4 w-4 text-primary-foreground" />
-            </div>
+       
+{/* =========================
+    LOGO
+========================= */}
+<Link
+  href="/"
+  className="mr-6 flex items-center gap-2 shrink-0 ml-8"
+>
+  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
+    <BookOpen className="h-4 w-4 text-primary-foreground" />
+  </div>
 
-            <span className="hidden text-sm font-bold text-foreground sm:inline-block">
-              CSE Learn
-            </span>
-          </Link>
+  <span className="hidden text-sm font-bold text-foreground sm:inline-block">
+    CSE Learn
+  </span>
+</Link>
 
           {/* =========================
               DESKTOP NAV
           ========================= */}
           <nav className="hidden items-center gap-6 text-sm md:flex">
-
             <Link
               href="/learn"
               className="text-muted-foreground transition-colors hover:text-foreground"
@@ -179,7 +185,6 @@ export function Header({
             >
               Get Started
             </Link>
-
           </nav>
 
           <div className="flex-1" />
@@ -193,7 +198,6 @@ export function Header({
                 SEARCH
             ========================= */}
             <div className="relative z-[70]">
-
               <div
                 className={cn(
                   "flex items-center transition-all duration-300 ease-in-out",
@@ -202,28 +206,19 @@ export function Header({
                     : "w-auto"
                 )}
               >
-
                 {searchOpen ? (
                   <div className="relative w-full">
-
-                    {/* SEARCH ICON */}
                     <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-
-                    {/* INPUT */}
                     <Input
                       type="search"
                       placeholder="Search topics..."
                       className="h-9 pl-8 pr-9"
                       value={searchQuery}
                       onChange={(e) =>
-                        handleSearch(
-                          e.target.value
-                        )
+                        handleSearch(e.target.value)
                       }
                       autoFocus
                     />
-
-                    {/* CLOSE BUTTON */}
                     <Button
                       variant="ghost"
                       size="icon"
@@ -233,12 +228,8 @@ export function Header({
                       <X className="h-4 w-4" />
                     </Button>
 
-                    {/* =========================
-                        SEARCH RESULTS
-                    ========================= */}
                     {searchResults.length > 0 && (
                       <div className="absolute top-full left-0 right-0 mt-2 overflow-hidden rounded-xl border border-border bg-popover shadow-2xl">
-
                         {searchResults.map(
                           (result, index) => (
                             <Link
@@ -250,14 +241,12 @@ export function Header({
                               <div className="text-sm font-medium text-foreground">
                                 {result.subtopic}
                               </div>
-
                               <div className="mt-1 text-xs text-muted-foreground">
                                 {result.topic}
                               </div>
                             </Link>
                           )
                         )}
-
                       </div>
                     )}
                   </div>
@@ -265,9 +254,7 @@ export function Header({
                   <Button
                     variant="ghost"
                     size="icon"
-                    onClick={() =>
-                      setSearchOpen(true)
-                    }
+                    onClick={() => setSearchOpen(true)}
                     aria-label="Search"
                   >
                     <Search className="h-5 w-5" />
@@ -286,19 +273,13 @@ export function Header({
                 aria-label="Toggle theme"
                 className="relative"
                 onClick={() =>
-                  setTheme(
-                    theme === "dark"
-                      ? "light"
-                      : "dark"
-                  )
+                  setTheme(theme === "dark" ? "light" : "dark")
                 }
               >
                 <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-
                 <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
               </Button>
             )}
-
           </div>
         </div>
       </header>

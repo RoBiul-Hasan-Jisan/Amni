@@ -4,6 +4,8 @@ import * as React from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Header } from "@/components/header";
 import { Sidebar } from "@/components/sidebar";
+import { Button } from "@/components/ui/button";
+import { PanelLeftClose, PanelLeft } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function LearnLayout({
@@ -12,6 +14,7 @@ export default function LearnLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = React.useState(false);
+  const [isDesktopSidebarOpen, setIsDesktopSidebarOpen] = React.useState(true);
 
   return (
     <ThemeProvider
@@ -26,23 +29,43 @@ export default function LearnLayout({
           isMenuOpen={sidebarOpen}
         />
 
+        {/* Desktop Sidebar Toggle Icon */}
+        <div className="hidden lg:block fixed left-2 top-3 z-50">
+          <Button
+            variant="secondary"
+            size="icon"
+            onClick={() => setIsDesktopSidebarOpen(!isDesktopSidebarOpen)}
+            className="h-8 w-8 shadow-md bg-secondary hover:bg-secondary/80"
+            title={isDesktopSidebarOpen ? "Hide Sidebar" : "Show Sidebar"}
+          >
+            {isDesktopSidebarOpen ? (
+              <PanelLeftClose className="h-4 w-4" />
+            ) : (
+              <PanelLeft className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
+
         <div className="flex">
-          {/* Mobile Sidebar Overlay */}
+          {/* Mobile Overlay - Click to close sidebar */}
           {sidebarOpen && (
             <div
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 z-[49] lg:hidden bg-black/30 backdrop-blur-sm cursor-pointer"
               onClick={() => setSidebarOpen(false)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Escape' && setSidebarOpen(false)}
             />
           )}
 
-          {/* Sidebar */}
-          <Sidebar
-            className={cn(
-              "fixed left-0 top-14 h-[calc(100vh-3.5rem)] z-50 transition-transform duration-300 lg:translate-x-0 lg:sticky",
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            )}
-            onNavigate={() => setSidebarOpen(false)}
-          />
+          {/* Sidebar - Desktop toggleable, Mobile conditional */}
+          <div className={`${!isDesktopSidebarOpen ? 'lg:hidden' : ''}`}>
+            <Sidebar
+              isMobileOpen={sidebarOpen}
+              onMobileClose={() => setSidebarOpen(false)}
+              onNavigate={() => setSidebarOpen(false)}
+            />
+          </div>
 
           {/* Main Content */}
           <main className="flex-1 min-w-0">{children}</main>
