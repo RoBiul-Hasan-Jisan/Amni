@@ -27,6 +27,17 @@ export default function LearnLayout({
         />
 
         <div className="flex">
+          {/* Mobile Overlay - Click to close sidebar */}
+          {sidebarOpen && (
+            <div
+              className="fixed inset-0 z-[49] lg:hidden bg-black/30 backdrop-blur-sm cursor-pointer"
+              onClick={() => setSidebarOpen(false)}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Escape' && setSidebarOpen(false)}
+            />
+          )}
+
           {/* Sidebar */}
           <Sidebar
             isMobileOpen={sidebarOpen}
