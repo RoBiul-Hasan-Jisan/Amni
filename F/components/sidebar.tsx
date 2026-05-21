@@ -121,20 +121,21 @@ export function Sidebar({
 
   return (
     <>
-      {/* MOBILE BACKDROP (FIXED) */}
+      {/* MOBILE BACKDROP */}
       {isMobileOpen && (
         <div
           className="fixed inset-0 top-14 bg-black/50 z-30 lg:hidden"
           onClick={onMobileClose}
+          aria-hidden="true"
         />
       )}
 
       {/* SIDEBAR */}
       <aside
         className={cn(
-          "fixed lg:sticky top-14 lg:top-auto left-0 h-[calc(100vh-3.5rem)] bg-sidebar border-r border-border overflow-y-auto transition-transform duration-300 z-40",
-          "lg:translate-x-0 lg:relative lg:h-[calc(100vh-3.5rem)]",
-          isMobileOpen ? "translate-x-0" : "-translate-x-full",
+          "fixed lg:sticky top-14 lg:top-auto left-0 w-64 h-[calc(100vh-3.5rem)] bg-sidebar border-r border-border overflow-y-auto transition-transform duration-300 z-40",
+          "lg:relative",
+          isMobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
           className
         )}
       >

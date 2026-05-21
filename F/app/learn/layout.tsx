@@ -20,32 +20,21 @@ export default function LearnLayout({
       enableSystem
       disableTransitionOnChange
     >
-      <div className="min-h-screen bg-background">
+      <div className="min-h-screen bg-background flex flex-col">
         <Header
           onMenuToggle={() => setSidebarOpen(!sidebarOpen)}
           isMenuOpen={sidebarOpen}
         />
 
-        <div className="flex">
-          {/* Mobile Sidebar Overlay */}
-          {sidebarOpen && (
-            <div
-              className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 lg:hidden"
-              onClick={() => setSidebarOpen(false)}
-            />
-          )}
-
-          {/* Sidebar */}
+        <div className="flex flex-1 overflow-hidden">
+          {/* Sidebar - Fixed on mobile, sticky on desktop */}
           <Sidebar
-            className={cn(
-              "fixed left-0 top-14 h-[calc(100vh-3.5rem)] z-50 transition-transform duration-300 lg:translate-x-0 lg:sticky",
-              sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            )}
-            onNavigate={() => setSidebarOpen(false)}
+            isMobileOpen={sidebarOpen}
+            onMobileClose={() => setSidebarOpen(false)}
           />
 
           {/* Main Content */}
-          <main className="flex-1 min-w-0">{children}</main>
+          <main className="flex-1 min-w-0 overflow-y-auto">{children}</main>
         </div>
       </div>
     </ThemeProvider>
