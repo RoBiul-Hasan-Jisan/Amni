@@ -121,7 +121,7 @@ export function Header({
       {/* =========================
           HEADER
       ========================= */}
-      <header className="sticky top-0 z-[60] w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <header className="sticky top-0 z-[45] w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="flex h-14 items-center px-4 lg:px-6">
 
           {/* =========================
