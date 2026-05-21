@@ -70,25 +70,22 @@ export const topics: Topic[] = [
     { "id": "list", "title": "Lists ", "slug": "list" },
     { "id": "dict", "title": "Dictionaries", "slug": "dict" },
     { "id": "set", "title": " set", "slug": "set" },
-    { "id": "functions", "title": "Functions: def, return, parameters, scope", "slug": "functions" },
-    { "id": "lambda", "title": "Lambda Functions & map/filter/reduce", "slug": "lambda" },
-    { "id": "error-handling", "title": "Exception Handling: try, except, finally", "slug": "error-handling" },
-    { "id": "file-handling", "title": "File I/O: open, read, write, with context", "slug": "file-handling" },
-    { "id": "modules", "title": "Modules & Packages: import, pip, __name__", "slug": "modules" },
+    
+    { "id": "range", "title": " Range", "slug": "range" },
+    { "id": "iterators", "title": " Iterators", "slug": "iterators" },
+    { "id": "functions", "title": "Functions", "slug": "functions" },
+    { "id": "lambda", "title": "Lambda ", "slug": "lambda" },
+    { "id": "error-handling", "title": "Exception Handling", "slug": "error-handling" },
+    { "id": "file-handling", "title": "File I/O", "slug": "file-handling" },
+    
     { "id": "recursion", "title": "Recursion in Python", "slug": "recursion" },
-    { "id": "oop", "title": "Object-Oriented Programming: classes, inheritance, dunder methods", "slug": "oop" },
-    { "id": "iterators-generators", "title": "Iterators & Generators: yield, next()", "slug": "iterators-generators" },
-    { "id": "decorators", "title": "Decorators", "slug": "decorators" },
-    { "id": "context-managers", "title": "Context Managers: with statement, __enter__/__exit__", "slug": "context-managers" },
-    { "id": "concurrency", "title": "Concurrency: threading, multiprocessing", "slug": "concurrency" },
-    { "id": "asyncio", "title": "Asynchronous Programming: async, await, asyncio", "slug": "asyncio" },
-    { "id": "metaclasses", "title": "Metaclasses", "slug": "metaclasses" },
-    { "id": "descriptors", "title": "Descriptors & property()", "slug": "descriptors" },
-    { "id": "type-hints", "title": "Type Hints: typing module, mypy", "slug": "type-hints" },
-    { "id": "testing", "title": "Testing: pytest, unittest, mocking", "slug": "testing" },
-    { "id": "profiling", "title": "Profiling & Optimization: cProfile, line_profiler", "slug": "profiling" },
-    { "id": "packaging", "title": "Packaging: pyproject.toml, setuptools, twine", "slug": "packaging" },
-    { "id": "c-extensions", "title": "C Extensions: ctypes, Cython, CFFI", "slug": "c-extensions" }
+    { "id": "advanced-python", "title": "Advanced Python", "slug": "advanced-python" },
+    { "id": "oop", "title": "oop-python", "slug": "oop" },
+    { "id": "execution", "title": " Execution", "slug": "execution" },
+    { "id": "jsonn", "title": "Json handle-python", "slug": "jsonn" },
+   
+   
+    
   ]
   },
   {
@@ -186,6 +183,7 @@ export const topics: Topic[] = [
     icon: "sparkles",
     subtopics: [
       { id: "dl-intro", title: "Introduction to Deep Learning", slug: "dl-intro" },
+      { id: "type-NN", title: "Types of Neural Networks ", slug: "type-NN" },
       { id: "ann", title: "Artificial Neural Networks (ANN)", slug: "ann" },
       { id: "cnn", title: "Convolutional Neural Networks (CNN)", slug: "cnn" },
       { id: "rnn", title: "Recurrent Neural Networks (RNN)", slug: "rnn" },

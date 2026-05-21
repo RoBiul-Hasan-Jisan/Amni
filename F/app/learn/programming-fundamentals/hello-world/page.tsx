@@ -1,279 +1,445 @@
-
-import Link from "next/link";
+import { TopicContent } from "@/components/topic-content";
+import { CodeBlock, MultiLanguageCode } from "@/components/code-block";
+import { Quiz, QuizQuestion } from "@/components/quiz";
+import { getSubtopicBySlug } from "@/lib/topics-data";
+import { AlertCircle, CheckCircle2, Clock, Lightbulb } from "lucide-react";
 
 export default function HelloWorldPage() {
+  const result = getSubtopicBySlug("programming-fundamentals", "hello-world");
+  if (!result) return null;
+
+  const { topic, subtopic } = result;
+
+ const codeExamples = [
+  {
+    language: "python",
+    label: "Python",
+    code: `# Basic Hello World
+print("Hello, World!")
+
+# Multiple arguments
+print("Hello", "World", "!")
+
+# Custom separator
+print("2", "4", "6", sep="-")
+
+# Custom end character
+print("Line one", end="")
+print("Line two")
+
+# With variables
+name = "Alice"
+print(f"Hello, {name}!")`,
+  },
+  {
+    language: "javascript",
+    label: "JavaScript",
+    code: `// Basic Hello World
+console.log("Hello, World!");
+
+// Multiple arguments
+console.log("Hello", "World", "!");
+
+// Template literals (escaped backticks)
+const name = "Alice";
+console.log("Hello, " + name + "!");
+
+// No newline (Node.js)
+process.stdout.write("Line one");
+process.stdout.write("Line two");`,
+  },
+  {
+    language: "java",
+    label: "Java",
+    code: `public class HelloWorld {
+  public static void main(String[] args) {
+    System.out.println("Hello, World!");
+
+    System.out.print("Line one");
+    System.out.print("Line two");
+
+    String name = "Alice";
+    System.out.printf("Hello, %s!%n", name);
+  }
+}`,
+  },
+  {
+    language: "cpp",
+    label: "C++",
+    code: `#include <iostream>
+using namespace std;
+
+int main() {
+  cout << "Hello, World!" << endl;
+  cout << "Hello" << " " << "World" << "!" << endl;
+
+  cout << "Line one";
+  cout << "Line two";
+
+  string name = "Alice";
+  cout << "Hello, " << name << "!" << endl;
+
+  return 0;
+}`,
+  },
+];
+
+  const quizQuestions: QuizQuestion[] = [
+    {
+      id: 1,
+      question: "What does the `print()` function do in Python?",
+      options: [
+        "Reads input from the user",
+        "Writes text to standard output",
+        "Creates a new variable",
+        "Opens a file"
+      ],
+      correctAnswer: 1,
+      explanation: "The `print()` function outputs text to the console (standard output), allowing programs to communicate with users.",
+    },
+    {
+      id: 2,
+      question: "What is the default separator between arguments in `print()`?",
+      options: ["Comma (,)", "Space ( )", "Nothing ('')", "Hyphen (-)"],
+      correctAnswer: 1,
+      explanation: "By default, `print()` separates multiple arguments with a space. You can change this using the `sep` parameter.",
+    },
+    {
+      id: 3,
+      question: "How do you prevent `print()` from adding a newline at the end?",
+      options: ["Use newline=False", "Use end=''", "Use no_newline=True", "Use sep=''"],
+      correctAnswer: 1,
+      explanation: "Using `end=''` replaces the default newline character with an empty string, so subsequent output continues on the same line.",
+    },
+    {
+      id: 4,
+      question: "What happens when you call `print()` with no arguments?",
+      options: [
+        "Nothing happens",
+        "It prints an empty string",
+        "It prints a blank line",
+        "It raises an error"
+      ],
+      correctAnswer: 2,
+      explanation: "`print()` with no arguments prints a blank line (just a newline character). This is useful for adding vertical spacing.",
+    },
+    {
+      id: 5,
+      question: "Which of the following is the correct way to write a comment in Python?",
+      options: [
+        "// This is a comment",
+        "<!-- This is a comment -->",
+        "# This is a comment",
+        "/* This is a comment */"
+      ],
+      correctAnswer: 2,
+      explanation: "In Python, comments start with the `#` symbol and continue to the end of the line.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Bar */}
-      <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link href="/learn" className="text-blue-600 dark:text-blue-400 hover:underline">
-                ← Back to Learning Path
-              </Link>
-            </div>
-            <div className="text-gray-700 dark:text-gray-300 font-semibold">
-              Programming Fundamentals
+    <TopicContent topic={topic} subtopic={subtopic}>
+      <div className="space-y-8">
+        {/* Introduction */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">What is Hello World?</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">"Hello, World!"</strong> is traditionally the first program written when 
+            learning a new programming language. It simply prints a message to the console, confirming that your 
+            development environment is set up correctly and that you can run code.
+          </p>
+          
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 my-6">
+            <div className="flex gap-3">
+              <Lightbulb className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Why "Hello World"?</h4>
+                <p className="text-sm text-muted-foreground">
+                  The tradition started with the 1978 book "The C Programming Language" by Kernighan and Ritchie. 
+                  It's a simple, confidence-building first step that proves your development environment works 
+                  and you can execute code successfully.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Hello World
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            A minimal Python program prints output to the console. This lesson focuses on{" "}
-            <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono text-sm">
-              print()
-            </code>{" "}
-            basics so you can run and verify your first scripts quickly.
-          </p>
-        </div>
+        </section>
 
         {/* The print() Function */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            The print() Function
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print()</code>{" "}
-            sends text to standard output. It accepts one or more arguments and converts them to strings before writing.
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">The print() Function</h2>
+          <p className="text-muted-foreground mb-4">
+            The <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-sm">print()</code> function sends text to standard output (usually the console). 
+            It accepts one or more arguments and automatically converts them to strings before displaying.
           </p>
-
-          <div className="space-y-5">
-            {/* Basic */}
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">print("Hello, World!")</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  Output: Hello, World!
-                </pre>
-              </div>
+          
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Basic Usage</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`print("Hello, World!")
+print(42)
+print(3.14159)`}
+              </pre>
             </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Multiple Arguments</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`print("Hello", "World")
+# Output: Hello World
 
-            {/* Multiple arguments */}
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Multiple arguments:</span> Arguments are separated by spaces by default.{" "}
-                The <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">sep</code> parameter controls the separator.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">print("Hello", "World", "!")</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  Output: Hello World !
-                </pre>
-              </div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-3">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">print("2", "4", "6", sep="-")</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  Output: 2-4-6
-                </pre>
-              </div>
+print("a", "b", "c", sep="-")
+# Output: a-b-c`}
+              </pre>
             </div>
-
-            {/* End parameter */}
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">End parameter:</span> The{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">end</code> parameter controls what is printed after the last argument.{" "}
-                The default is a newline (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">\n</code>).
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">
-                  print("Line one", end="")
-                  {"\n"}print("Line two")
-                </div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  Output: Line oneLine two
-                </pre>
-              </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Custom End Character</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`print("Same", end="")
+print("line")
+# Output: Same line`}
+              </pre>
             </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Print Empty Line</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`print()  # Prints blank line
+print("After gap")`}
+              </pre>
+            </div>
+          </div>
+        </section>
 
-            {/* No arguments */}
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">No arguments:</span>{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print()</code> with no arguments prints a single newline.
+        {/* Code Examples */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Code Examples Across Languages</h2>
+          <p className="text-muted-foreground mb-4">
+            See how "Hello, World!" and basic output operations look in different programming languages:
+          </p>
+          <MultiLanguageCode codes={codeExamples} />
+        </section>
+
+        {/* Python Syntax Basics */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Python Syntax Basics</h2>
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Indentation</h4>
+              <p className="text-sm text-muted-foreground">
+                Python uses indentation to define code blocks. Four spaces per level is the convention.
               </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">print()</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  Output: (blank line)
-                </pre>
-              </div>
+              <pre className="bg-muted p-2 rounded text-xs mt-2">
+                {`if True:
+    print("Indented!")`}
+              </pre>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Comments</h4>
+              <p className="text-sm text-muted-foreground">
+                Lines starting with <code className="bg-muted px-1 rounded">#</code> are comments and are ignored.
+              </p>
+              <pre className="bg-muted p-2 rounded text-xs mt-2">
+                {`# This is a comment
+print("Hello")  # Inline comment`}
+              </pre>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Colon</h4>
+              <p className="text-sm text-muted-foreground">
+                A colon <code className="bg-muted px-1 rounded">:</code> starts a block. The following lines must be indented.
+              </p>
+              <pre className="bg-muted p-2 rounded text-xs mt-2">
+                {`if condition:
+    # Block starts here
+    print("Inside block")`}
+              </pre>
             </div>
           </div>
         </section>
 
         {/* Common Patterns */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Common Patterns
-          </h2>
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Common Usage Patterns</h2>
           <div className="space-y-4">
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2 font-semibold">Minimal executable script:</p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  print("Hello, World!")
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2"> Simple Greeting</h4>
+              <pre className="bg-muted p-3 rounded-lg text-sm overflow-x-auto">
+                {`name = "Alice"
+print(f"Hello, {name}! Welcome to Python.")`}
+              </pre>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2"> Progress Indicator</h4>
+              <pre className="bg-muted p-3 rounded-lg text-sm overflow-x-auto">
+                {`import time
+
+print("Loading", end="")
+for i in range(3):
+    print(".", end="", flush=True)
+    time.sleep(0.5)
+print(" Done!")`}
+              </pre>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2"> Formatted Table</h4>
+              <pre className="bg-muted p-3 rounded-lg text-sm overflow-x-auto">
+                {`print("Name".ljust(10) + "Score".rjust(10))
+print("-" * 20)
+print("Alice".ljust(10) + "95".rjust(10))
+print("Bob".ljust(10) + "87".rjust(10))`}
+              </pre>
+            </div>
+          </div>
+        </section>
+
+        {/* Time & Space Complexity Note */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Performance Considerations</h2>
+          <div className="bg-card border border-border rounded-lg p-4">
+            <div className="flex items-start gap-3">
+              <Clock className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">I/O Operations are Expensive</h4>
+                <p className="text-sm text-muted-foreground">
+                  While <code className="bg-muted px-1 rounded">print()</code> is fine for learning and debugging, 
+                  frequent console output in production can slow down your program. Each I/O operation is costly 
+                  compared to in-memory operations. For performance-critical applications, minimize console output 
+                  or use logging with appropriate levels.
+                </p>
+                <div className="mt-3 p-3 bg-muted rounded text-sm">
+                  <p className="font-mono text-xs"># Bad for performance in loops:</p>
+                  <p className="font-mono text-xs text-muted-foreground">for i in range(10000): print(i)</p>
+                  <p className="font-mono text-xs mt-2"># Better: Collect and print once</p>
+                  <p className="font-mono text-xs text-muted-foreground">result = [str(i) for i in range(10000)]</p>
+                  <p className="font-mono text-xs text-muted-foreground">print("\n".join(result))</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Common Mistakes */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Common Mistakes to Avoid</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Missing Parentheses</h4>
+                <p className="text-sm text-muted-foreground">
+                  In Python 3, <code className="bg-muted px-1 rounded">print</code> is a function and requires parentheses.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Wrong (Python 2 style)
+print "Hello"
+
+# Correct
+print("Hello")`}
                 </pre>
               </div>
             </div>
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2 font-semibold">Multiple values in one line:</p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Quote Mismatch</h4>
+                <p className="text-sm text-muted-foreground">
+                  Strings must start and end with matching quotes.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Wrong
+print("Hello')  # Mixed quotes
+
+# Correct
+print("Hello")   # Double quotes
+print('Hello')   # Single quotes`}
+                </pre>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Indentation Errors</h4>
+                <p className="text-sm text-muted-foreground">
+                  Python requires consistent indentation. Mixing tabs and spaces causes <code className="bg-muted px-1 rounded">IndentationError</code>.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Wrong - inconsistent indentation
+if True:
+  print("Two spaces")
+    print("Four spaces")
+
+# Correct - consistent
+if True:
+    print("Four spaces")
+    print("Also four spaces")`}
+                </pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Best Practices */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Best Practices</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use f-strings for Formatting</h4>
+                <p className="text-sm text-muted-foreground">
+                  Modern Python (3.6+) supports f-strings, which are cleaner and faster than other formatting methods.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
                   {`name = "Alice"
-score = 82
-print("Name:", name, "Score:", score)`}
+score = 95
+print(f"{name} scored {score}%")  # Recommended`}
                 </pre>
               </div>
             </div>
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2 font-semibold">Custom separator for compact output:</p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  print("2", "4", "6", sep="-")
-                </pre>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        {/* Python Syntax Basics */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Python Syntax Basics
-          </h2>
-          <div className="space-y-4">
-            <div>
-              <p className="text-gray-700 dark:text-gray-300">
-                <span className="font-semibold">Indentation:</span> Python uses indentation to define blocks. Four spaces per level is conventional. Mixing tabs and spaces can cause errors.
-              </p>
-            </div>
-            <div>
-              <p className="text-gray-700 dark:text-gray-300">
-                <span className="font-semibold">Colon:</span> A colon (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">:</code>) starts a block. The block must be indented.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`if True:
-    print("indented block")`}
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Add Descriptive Messages</h4>
+                <p className="text-sm text-muted-foreground">
+                  When printing for users, add clear context to your output.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Good
+print(f"Processing file: {filename}")
+
+# Bad
+print(filename)`}
                 </pre>
               </div>
             </div>
-            <div>
-              <p className="text-gray-700 dark:text-gray-300">
-                <span className="font-semibold">Comments:</span> Lines starting with{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">#</code> are comments and are ignored.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# This is a comment
-print("Hello")  # inline comment`}
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use flush for Real-time Output</h4>
+                <p className="text-sm text-muted-foreground">
+                  Use <code className="bg-muted px-1 rounded">flush=True</code> to force immediate output, especially in progress indicators.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`for i in range(10):
+    print(f"\rProgress: {i}/10", end="", flush=True)
+    time.sleep(0.1)`}
                 </pre>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Tricky Points */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Tricky Points
-          </h2>
-          <div className="space-y-3">
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Multiple arguments are converted to strings</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print()</code> stringifies each argument. You can pass numbers, booleans, and other objects directly.
-              </p>
-            </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Separator affects readability</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Using a custom <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">sep</code> is useful, but overusing separators can make logs harder to scan.
-              </p>
-            </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">print() adds a newline by default</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print("x")</code> ends with <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">\n</code>. Use{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">end=""</code> when you need to continue on the same line.
-              </p>
-            </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Indentation errors</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Any block statement in Python must be indented consistently, or{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">IndentationError</code> is raised.
-              </p>
-            </div>
-          </div>
+        {/* Quiz */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Test Your Knowledge</h2>
+          <Quiz questions={quizQuestions} title="Hello World Quiz" />
         </section>
-
-        {/* Interview Questions */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Interview Questions
-          </h2>
-          <div className="space-y-5">
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                How do you pass multiple values to print()?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                Pass them as separate arguments: <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print("a", "b", "c")</code>. They are separated by spaces by default; use{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">sep</code> to change this.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is the difference between sep and end in print()?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">sep</code> controls text between arguments.{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">end</code> controls what is printed after the last argument.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is the default value of end in print()?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                A newline character (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">\n</code>). Use{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">end=""</code> to suppress the trailing newline.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What does print() do with non-string values?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                It calls string conversion and prints the result. For example,{" "}
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print(2, True, [4, 6])</code> is valid.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        {/* Navigation */}
-        <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700 mt-4">
-          <div className="text-gray-400">Previous: Getting Started</div>
-          <Link
-            href="/learn/programming-fundamentals/variables"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
-          >
-            Next: Variables & Data Types →
-          </Link>
-        </div>
       </div>
-    </div>
+    </TopicContent>
   );
 }

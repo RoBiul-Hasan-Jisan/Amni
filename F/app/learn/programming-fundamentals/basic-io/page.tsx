@@ -1,207 +1,268 @@
-
-
-import Link from "next/link";
+import { TopicContent } from "@/components/topic-content";
+import { CodeBlock, MultiLanguageCode } from "@/components/code-block";
+import { Quiz, QuizQuestion } from "@/components/quiz";
+import { getSubtopicBySlug } from "@/lib/topics-data";
+import { AlertCircle, CheckCircle2, Clock, Lightbulb } from "lucide-react";
 
 export default function BasicIOPage() {
-  return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Bar */}
-      <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link href="/learn" className="text-blue-600 dark:text-blue-400 hover:underline">
-                ← Back to Learning Path
-              </Link>
-            </div>
-            <div className="text-gray-700 dark:text-gray-300 font-semibold">
-              Programming Fundamentals
-            </div>
-          </div>
-        </div>
-      </nav>
+  const result = getSubtopicBySlug("programming-fundamentals", "basic-io");
+  if (!result) return null;
 
-      {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Basic I/O
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Input and output operations let programs interact with users. Python provides <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print()</code> for output and <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">input()</code> for user input.
-          </p>
-        </div>
+  const { topic, subtopic } = result;
 
-        {/* Output with print() */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Output with print()
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            The <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print()</code> function writes text to standard output (usually the console).
-          </p>
-
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Basic output</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`print("Hello, World!")
+  const codeExamples = [
+    {
+      language: "python",
+      label: "Python",
+      code: `# Basic print output
+print("Hello, World!")
 print(42)
 print(3.14159)
-print(True)`}
-                </pre>
-              </div>
-            </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Separator (sep):</span> Control how multiple arguments are joined.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Using sep parameter</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`print("apple", "banana", "cherry")           # apple banana cherry
+# Using sep parameter
+print("apple", "banana", "cherry")           # apple banana cherry
 print("apple", "banana", "cherry", sep=", ")  # apple, banana, cherry
-print("apple", "banana", "cherry", sep=" | ") # apple | banana | cherry`}
-                </pre>
-              </div>
-            </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">End character (end):</span> Control what is printed after the last argument.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Using end parameter</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`print("First line")           # Ends with newline
+# Using end parameter
+print("First line")           # Ends with newline
 print("Same", end=" ")         # Ends with space
 print("line")                  # Continues on same line
-print("No newline", end="")    # No newline at all`}
-                </pre>
-              </div>
-            </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Formatted strings (f-strings):</span> Embed expressions inside strings.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">f-string formatting</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`name = "Alice"
+# f-string formatting
+name = "Alice"
 age = 25
 print(f"My name is {name} and I am {age} years old")
-print(f"Next year I will be {age + 1}")`}
-                </pre>
-              </div>
-            </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">String formatting methods:</span> Alternative ways to format strings.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">.format() method</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# .format() method
-print("My name is {} and I am {} years old".format(name, age))
-print("{1} is {0} years old".format(age, name))  # Positional
+# Basic input
+user_input = input("Enter your name: ")
+print(f"Hello {user_input}")
 
-# %-formatting (old style)
-print("My name is %s and I am %d years old" % (name, age))`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </section>
+# Type conversion
+age = int(input("Enter your age: "))
+price = float(input("Enter price: "))
 
-        {/* Input with input() */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Input with input()
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            The <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">input()</code> function reads a line from standard input (usually the keyboard) and returns it as a <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">str</code>.
-          </p>
-
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Basic input</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`name = input()
-print("Hello", name)`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Input with prompt:</span> Display a message before reading input.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Prompt parameter</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`name = input("Enter your name: ")
-age = input("Enter your age: ")
-print(f"Hello {name}, you are {age} years old")`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Type conversion:</span> Convert input from string to other types.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Converting input</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`age = int(input("Enter your age: "))        # Convert to int
-price = float(input("Enter price: "))        # Convert to float
-is_student = input("Are you a student? (y/n): ").lower() == 'y'`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Multiple inputs in one line:</span> Split and parse multiple values.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Multiple values</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Input: "Alice 25 Engineer"
-data = input().split()
-name = data[0]
-age = int(data[1])
-job = data[2]
-
-# Using tuple unpacking
+# Multiple inputs in one line
 x, y = map(int, input("Enter two numbers: ").split())
-print(f"Sum: {x + y}")`}
-                </pre>
+print(f"Sum: {x + y}")`,
+    },
+    {
+      language: "javascript",
+      label: "JavaScript",
+      code: `// Basic console output
+console.log("Hello, World!");
+console.log(42);
+console.log(3.14159);
+
+// Multiple arguments
+console.log("apple", "banana", "cherry");
+
+// Template literals (like f-strings)
+const name = "Alice";
+const age = 25;
+console.log(\`My name is \${name} and I am \${age} years old\`);
+
+// Basic input (Node.js with readline)
+const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.question("Enter your name: ", (answer) => {
+  console.log(\`Hello \${answer}\`);
+  rl.close();
+});
+
+// Type conversion
+const num = parseInt("42");
+const floatNum = parseFloat("3.14");`,
+    },
+    {
+      language: "java",
+      label: "Java",
+      code: `import java.util.Scanner;
+
+public class Main {
+  public static void main(String[] args) {
+    // Basic output
+    System.out.println("Hello, World!");
+    System.out.println(42);
+    System.out.print("No newline");
+    
+    // Formatted output
+    String name = "Alice";
+    int age = 25;
+    System.out.printf("My name is %s and I am %d years old%n", name, age);
+    
+    // Basic input
+    Scanner scanner = new Scanner(System.in);
+    System.out.print("Enter your name: ");
+    String input = scanner.nextLine();
+    System.out.println("Hello " + input);
+    
+    // Type conversion
+    System.out.print("Enter your age: ");
+    int age2 = scanner.nextInt();
+    
+    scanner.close();
+  }
+}`,
+    },
+    {
+      language: "cpp",
+      label: "C++",
+      code: `#include <iostream>
+#include <string>
+using namespace std;
+
+int main() {
+  // Basic output
+  cout << "Hello, World!" << endl;
+  cout << 42 << endl;
+  cout << 3.14159 << endl;
+  
+  // Formatted output
+  string name = "Alice";
+  int age = 25;
+  cout << "My name is " << name << " and I am " << age << " years old" << endl;
+  
+  // Basic input
+  string userInput;
+  cout << "Enter your name: ";
+  getline(cin, userInput);
+  cout << "Hello " << userInput << endl;
+  
+  // Type conversion
+  int number;
+  cout << "Enter a number: ";
+  cin >> number;
+  
+  return 0;
+}`,
+    },
+  ];
+
+  const quizQuestions: QuizQuestion[] = [
+    {
+      id: 1,
+      question: "What does the `input()` function return in Python?",
+      options: ["Integer", "Float", "String", "Boolean"],
+      correctAnswer: 2,
+      explanation: "The `input()` function always returns a string, regardless of what the user enters. You need to convert it using int() or float() for numeric operations.",
+    },
+    {
+      id: 2,
+      question: "What is the default value of the `sep` parameter in `print()`?",
+      options: ["Comma (,)", "Space ( )", "Nothing ('')", "Newline (\\n)"],
+      correctAnswer: 1,
+      explanation: "The default separator between arguments in print() is a space. You can change it using sep parameter.",
+    },
+    {
+      id: 3,
+      question: "How do you prevent `print()` from adding a newline at the end?",
+      options: ["Use newline=False", "Use end=''", "Use no_newline=True", "Use sep=''"],
+      correctAnswer: 1,
+      explanation: "Using end='' replaces the default newline character with an empty string, so subsequent output continues on the same line.",
+    },
+    {
+      id: 4,
+      question: "What is an f-string used for?",
+      options: ["File input/output", "Function definitions", "String formatting with embedded expressions", "Finding substrings"],
+      correctAnswer: 2,
+      explanation: "f-strings (formatted string literals) allow you to embed expressions directly inside string literals using curly braces {}.",
+    },
+    {
+      id: 5,
+      question: "How do you read multiple integers from a single input line in Python?",
+      options: ["input().split().to_int()", "int(input().split())", "map(int, input().split())", "input().split(int)"],
+      correctAnswer: 2,
+      explanation: "Use map(int, input().split()) to split the input and convert each part to an integer.",
+    },
+  ];
+
+  return (
+    <TopicContent topic={topic} subtopic={subtopic}>
+      <div className="space-y-8">
+        {/* Introduction */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">What is Basic I/O?</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">Input and Output (I/O)</strong> operations allow programs to interact with users. 
+            Python provides <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-sm">print()</code> for output and{' '}
+            <code className="bg-muted px-1.5 py-0.5 rounded font-mono text-sm">input()</code> for user input, forming the foundation of interactive programming.
+          </p>
+          
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 my-6">
+            <div className="flex gap-3">
+              <Lightbulb className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Real-world Analogy</h4>
+                <p className="text-sm text-muted-foreground">
+                  Think of I/O like a conversation: <strong>output (print)</strong> is like speaking to someone, 
+                  while <strong>input</strong> is like listening and waiting for a response. The program speaks first, 
+                  then listens, then responds based on what it heard.
+                </p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Complete Example */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Complete Example
-          </h2>
-          <div className="bg-gray-900 rounded-lg overflow-hidden">
-            <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Interactive program</div>
-            <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-              {`# Simple calculator
-print("=== Simple Calculator ===")
+        {/* Key Concepts */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Key I/O Concepts</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Standard Output (stdout)</h4>
+              <p className="text-sm text-muted-foreground">
+                The <code className="bg-muted px-1 py-0.5 rounded">print()</code> function writes to the console by default. 
+                You can customize separators and line endings.
+              </p>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Standard Input (stdin)</h4>
+              <p className="text-sm text-muted-foreground">
+                The <code className="bg-muted px-1 py-0.5 rounded">input()</code> function reads user input as strings. 
+                Always convert numeric input to appropriate types.
+              </p>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">String Formatting</h4>
+              <p className="text-sm text-muted-foreground">
+                f-strings offer the most readable way to embed expressions in strings. 
+                Alternative methods include <code>.format()</code> and <code>%</code>-formatting.
+              </p>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Error Output (stderr)</h4>
+              <p className="text-sm text-muted-foreground">
+                Use <code>file=sys.stderr</code> to print error messages separately from normal output.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Code Examples */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Code Examples</h2>
+          <p className="text-muted-foreground mb-4">
+            Here are examples of basic I/O operations across different programming languages:
+          </p>
+          <MultiLanguageCode codes={codeExamples} />
+        </section>
+
+        {/* Common Use Cases */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Common Use Cases</h2>
+          <div className="space-y-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2"> Simple Calculator</h4>
+              <pre className="bg-muted p-3 rounded-lg text-sm overflow-x-auto">
+                {`# Get user input
 num1 = float(input("Enter first number: "))
 operator = input("Enter operator (+, -, *, /): ")
 num2 = float(input("Enter second number: "))
 
+# Perform calculation
 if operator == '+':
     result = num1 + num2
 elif operator == '-':
@@ -210,137 +271,192 @@ elif operator == '*':
     result = num1 * num2
 elif operator == '/':
     result = num1 / num2 if num2 != 0 else "Error: Division by zero"
-else:
-    result = "Invalid operator"
 
+# Output result
 print(f"{num1} {operator} {num2} = {result}")`}
-            </pre>
-          </div>
-        </section>
+              </pre>
+            </div>
 
-        {/* Redirecting Output */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Redirecting Output (file parameter)
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            The <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">file</code> parameter lets you write to files instead of the console.
-          </p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2"> Data Collection Form</h4>
+              <pre className="bg-muted p-3 rounded-lg text-sm overflow-x-auto">
+                {`# Collect user information
+name = input("Enter your name: ")
+age = int(input("Enter your age: "))
+email = input("Enter your email: ")
 
-          <div className="space-y-4">
-            <div className="bg-gray-900 rounded-lg overflow-hidden">
-              <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                {`# Write to a file
-with open("output.txt", "w") as f:
-    print("Hello, file!", file=f)
-    print("This goes to the file", file=f)
+# Display formatted output
+print("\\n=== User Profile ===")
+print(f"Name: {name}")
+print(f"Age: {age}")
+print(f"Email: {email}")
+print("===================")`}
+              </pre>
+            </div>
 
-# Write to stderr (error output)
-import sys
-print("Error message", file=sys.stderr)`}
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2"> Progress Indicator</h4>
+              <pre className="bg-muted p-3 rounded-lg text-sm overflow-x-auto">
+                {`import time
+
+# Print progress on same line
+print("Loading", end="")
+for i in range(5):
+    print(".", end="", flush=True)
+    time.sleep(0.5)
+print(" Done!")`}
               </pre>
             </div>
           </div>
         </section>
 
-        {/* Tricky Points */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Tricky Points
-          </h2>
-          <div className="space-y-3">
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">input() always returns a string</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Even if the user enters a number, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">input()</code> returns it as a string. Always convert using <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">int()</code> or <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">float()</code> for numeric operations.
-              </p>
+        {/* Formatting Methods Comparison */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">String Formatting Methods</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-muted">
+                  <th className="border border-border p-3 text-left text-foreground">Method</th>
+                  <th className="border border-border p-3 text-left text-foreground">Syntax</th>
+                  <th className="border border-border p-3 text-left text-foreground">When to Use</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-border p-3 font-mono text-sm text-foreground">f-strings (Python 3.6+)</td>
+                <td className="border border-border p-3 font-mono text-sm text-primary">
+  {"Hello World"}
+</td>
+                  <td className="border border-border p-3 text-muted-foreground text-sm">Most readable, fastest, recommended</td>
+                </tr>
+                <tr>
+                  <td className="border border-border p-3 font-mono text-sm text-foreground">.format()</td>
+                  <td className="border border-border p-3 font-mono text-sm text-primary">"Hello {}".format(name)</td>
+                  <td className="border border-border p-3 text-muted-foreground text-sm">Compatible with older Python versions</td>
+                </tr>
+                <tr>
+                  <td className="border border-border p-3 font-mono text-sm text-foreground">%-formatting</td>
+                  <td className="border border-border p-3 font-mono text-sm text-primary">"Hello %s" % name</td>
+                  <td className="border border-border p-3 text-muted-foreground text-sm">Legacy code, C-style formatting</td>
+                </tr>
+                <tr>
+                  <td className="border border-border p-3 font-mono text-sm text-foreground">Concatenation</td>
+                  <td className="border border-border p-3 font-mono text-sm text-primary">"Hello " + name</td>
+                  <td className="border border-border p-3 text-muted-foreground text-sm">Simple cases with few variables</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        {/* Common Mistakes */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Common Mistakes to Avoid</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Forgetting Type Conversion</h4>
+                <p className="text-sm text-muted-foreground">
+                  <code className="bg-muted px-1 py-0.5 rounded">input()</code> returns a string. Always convert numeric input using 
+                  <code className="bg-muted px-1 py-0.5 rounded">int()</code> or <code className="bg-muted px-1 py-0.5 rounded">float()</code> before math operations.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Wrong
+age = input("Enter age: ")
+next_age = age + 1  # TypeError!
+
+# Correct
+age = int(input("Enter age: "))
+next_age = age + 1  # Works!`}
+                </pre>
+              </div>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Trailing newline in input</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">input()</code> strips the trailing newline but keeps other whitespace. Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">.strip()</code> to remove leading/trailing spaces.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Not Handling Invalid Input</h4>
+                <p className="text-sm text-muted-foreground">
+                  User input can be invalid (letters when expecting numbers). Use try/except for robust programs.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`try:
+    age = int(input("Enter your age: "))
+except ValueError:
+    print("Please enter a valid number!")`}
+                </pre>
+              </div>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Print adds spaces between arguments</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print("a", "b")</code> outputs <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">"a b"</code>. Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">sep=""</code> to remove spaces.
-              </p>
-            </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Input can raise EOFError</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                When reading from a file or pipe that ends unexpectedly, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">input()</code> raises <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">EOFError</code>. Handle with try/except if needed.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Whitespace Issues</h4>
+                <p className="text-sm text-muted-foreground">
+                  Input may contain leading/trailing spaces. Use <code className="bg-muted px-1 py-0.5 rounded">.strip()</code> to clean input.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`name = input("Enter name: ").strip()  # Removes extra spaces`}
+                </pre>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Interview Questions */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Interview Questions
-          </h2>
-          <div className="space-y-5">
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is the difference between <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print("a", "b")</code> and <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">print("a" + "b")</code>?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                First prints <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">"a b"</code> (space separated). Second concatenates strings first, printing <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">"ab"</code>.
-              </p>
+        {/* Best Practices */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Best Practices</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use f-strings for Formatting</h4>
+                <p className="text-sm text-muted-foreground">
+                  f-strings are more readable, faster, and less error-prone than other formatting methods.
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                How do you read a number from user input?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">num = int(input("Enter a number: "))</code>. Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">float()</code> for decimals. Wrap in try/except to handle invalid input.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Provide Clear Prompts</h4>
+                <p className="text-sm text-muted-foreground">
+                  Always tell users what input you expect. Include expected format and valid ranges.
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What does <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">end=""</code> do in a print statement?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                It prevents the default newline from being added after printing. Useful for building output gradually on the same line.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Validate Input</h4>
+                <p className="text-sm text-muted-foreground">
+                  Never trust user input. Always validate, convert, and handle errors appropriately.
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                How can you read multiple integers from a single input line?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">a, b = map(int, input().split())</code>. This splits the input by whitespace and converts each part to an integer.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is an f-string and why is it useful?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                f-strings (formatted string literals) allow embedding expressions directly in strings using <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">{}</code>. They're faster and more readable than <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">.format()</code> or <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">%</code>-formatting.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use Descriptive Messages</h4>
+                <p className="text-sm text-muted-foreground">
+                  Error messages should explain what went wrong and how to fix it.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Navigation */}
-        <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700 mt-4">
-          <Link
-            href="/learn/programming-fundamentals/variables"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
-          >
-            ← Previous: Variables & Data Types
-          </Link>
-          <Link
-            href="/learn/programming-fundamentals/control-flow"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
-          >
-            Next: Control Flow →
-          </Link>
-        </div>
+        {/* Quiz */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Test Your Knowledge</h2>
+          <Quiz questions={quizQuestions} title="Basic I/O Quiz" />
+        </section>
       </div>
-    </div>
+    </TopicContent>
   );
 }

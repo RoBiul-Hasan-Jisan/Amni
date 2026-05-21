@@ -1,529 +1,544 @@
-// app/learn/programming-fundamentals/collections/page.tsx
-
-import Link from "next/link";
+import { TopicContent } from "@/components/topic-content";
+import { CodeBlock, MultiLanguageCode } from "@/components/code-block";
+import { Quiz, QuizQuestion } from "@/components/quiz";
+import { getSubtopicBySlug } from "@/lib/topics-data";
+import { AlertCircle, CheckCircle2, Clock, Lightbulb } from "lucide-react";
 
 export default function CollectionsPage() {
+  const result = getSubtopicBySlug("programming-fundamentals", "collections");
+  if (!result) return null;
+
+  const { topic, subtopic } = result;
+
+  const codeExamples = [
+    {
+      language: "python",
+      label: "Python",
+      code: `# Lists - Ordered, mutable
+fruits = ["apple", "banana", "cherry"]
+fruits.append("orange")
+fruits[0] = "strawberry"
+
+# Tuples - Ordered, immutable
+coordinates = (10, 20)
+x, y = coordinates  # Unpacking
+
+# Dictionaries - Key-value pairs
+person = {"name": "Alice", "age": 30}
+person["email"] = "alice@example.com"
+
+# Sets - Unordered, unique elements
+unique_numbers = {1, 2, 3, 3, 2}  # {1, 2, 3}
+unique_numbers.add(4)
+
+# List comprehension
+squares = [x**2 for x in range(10)]
+
+# Dictionary comprehension
+square_dict = {x: x**2 for x in range(5)}`,
+    },
+    {
+      language: "javascript",
+      label: "JavaScript",
+      code: `// Arrays - Ordered, mutable
+const fruits = ["apple", "banana", "cherry"];
+fruits.push("orange");
+fruits[0] = "strawberry";
+
+// Objects (like dictionaries)
+const person = { name: "Alice", age: 30 };
+person.email = "alice@example.com";
+
+// Sets - Unique values
+const uniqueNumbers = new Set([1, 2, 3, 3, 2]); // {1, 2, 3}
+uniqueNumbers.add(4);
+
+// Maps - Key-value with any key type
+const map = new Map();
+map.set("name", "Alice");
+map.set(42, "answer");
+
+// Array methods
+const squares = Array.from({length: 10}, (_, i) => i ** 2);`,
+    },
+    {
+      language: "java",
+      label: "Java",
+      code: `import java.util.*;
+
+// ArrayList - Dynamic array
+List<String> fruits = new ArrayList<>();
+fruits.add("apple");
+fruits.add("banana");
+fruits.set(0, "strawberry");
+
+// HashMap - Key-value pairs
+Map<String, Integer> person = new HashMap<>();
+person.put("age", 30);
+person.put("name", "Alice");
+
+// HashSet - Unique elements
+Set<Integer> uniqueNumbers = new HashSet<>();
+uniqueNumbers.add(1);
+uniqueNumbers.add(2);
+uniqueNumbers.add(2); // Duplicate ignored
+
+// Array and List conversion
+int[] arr = {1, 2, 3, 4, 5};
+List<Integer> list = Arrays.asList(1, 2, 3, 4, 5);`,
+    },
+    {
+      language: "cpp",
+      label: "C++",
+      code: `#include <vector>
+#include <map>
+#include <unordered_set>
+#include <string>
+
+// Vector - Dynamic array
+std::vector<std::string> fruits = {"apple", "banana", "cherry"};
+fruits.push_back("orange");
+fruits[0] = "strawberry";
+
+// Map - Key-value pairs
+std::map<std::string, int> person;
+person["name"] = 1; // Using int for simplicity
+person["age"] = 30;
+
+// Unordered set - Unique elements
+std::unordered_set<int> uniqueNumbers = {1, 2, 3, 3, 2}; // {1, 2, 3}
+uniqueNumbers.insert(4);
+
+// Array (fixed size)
+int arr[] = {1, 2, 3, 4, 5};`,
+    },
+  ];
+
+  const quizQuestions: QuizQuestion[] = [
+    {
+      id: 1,
+      question: "Which collection type is immutable (cannot be changed after creation)?",
+      options: ["List", "Dictionary", "Tuple", "Set"],
+      correctAnswer: 2,
+      explanation: "Tuples are immutable sequences that cannot be modified after creation. Lists, dictionaries, and sets are mutable.",
+    },
+    {
+      id: 2,
+      question: "What is the time complexity of checking if an item exists in a set?",
+      options: ["O(1)", "O(n)", "O(log n)", "O(n²)"],
+      correctAnswer: 0,
+      explanation: "Sets use hash tables for O(1) average time complexity for membership testing (the 'in' operator).",
+    },
+    {
+      id: 3,
+      question: "Which collection type would you use to store key-value pairs?",
+      options: ["List", "Tuple", "Set", "Dictionary"],
+      correctAnswer: 3,
+      explanation: "Dictionaries store key-value pairs, allowing fast lookup by key. Lists store ordered sequences, tuples are immutable sequences, and sets store unique values.",
+    },
+    {
+      id: 4,
+      question: "What happens when you create a set with duplicate values?",
+      options: [
+        "It raises an error",
+        "It keeps all duplicates",
+        "It keeps only unique values",
+        "It sorts the values"
+      ],
+      correctAnswer: 2,
+      explanation: "Sets automatically remove duplicates, keeping only unique values. This is one of the key features of sets.",
+    },
+    {
+      id: 5,
+      question: "Which collection type maintains the order of elements?",
+      options: ["Set only", "List and Tuple only", "Dictionary only", "List, Tuple, and Dictionary (Python 3.7+)"],
+      correctAnswer: 3,
+      explanation: "Lists and tuples maintain order by definition. Since Python 3.7, dictionaries also preserve insertion order. Sets are unordered.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Bar */}
-      <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link href="/learn" className="text-blue-600 dark:text-blue-400 hover:underline">
-                ← Back to Learning Path
-              </Link>
-            </div>
-            <div className="text-gray-700 dark:text-gray-300 font-semibold">
-              Programming Fundamentals
+    <TopicContent topic={topic} subtopic={subtopic}>
+      <div className="space-y-8">
+        {/* Introduction */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">What are Collections?</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">Collections</strong> are data structures that store multiple items in a single object. 
+            Python provides four main collection types: <strong>lists</strong>, <strong>tuples</strong>, <strong>dictionaries</strong>, 
+            and <strong>sets</strong> — each with unique properties and use cases.
+          </p>
+          
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 my-6">
+            <div className="flex gap-3">
+              <Lightbulb className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Real-world Analogy</h4>
+                <p className="text-sm text-muted-foreground">
+                  Think of collections like different types of containers: a <strong>list</strong> is like a shopping list (ordered, can change), 
+                  a <strong>tuple</strong> is like coordinates (fixed, can't change), a <strong>dictionary</strong> is like a phone book 
+                  (find values by keys), and a <strong>set</strong> is like a bag of unique items (no duplicates, order doesn't matter).
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
+        </section>
 
-      {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Collections
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Collections store multiple items in a single data structure. Python provides four main collection types: lists, tuples, dictionaries, and sets — each with unique properties and use cases.
+        {/* Quick Reference */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Quick Reference</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-muted">
+                  <th className="border border-border p-3 text-left text-foreground">Collection</th>
+                  <th className="border border-border p-3 text-left text-foreground">Syntax</th>
+                  <th className="border border-border p-3 text-left text-foreground">Ordered</th>
+                  <th className="border border-border p-3 text-left text-foreground">Mutable</th>
+                  <th className="border border-border p-3 text-left text-foreground">Duplicates</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 font-semibold text-foreground">List</td>
+                  <td className="border border-border p-3 font-mono text-sm text-primary">[1, 2, 3]</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓</td>
+                </tr>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 font-semibold text-foreground">Tuple</td>
+                  <td className="border border-border p-3 font-mono text-sm text-primary">(1, 2, 3)</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓</td>
+                  <td className="border border-border p-3 text-muted-foreground">✗</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓</td>
+                </tr>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 font-semibold text-foreground">Dictionary</td>
+                  <td className="border border-border p-3 font-mono text-sm text-primary">{"{key: value}"}</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓*</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓</td>
+                  <td className="border border-border p-3 text-muted-foreground">Keys: ✗, Values: ✓</td>
+                </tr>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 font-semibold text-foreground">Set</td>
+                  <td className="border border-border p-3 font-mono text-sm text-primary">{"{1, 2, 3}"}</td>
+                  <td className="border border-border p-3 text-muted-foreground">✗</td>
+                  <td className="border border-border p-3 text-muted-foreground">✓</td>
+                  <td className="border border-border p-3 text-muted-foreground">✗</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="text-sm text-muted-foreground mt-2">
+            *Dictionaries preserve insertion order in Python 3.7+
           </p>
-        </div>
+        </section>
 
-        {/* Lists */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Lists
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Ordered, mutable sequences that can contain mixed types. Lists are defined with square brackets <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">[]</code>.
+        {/* Code Examples */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Code Examples Across Languages</h2>
+          <p className="text-muted-foreground mb-4">
+            See how different collection types are implemented across programming languages:
           </p>
+          <MultiLanguageCode codes={codeExamples} />
+        </section>
 
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Creating and accessing lists</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Creating lists
-fruits = ["apple", "banana", "cherry"]
+        {/* Lists Deep Dive */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Lists</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">Lists</strong> are ordered, mutable sequences that can contain mixed types.
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Creating Lists</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`fruits = ["apple", "banana", "cherry"]
 numbers = [1, 2, 3, 4, 5]
 mixed = [1, "hello", 3.14, True]
-empty = []
-
-# Accessing elements (0-indexed)
-print(fruits[0])    # apple
-print(fruits[-1])   # cherry (last element)
-print(fruits[1:3])  # ['banana', 'cherry'] (slicing)`}
-                </pre>
-              </div>
+empty = []`}
+              </pre>
             </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Modifying lists:</span> Add, remove, and change elements.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">List operations</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Adding elements
-fruits.append("orange")        # Add to end
-fruits.insert(1, "blueberry")  # Insert at index
-fruits.extend(["grape", "kiwi"]) # Add multiple
-
-# Removing elements
-fruits.remove("banana")        # Remove by value
-last = fruits.pop()            # Remove and return last
-item = fruits.pop(1)           # Remove and return at index
-del fruits[0]                  # Delete by index
-fruits.clear()                 # Empty the list
-
-# Modifying elements
-fruits[0] = "strawberry"       # Change element
-
-# Checking existence
-if "apple" in fruits:
-    print("Found!")`}
-                </pre>
-              </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Accessing Elements</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`fruits[0]     # First: 'apple'
+fruits[-1]    # Last: 'cherry'
+fruits[1:3]   # Slicing: ['banana', 'cherry']`}
+              </pre>
             </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">List methods and operations:</span>
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`numbers = [3, 1, 4, 1, 5, 9, 2]
-
-# Length
-len(numbers)                    # 7
-
-# Sorting
-numbers.sort()                  # Sorts in-place: [1, 1, 2, 3, 4, 5, 9]
-numbers.sort(reverse=True)      # Descending
-sorted_numbers = sorted(numbers) # Returns new sorted list
-
-# Reversing
-numbers.reverse()               # Reverse in-place
-reversed_list = list(reversed(numbers))
-
-# Counting
-count = numbers.count(1)        # 2
-
-# Finding index
-index = numbers.index(5)        # First occurrence
-
-# Copying (shallow copy)
-copy1 = numbers.copy()
-copy2 = numbers[:]              # Slicing creates copy`}
-                </pre>
-              </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Adding Elements</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`fruits.append("orange")     # Add to end
+fruits.insert(1, "berry")   # Insert at index
+fruits.extend(["grape"])     # Add multiple`}
+              </pre>
             </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Removing Elements</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`fruits.remove("banana")    # Remove by value
+last = fruits.pop()         # Remove last
+item = fruits.pop(1)        # Remove at index
+fruits.clear()              # Empty list`}
+              </pre>
+            </div>
+          </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">List comprehensions:</span> Concise way to create lists.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Basic comprehension
-squares = [x**2 for x in range(10)]  # [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h4 className="font-semibold mb-2 text-foreground">List Comprehensions</h4>
+            <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+              {`# Basic comprehension
+squares = [x**2 for x in range(10)]
 
 # With condition
 evens = [x for x in range(20) if x % 2 == 0]
 
 # With if-else
-labels = ["even" if x % 2 == 0 else "odd" for x in range(5)]
-
-# Nested comprehension
-matrix = [[j for j in range(3)] for i in range(3)]`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Tuples */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Tuples
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Ordered, immutable sequences. Tuples are defined with parentheses <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">()</code> and are faster than lists.
-          </p>
-
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Creating and using tuples</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Creating tuples
-coordinates = (10, 20)
-person = ("Alice", 30, "New York")
-single_item = (5,)              # Comma required for single-item tuple
-empty_tuple = ()
-not_a_tuple = (5)               # This is just an integer!
-
-# Accessing elements (same as lists)
-print(coordinates[0])   # 10
-print(coordinates[-1])  # 20
-
-# Tuple unpacking
-x, y = coordinates      # x=10, y=20
-name, age, city = person
-
-# Immutability (cannot change)
-# coordinates[0] = 15   # TypeError: 'tuple' object does not support item assignment
-
-# Methods (limited)
-print(coordinates.count(10))  # 1
-print(coordinates.index(20))  # 1`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Tuple use cases:</span>
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# 1. Returning multiple values from functions
-def get_min_max(numbers):
-    return min(numbers), max(numbers)
-
-min_val, max_val = get_min_max([1, 5, 3, 9, 2])
-
-# 2. Dictionary keys (lists cannot be keys)
-locations = { (40.7128, 74.0060): "NYC", (34.0522, 118.2437): "LA" }
-
-# 3. Using as namedtuple for structured data
-from collections import namedtuple
-Point = namedtuple('Point', ['x', 'y'])
-p = Point(10, 20)
-print(p.x, p.y)  # 10 20`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Dictionaries */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Dictionaries
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Unordered collections of key-value pairs. Keys must be immutable (strings, numbers, tuples), values can be any type. Defined with curly braces <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">{}</code>.
-          </p>
-
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Creating and accessing dictionaries</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Creating dictionaries
-person = {
-    "name": "Alice",
-    "age": 30,
-    "city": "New York"
-}
-
-# Alternative constructors
-dict1 = dict(name="Bob", age=25)
-dict2 = dict([("a", 1), ("b", 2)])
-
-# Accessing values
-print(person["name"])       # Alice
-print(person.get("age"))    # 30 (returns None if key missing)
-print(person.get("country", "USA"))  # Default value
-
-# Safe access (avoids KeyError)
-if "name" in person:
-    print(person["name"])`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Modifying dictionaries:</span>
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Adding/updating
-person["email"] = "alice@example.com"  # Add new key
-person["age"] = 31                     # Update existing
-
-# Removing
-del person["city"]                     # Delete by key
-email = person.pop("email")            # Remove and return value
-last_item = person.popitem()           # Remove and return last inserted item
-
-# Merging dictionaries
-dict1 = {"a": 1, "b": 2}
-dict2 = {"b": 3, "c": 4}
-dict1.update(dict2)                    # dict1 becomes {"a": 1, "b": 3, "c": 4}
-
-# Dictionary comprehension
-squares = {x: x**2 for x in range(5)}  # {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Iterating through dictionaries:</span>
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`person = {"name": "Alice", "age": 30, "city": "NYC"}
-
-# Iterate over keys
-for key in person:
-    print(key)
-
-# Iterate over values
-for value in person.values():
-    print(value)
-
-# Iterate over key-value pairs
-for key, value in person.items():
-    print(f"{key}: {value}")`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Dictionary methods:</span>
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Getting keys, values, items
-keys = person.keys()       # dict_keys view
-values = person.values()   # dict_values view
-items = person.items()     # dict_items view
-
-# Set defaults
-person.setdefault("country", "USA")  # Sets only if key missing
-
-# Clearing
-person.clear()              # Empty the dictionary
-
-# Copying
-copy = person.copy()        # Shallow copy`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Sets */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Sets
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Unordered collections of unique elements. Sets are defined with curly braces <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">{}</code> or <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">set()</code>.
-          </p>
-
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Creating and using sets</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Creating sets
-fruits = {"apple", "banana", "cherry"}
-numbers = set([1, 2, 3, 3, 2, 1])  # {1, 2, 3} (duplicates removed)
-empty_set = set()                    # {} creates empty dict!
-
-# Adding and removing
-fruits.add("orange")                # Add element
-fruits.remove("banana")              # Raises KeyError if not found
-fruits.discard("grape")              # No error if not found
-popped = fruits.pop()                # Remove and return arbitrary element
-fruits.clear()                       # Empty the set
-
-# Checking membership (very fast O(1))
-if "apple" in fruits:
-    print("Found!")`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Set operations:</span>
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`A = {1, 2, 3, 4}
-B = {3, 4, 5, 6}
-
-# Union (all elements from both)
-print(A | B)           # {1, 2, 3, 4, 5, 6}
-print(A.union(B))      # Same
-
-# Intersection (common elements)
-print(A & B)           # {3, 4}
-print(A.intersection(B))
-
-# Difference (elements in A but not in B)
-print(A - B)           # {1, 2}
-print(A.difference(B))
-
-# Symmetric difference (elements in either but not both)
-print(A ^ B)           # {1, 2, 5, 6}
-print(A.symmetric_difference(B))
-
-# Subset and superset
-print(A.issubset(B))   # False
-print(A.issuperset({1, 2}))  # True
-print(A.isdisjoint(B)) # False (they share elements)`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Set comprehensions:</span>
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`# Set comprehension
-squares = {x**2 for x in range(10)}  # {0, 1, 4, 9, 16, 25, 36, 49, 64, 81}
-
-# With condition
-evens = {x for x in range(20) if x % 2 == 0}
-
-# Removing duplicates from list
-numbers = [1, 2, 2, 3, 3, 3, 4]
-unique = set(numbers)  # {1, 2, 3, 4}`}
-                </pre>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Frozenset */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Frozenset
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Immutable version of a set. Can be used as dictionary keys or stored in other sets.
-          </p>
-
-          <div className="bg-gray-900 rounded-lg overflow-hidden">
-            <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-              {`# Creating frozensets
-fs = frozenset([1, 2, 3, 3, 2])  # frozenset({1, 2, 3})
-
-# Immutable (no add, remove, etc.)
-# fs.add(4)  # AttributeError
-
-# Can be used as dictionary keys
-dict_with_frozenset = {frozenset([1, 2]): "value"}
-
-# Set operations work (return new frozensets)
-result = fs.union({4, 5})        # frozenset({1, 2, 3, 4, 5})
-intersection = fs.intersection({2, 3, 4})  # frozenset({2, 3})`}
+labels = ["even" if x % 2 == 0 else "odd" for x in range(5)]`}
             </pre>
           </div>
         </section>
 
-        {/* Collection Performance */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Performance Comparison
-          </h2>
+        {/* Tuples Deep Dive */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Tuples</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">Tuples</strong> are ordered, immutable sequences. They're faster than lists and can be used as dictionary keys.
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Creating Tuples</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`coordinates = (10, 20)
+person = ("Alice", 30, "NYC")
+single = (5,)  # Comma required!
+empty = ()`}
+              </pre>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Tuple Unpacking</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`x, y = coordinates  # x=10, y=20
+name, age, city = person
+
+# Swap variables
+a, b = b, a`}
+              </pre>
+            </div>
+          </div>
+
+          <div className="mt-4 bg-primary/5 border border-primary/20 rounded-lg p-4">
+            <div className="flex gap-3">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Tuple Use Cases</h4>
+                <ul className="text-sm text-muted-foreground list-disc list-inside space-y-1">
+                  <li>Returning multiple values from functions</li>
+                  <li>Dictionary keys (lists cannot be used as keys)</li>
+                  <li>Fixed data that shouldn't change (e.g., coordinates, RGB values)</li>
+                  <li>More memory-efficient than lists for static data</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Dictionaries Deep Dive */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Dictionaries</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">Dictionaries</strong> store key-value pairs for fast lookup. Keys must be immutable (strings, numbers, tuples).
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Creating Dictionaries</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`person = {"name": "Alice", "age": 30}
+dict1 = dict(name="Bob", age=25)
+dict2 = dict([("a", 1), ("b", 2)])`}
+              </pre>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Accessing Values</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`person["name"]              # 'Alice'
+person.get("age")           # 30
+person.get("country", "USA") # Default value`}
+              </pre>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Modifying Dictionaries</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`person["email"] = "alice@example.com"  # Add
+person["age"] = 31                     # Update
+del person["city"]                     # Delete`}
+              </pre>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Iterating</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`for key in person:
+    print(key)
+    
+for key, value in person.items():
+    print(f"{key}: {value}")`}
+              </pre>
+            </div>
+          </div>
+
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h4 className="font-semibold mb-2 text-foreground">Dictionary Comprehension</h4>
+            <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+              {`# Create dictionary of squares
+squares = {x: x**2 for x in range(5)}
+# {0: 0, 1: 1, 2: 4, 3: 9, 4: 16}
+
+# Filter items
+evens = {x: x**2 for x in range(10) if x % 2 == 0}`}
+            </pre>
+          </div>
+        </section>
+
+        {/* Sets Deep Dive */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Sets</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">Sets</strong> are unordered collections of unique elements. They offer O(1) membership testing.
+          </p>
+          
+          <div className="grid md:grid-cols-2 gap-4 mb-6">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Creating Sets</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`fruits = {"apple", "banana", "cherry"}
+numbers = set([1, 2, 3, 3, 2])  # {1, 2, 3}
+empty = set()  # {} creates dict!`}
+              </pre>
+            </div>
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold mb-2 text-foreground">Set Operations</h4>
+              <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+                {`A = {1, 2, 3, 4}
+B = {3, 4, 5, 6}
+
+A | B  # Union: {1,2,3,4,5,6}
+A & B  # Intersection: {3,4}
+A - B  # Difference: {1,2}
+A ^ B  # Symmetric diff: {1,2,5,6}`}
+              </pre>
+            </div>
+          </div>
+
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h4 className="font-semibold mb-2 text-foreground">Set Operations & Methods</h4>
+            <pre className="bg-muted p-3 rounded text-sm overflow-x-auto">
+              {`# Adding and removing
+fruits.add("orange")
+fruits.remove("banana")     # Raises KeyError if not found
+fruits.discard("grape")     # No error if not found
+
+# Membership (fast O(1))
+if "apple" in fruits:
+    print("Found!")
+
+# Remove duplicates from list
+unique = list(set([1, 2, 2, 3, 3, 3]))  # [1, 2, 3]`}
+            </pre>
+          </div>
+        </section>
+
+        {/* Performance Comparison */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Performance Comparison</h2>
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-white dark:bg-gray-800 rounded-lg shadow-md">
+            <table className="w-full border-collapse">
               <thead>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <th className="text-left p-3 font-semibold text-gray-900 dark:text-white">Operation</th>
-                  <th className="text-left p-3 font-semibold text-gray-900 dark:text-white">List</th>
-                  <th className="text-left p-3 font-semibold text-gray-900 dark:text-white">Set</th>
-                  <th className="text-left p-3 font-semibold text-gray-900 dark:text-white">Dict</th>
+                <tr className="bg-muted">
+                  <th className="border border-border p-3 text-left text-foreground">Operation</th>
+                  <th className="border border-border p-3 text-left text-foreground">List</th>
+                  <th className="border border-border p-3 text-left text-foreground">Set</th>
+                  <th className="border border-border p-3 text-left text-foreground">Dict</th>
                 </tr>
               </thead>
-              <tbody className="text-gray-700 dark:text-gray-300">
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <td className="p-3">Index/Access</td>
-                  <td className="p-3">O(1)</td>
-                  <td className="p-3">-</td>
-                  <td className="p-3">O(1)</td>
+              <tbody>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 text-foreground">Index/Access</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
+                  <td className="border border-border p-3 text-muted-foreground">-</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
                 </tr>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <td className="p-3">Search (in)</td>
-                  <td className="p-3">O(n)</td>
-                  <td className="p-3">O(1)</td>
-                  <td className="p-3">O(1)</td>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 text-foreground">Search (in)</td>
+                  <td className="border border-border p-3 font-mono text-warning">O(n)</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
                 </tr>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <td className="p-3">Insert</td>
-                  <td className="p-3">O(1)*</td>
-                  <td className="p-3">O(1)</td>
-                  <td className="p-3">O(1)</td>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 text-foreground">Insert</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)*</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
                 </tr>
-                <tr className="border-b border-gray-200 dark:border-gray-700">
-                  <td className="p-3">Delete</td>
-                  <td className="p-3">O(n)</td>
-                  <td className="p-3">O(1)</td>
-                  <td className="p-3">O(1)</td>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 text-foreground">Delete</td>
+                  <td className="border border-border p-3 font-mono text-warning">O(n)</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
                 </tr>
-                <tr>
-                  <td className="p-3">Memory per item</td>
-                  <td className="p-3">Low</td>
-                  <td className="p-3">High</td>
-                  <td className="p-3">High</td>
+                <tr className="hover:bg-muted/50">
+                  <td className="border border-border p-3 text-foreground">Memory/Item</td>
+                  <td className="border border-border p-3 text-muted-foreground">Low</td>
+                  <td className="border border-border p-3 text-muted-foreground">High</td>
+                  <td className="border border-border p-3 text-muted-foreground">High</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400 mt-2">*Append is O(1), insert at arbitrary position is O(n)</p>
+          <p className="text-sm text-muted-foreground mt-2">
+            *Append is O(1), insert at arbitrary position is O(n)
+          </p>
         </section>
 
         {/* Choosing the Right Collection */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Choosing the Right Collection
-          </h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2">Use a List when:</p>
-              <ul className="text-gray-700 dark:text-gray-300 text-sm space-y-1 list-disc list-inside">
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Choosing the Right Collection</h2>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold text-foreground mb-2">✓ Use a List when:</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
                 <li>Order matters</li>
                 <li>You need indexing</li>
                 <li>Duplicates are allowed</li>
                 <li>You frequently modify the collection</li>
               </ul>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2">Use a Tuple when:</p>
-              <ul className="text-gray-700 dark:text-gray-300 text-sm space-y-1 list-disc list-inside">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold text-foreground mb-2">✓ Use a Tuple when:</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
                 <li>Order matters and shouldn't change</li>
                 <li>The data is fixed (e.g., coordinates)</li>
                 <li>You need a dictionary key</li>
                 <li>Performance is critical (tuples are faster)</li>
               </ul>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2">Use a Dict when:</p>
-              <ul className="text-gray-700 dark:text-gray-300 text-sm space-y-1 list-disc list-inside">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold text-foreground mb-2">✓ Use a Dict when:</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
                 <li>You need fast key-based lookup</li>
                 <li>Keys have meaningful names</li>
                 <li>You need to associate values</li>
-                <li>Order doesn't matter (Python 3.7+ preserves insertion order)</li>
+                <li>Order matters (Python 3.7+ preserves order)</li>
               </ul>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-semibold text-blue-600 dark:text-blue-400 mb-2">Use a Set when:</p>
-              <ul className="text-gray-700 dark:text-gray-300 text-sm space-y-1 list-disc list-inside">
+            <div className="p-4 bg-card border border-border rounded-lg">
+              <h4 className="font-semibold text-foreground mb-2">✓ Use a Set when:</h4>
+              <ul className="list-disc list-inside space-y-1 text-sm text-muted-foreground">
                 <li>You need unique elements</li>
                 <li>Order doesn't matter</li>
                 <li>Fast membership testing is needed</li>
@@ -533,104 +548,144 @@ intersection = fs.intersection({2, 3, 4})  # frozenset({2, 3})`}
           </div>
         </section>
 
-        {/* Tricky Points */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Tricky Points
-          </h2>
-          <div className="space-y-3">
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Lists are mutable but tuple contents may be mutable</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                A tuple containing a list allows modifying the list: <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">t = (1, [2, 3]); t[1].append(4)</code> works.
-              </p>
+        {/* Common Mistakes */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Common Mistakes to Avoid</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Modifying List While Iterating</h4>
+                <p className="text-sm text-muted-foreground">
+                  Modifying a list during iteration can cause skipped elements. Iterate over a copy instead.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Wrong
+for item in my_list:
+    if condition:
+        my_list.remove(item)
+
+# Correct
+for item in my_list[:]:  # Iterate over copy
+    if condition:
+        my_list.remove(item)`}
+                </pre>
+              </div>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Don't modify a list while iterating</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Modifying a list during iteration causes skipped elements. Iterate over a copy: <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">for item in list[:]:</code>
-              </p>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Using List as Dictionary Key</h4>
+                <p className="text-sm text-muted-foreground">
+                  Lists are mutable and cannot be used as dictionary keys. Use tuples instead.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Wrong
+my_dict = {[1, 2]: "value"}  # TypeError!
+
+# Correct
+my_dict = {(1, 2): "value"}  # Works!`}
+                </pre>
+              </div>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Default arguments and mutable objects</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Using mutable default arguments (lists, dicts) persists across function calls. Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">None</code> instead.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Mutable Default Arguments</h4>
+                <p className="text-sm text-muted-foreground">
+                  Using mutable default arguments persists across function calls.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`# Wrong
+def add_item(item, my_list=[]):
+    my_list.append(item)
+    return my_list
+
+# Correct
+def add_item(item, my_list=None):
+    if my_list is None:
+        my_list = []
+    my_list.append(item)
+    return my_list`}
+                </pre>
+              </div>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Shallow vs Deep copies</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">.copy()</code> and <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">[:]</code> create shallow copies (nested objects are referenced). Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">copy.deepcopy()</code> for nested structures.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Shallow vs Deep Copies</h4>
+                <p className="text-sm text-muted-foreground">
+                  <code className="bg-muted px-1 rounded">.copy()</code> creates shallow copies. Nested objects are still referenced.
+                </p>
+                <pre className="mt-2 bg-muted p-2 rounded text-sm">
+                  {`import copy
+
+# Shallow copy
+new_list = original_list.copy()
+
+# Deep copy (for nested structures)
+new_list = copy.deepcopy(original_list)`}
+                </pre>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Interview Questions */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Interview Questions
-          </h2>
-          <div className="space-y-5">
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is the difference between a list and a tuple?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                Lists are mutable (can be changed), tuples are immutable. Tuples are faster and can be used as dictionary keys. Lists use more memory.
-              </p>
+        {/* Best Practices */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Best Practices</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use List Comprehensions</h4>
+                <p className="text-sm text-muted-foreground">
+                  List comprehensions are more readable and faster than manual loops for creating lists.
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                How do you remove duplicates from a list?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">list(set(my_list))</code> — convert to set then back to list. Note: order is not preserved. Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">dict.fromkeys(my_list).keys()</code> to preserve order in Python 3.7+.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use Tuples for Fixed Data</h4>
+                <p className="text-sm text-muted-foreground">
+                  If data shouldn't change, use a tuple. It's more memory-efficient and signals intent to other developers.
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is the time complexity of checking if an item exists in a list vs a set?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                List: O(n) - needs to check each element. Set: O(1) average - uses hash table. Sets are much faster for membership testing.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use Sets for Membership Testing</h4>
+                <p className="text-sm text-muted-foreground">
+                  When you need to check if an item exists in a collection, sets provide O(1) lookup vs O(n) for lists.
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                Can a list be a dictionary key? Why or why not?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                No, list is mutable and not hashable. Dictionary keys must be immutable (strings, numbers, tuples, frozensets).
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is the difference between <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">list.remove()</code> and <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">list.pop()</code>?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">remove()</code> removes the first occurrence of a value and returns nothing. <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">pop()</code> removes an element at an index (default last) and returns it.
-              </p>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use get() for Dictionaries</h4>
+                <p className="text-sm text-muted-foreground">
+                  Use <code className="bg-muted px-1 rounded">dict.get()</code> to safely access values without risking KeyError.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Navigation */}
-        <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700 mt-4">
-          <Link
-            href="/learn/programming-fundamentals/match-pattern"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
-          >
-            ← Previous: Match Pattern
-          </Link>
-          <Link
-            href="/learn/programming-fundamentals/string"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
-          >
-            Next: → String
-          </Link>
-        </div>
+        {/* Quiz */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Test Your Knowledge</h2>
+          <Quiz questions={quizQuestions} title="Collections Quiz" />
+        </section>
       </div>
-    </div>
+    </TopicContent>
   );
 }

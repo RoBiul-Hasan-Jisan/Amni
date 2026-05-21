@@ -1,83 +1,259 @@
-// app/learn/programming-fundamentals/control-flow/page.tsx
-
-import Link from "next/link";
+import { TopicContent } from "@/components/topic-content";
+import { CodeBlock, MultiLanguageCode } from "@/components/code-block";
+import { Quiz, QuizQuestion } from "@/components/quiz";
+import { getSubtopicBySlug } from "@/lib/topics-data";
+import { AlertCircle, CheckCircle2, Clock, Lightbulb, Terminal, GitBranch, Code2 } from "lucide-react";
 
 export default function ControlFlowPage() {
+  const result = getSubtopicBySlug("programming-fundamentals", "control-flow");
+  if (!result) return null;
+
+  const { topic, subtopic } = result;
+
+  const codeExamples = [
+    {
+      language: "python",
+      label: "Python",
+      code: `# Basic if statement
+age = 18
+if age >= 18:
+    print("You can vote")
+
+# if-else
+temperature = 30
+if temperature > 25:
+    print("It's hot outside")
+else:
+    print("It's cool outside")
+
+# if-elif-else
+score = 85
+if score >= 90:
+    grade = "A"
+elif score >= 80:
+    grade = "B"
+elif score >= 70:
+    grade = "C"
+else:
+    grade = "F"
+print(f"Grade: {grade}")
+
+# match/case (Python 3.10+)
+command = "start"
+match command:
+    case "start":
+        print("Starting...")
+    case "stop":
+        print("Stopping...")
+    case "restart":
+        print("Restarting...")
+    case _:
+        print("Unknown command")`,
+    },
+    {
+      language: "javascript",
+      label: "JavaScript",
+      code: `// Basic if statement
+let age = 18;
+if (age >= 18) {
+    console.log("You can vote");
+}
+
+// if-else
+let temperature = 30;
+if (temperature > 25) {
+    console.log("It's hot outside");
+} else {
+    console.log("It's cool outside");
+}
+
+// if-else if-else
+let score = 85;
+let grade;
+if (score >= 90) {
+    grade = "A";
+} else if (score >= 80) {
+    grade = "B";
+} else if (score >= 70) {
+    grade = "C";
+} else {
+    grade = "F";
+}
+console.log(\`Grade: \${grade}\`);
+
+// switch statement
+let command = "start";
+switch(command) {
+    case "start":
+        console.log("Starting...");
+        break;
+    case "stop":
+        console.log("Stopping...");
+        break;
+    case "restart":
+        console.log("Restarting...");
+        break;
+    default:
+        console.log("Unknown command");
+}`,
+    },
+    {
+      language: "java",
+      label: "Java",
+      code: `// Basic if statement
+int age = 18;
+if (age >= 18) {
+    System.out.println("You can vote");
+}
+
+// if-else
+int temperature = 30;
+if (temperature > 25) {
+    System.out.println("It's hot outside");
+} else {
+    System.out.println("It's cool outside");
+}
+
+// if-else if-else
+int score = 85;
+String grade;
+if (score >= 90) {
+    grade = "A";
+} else if (score >= 80) {
+    grade = "B";
+} else if (score >= 70) {
+    grade = "C";
+} else {
+    grade = "F";
+}
+System.out.println("Grade: " + grade);
+
+// switch statement
+String command = "start";
+switch(command) {
+    case "start":
+        System.out.println("Starting...");
+        break;
+    case "stop":
+        System.out.println("Stopping...");
+        break;
+    case "restart":
+        System.out.println("Restarting...");
+        break;
+    default:
+        System.out.println("Unknown command");
+}`,
+    },
+  ];
+
+  const quizQuestions: QuizQuestion[] = [
+    {
+      id: 1,
+      question: "What is the output of: `print('A' if 5 > 3 else 'B')`?",
+      options: ["A", "B", "True", "False"],
+      correctAnswer: 0,
+      explanation: "Since 5 > 3 is True, the ternary operator returns the first value 'A'.",
+    },
+    {
+      id: 2,
+      question: "Which of the following is falsy in Python?",
+      options: ["1", "'False'", "[]", "True"],
+      correctAnswer: 2,
+      explanation: "Empty list [] is falsy. Non-empty strings and non-zero numbers are truthy.",
+    },
+    {
+      id: 3,
+      question: "What does the `elif` keyword stand for?",
+      options: ["Else if", "Else in if", "Else loop if", "None of the above"],
+      correctAnswer: 0,
+      explanation: "`elif` is Python's shorthand for 'else if', allowing multiple condition checks.",
+    },
+    {
+      id: 4,
+      question: "What happens if no case matches in Python's match/case?",
+      options: [
+        "Syntax error",
+        "Runs the default case (_)",
+        "Skips the entire block",
+        "Repeats the match"
+      ],
+      correctAnswer: 1,
+      explanation: "The underscore `_` serves as the default/wildcard case that matches anything.",
+    },
+  ];
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
-      {/* Navigation Bar */}
-      <nav className="bg-white dark:bg-gray-800 shadow-md sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <Link href="/learn" className="text-blue-600 dark:text-blue-400 hover:underline">
-                ← Back to Learning Path
-              </Link>
-            </div>
-            <div className="text-gray-700 dark:text-gray-300 font-semibold">
-              Programming Fundamentals
+    <TopicContent topic={topic} subtopic={subtopic}>
+      <div className="space-y-8">
+        {/* Introduction */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">What is Control Flow?</h2>
+          <p className="text-muted-foreground mb-4">
+            <strong className="text-foreground">Control flow</strong> determines the order in which statements are executed. 
+            Think of it as the traffic signals of your code - telling Python which path to take based on conditions.
+          </p>
+          
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 my-6">
+            <div className="flex gap-3">
+              <GitBranch className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Real-world Analogy</h4>
+                <p className="text-sm text-muted-foreground">
+                  Imagine a GPS navigation system. At each intersection, it checks conditions 
+                  (traffic, distance, user preference) and decides which route to take. 
+                  Control flow works the same way - making decisions at decision points!
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </nav>
-
-      {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            Control Flow
-          </h1>
-          <p className="text-gray-600 dark:text-gray-400 text-lg">
-            Control flow statements determine the order in which code executes. Python provides conditionals (if/elif/else) and pattern matching (match/case) for branching logic.
-          </p>
-        </div>
+        </section>
 
         {/* if Statement */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            if Statement
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            The <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">if</code> statement executes a block only when a condition is <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">True</code>.
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">The if Statement</h2>
+          <p className="text-muted-foreground mb-4">
+            The <code className="bg-muted px-1.5 py-0.5 rounded font-mono">if</code> statement is the simplest form of control flow. 
+            It executes a block of code only when a condition is <code className="bg-muted px-1.5 py-0.5 rounded font-mono">True</code>.
           </p>
 
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Basic if</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`age = 18
+          <div className="space-y-6">
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="bg-muted px-4 py-2 border-b border-border">
+                <h4 className="font-semibold text-foreground">Basic if</h4>
+              </div>
+              <div className="p-4">
+                <CodeBlock 
+                  code={`age = 18
 if age >= 18:
     print("You can vote")`}
-                </pre>
+                  language="python"
+                />
               </div>
             </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">if-else:</span> Execute one block if condition is True, another if False.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">if-else</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`temperature = 30
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="bg-muted px-4 py-2 border-b border-border">
+                <h4 className="font-semibold text-foreground">if-else</h4>
+              </div>
+              <div className="p-4">
+                <CodeBlock 
+                  code={`temperature = 30
 if temperature > 25:
     print("It's hot outside")
 else:
     print("It's cool outside")`}
-                </pre>
+                  language="python"
+                />
               </div>
             </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">if-elif-else:</span> Check multiple conditions in sequence.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">if-elif-else</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`score = 85
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="bg-muted px-4 py-2 border-b border-border">
+                <h4 className="font-semibold text-foreground">if-elif-else (Multiple Conditions)</h4>
+              </div>
+              <div className="p-4">
+                <CodeBlock 
+                  code={`score = 85
 if score >= 90:
     grade = "A"
 elif score >= 80:
@@ -88,56 +264,87 @@ elif score >= 60:
     grade = "D"
 else:
     grade = "F"
-print(f"Grade: {grade}")`}
-                </pre>
+print(f"Grade: {grade}")  # Output: B`}
+                  language="python"
+                />
               </div>
             </div>
           </div>
         </section>
 
         {/* Comparison Operators */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Comparison Operators
-          </h2>
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-mono text-gray-900 dark:text-white">==</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Equal to</p>
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Comparison Operators</h2>
+          <p className="text-muted-foreground mb-4">
+            These operators compare values and return <code className="bg-muted px-1.5 py-0.5 rounded">True</code> or <code className="bg-muted px-1.5 py-0.5 rounded">False</code>.
+          </p>
+          
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">==</code>
+              <p className="text-sm text-muted-foreground mt-1">Equal to</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>5 == 5</code> → True</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-mono text-gray-900 dark:text-white">!=</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Not equal to</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">!=</code>
+              <p className="text-sm text-muted-foreground mt-1">Not equal to</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>5 != 3</code> → True</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-mono text-gray-900 dark:text-white">&gt;</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Greater than</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">&gt;</code>
+              <p className="text-sm text-muted-foreground mt-1">Greater than</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>5 &gt; 3</code> → True</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-mono text-gray-900 dark:text-white">&lt;</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Less than</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">&lt;</code>
+              <p className="text-sm text-muted-foreground mt-1">Less than</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>3 &lt; 5</code> → True</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-mono text-gray-900 dark:text-white">&gt;=</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Greater than or equal to</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">&gt;=</code>
+              <p className="text-sm text-muted-foreground mt-1">Greater than or equal</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>5 &gt;= 5</code> → True</p>
             </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-mono text-gray-900 dark:text-white">&lt;=</p>
-              <p className="text-gray-600 dark:text-gray-400 text-sm">Less than or equal to</p>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">&lt;=</code>
+              <p className="text-sm text-muted-foreground mt-1">Less than or equal</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>3 &lt;= 5</code> → True</p>
             </div>
           </div>
         </section>
 
         {/* Logical Operators */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Logical Operators
-          </h2>
-          <div className="space-y-4">
-            <div className="bg-gray-900 rounded-lg overflow-hidden">
-              <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">and, or, not</div>
-              <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                {`age = 25
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Logical Operators</h2>
+          <p className="text-muted-foreground mb-4">
+            Combine multiple conditions using <code className="bg-muted px-1.5 py-0.5 rounded">and</code>, <code className="bg-muted px-1.5 py-0.5 rounded">or</code>, and <code className="bg-muted px-1.5 py-0.5 rounded">not</code>.
+          </p>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">and</code>
+              <p className="text-sm text-muted-foreground mt-1">Both must be True</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>True and True</code> → True</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">or</code>
+              <p className="text-sm text-muted-foreground mt-1">At least one must be True</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>True or False</code> → True</p>
+            </div>
+            <div className="bg-card border border-border rounded-lg p-4">
+              <code className="text-lg font-mono text-primary">not</code>
+              <p className="text-sm text-muted-foreground mt-1">Reverses the truth value</p>
+              <p className="text-xs text-muted-foreground mt-2"><code>not True</code> → False</p>
+            </div>
+          </div>
+
+          <div className="bg-card border border-border rounded-lg overflow-hidden">
+            <div className="bg-muted px-4 py-2 border-b border-border">
+              <h4 className="font-semibold text-foreground">Example: Using Logical Operators</h4>
+            </div>
+            <div className="p-4">
+              <CodeBlock 
+                code={`age = 25
 has_license = True
 
 # AND - both conditions must be True
@@ -150,36 +357,125 @@ if age < 18 or age > 65:
 
 # NOT - reverses the condition
 if not has_license:
-    print("Get a license first")
-
-# Combining operators
-if (age >= 18 and has_license) or age >= 65:
-    print("Eligible")`}
-              </pre>
+    print("Get a license first")`}
+                language="python"
+              />
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="text-sm text-yellow-800 dark:text-yellow-200">
-                💡 <span className="font-semibold">Short-circuit evaluation:</span> <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">and</code> stops at first False, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">or</code> stops at first True.
-              </p>
+          </div>
+
+          <div className="bg-primary/5 border border-primary/20 rounded-lg p-4 mt-4">
+            <div className="flex gap-3">
+              <Lightbulb className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Short-circuit Evaluation</h4>
+                <p className="text-sm text-muted-foreground">
+                  Python stops evaluating as soon as the result is determined. 
+                  With <code className="bg-muted px-1.5 py-0.5 rounded">and</code>, if first condition is False, it doesn't check the second. 
+                  With <code className="bg-muted px-1.5 py-0.5 rounded">or</code>, if first is True, it stops.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* match/case Statement (Python 3.10+) */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            match/case Statement (Python 3.10+)
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Structural pattern matching — more powerful than switch statements in other languages.
+        {/* Truthiness and Falsy Values */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Truthiness & Falsy Values</h2>
+          <p className="text-muted-foreground mb-4">
+            In Python, every value has an inherent truth value when used in conditions.
           </p>
 
-          <div className="space-y-5">
-            <div>
-              <div className="bg-gray-900 rounded-lg overflow-hidden">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Basic match/case</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`command = "start"
+          <div className="grid md:grid-cols-2 gap-6">
+            <div className="bg-destructive/5 border border-destructive/20 rounded-lg p-4">
+              <h4 className="font-semibold text-destructive mb-2 flex items-center gap-2">
+                <AlertCircle className="h-4 w-4" />
+                Falsy Values
+              </h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">False</code></li>
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">None</code></li>
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">0</code>, <code className="bg-muted px-1.5 py-0.5 rounded">0.0</code></li>
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">""</code> (empty string)</li>
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">[]</code> (empty list)</li>
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">{}</code> (empty dict)</li>
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">set()</code> (empty set)</li>
+              </ul>
+            </div>
+
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+              <h4 className="font-semibold text-primary mb-2 flex items-center gap-2">
+                <CheckCircle2 className="h-4 w-4" />
+                Truthy Values
+              </h4>
+              <ul className="space-y-1 text-sm text-muted-foreground">
+                <li><code className="bg-muted px-1.5 py-0.5 rounded">True</code></li>
+                <li>Non-zero numbers (<code className="bg-muted px-1.5 py-0.5 rounded">1</code>, <code className="bg-muted px-1.5 py-0.5 rounded">-5</code>, <code className="bg-muted px-1.5 py-0.5 rounded">3.14</code>)</li>
+                <li>Non-empty strings (<code className="bg-muted px-1.5 py-0.5 rounded">"Hello"</code>)</li>
+                <li>Non-empty containers (<code className="bg-muted px-1.5 py-0.5 rounded">[1, 2]</code>, <code className="bg-muted px-1.5 py-0.5 rounded">{'{"a": 1}'}</code>)</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="bg-card border border-border rounded-lg overflow-hidden mt-4">
+            <div className="bg-muted px-4 py-2 border-b border-border">
+              <h4 className="font-semibold text-foreground">Practical Example: Checking Empty Collections</h4>
+            </div>
+            <div className="p-4">
+              <CodeBlock 
+                code={`# Instead of: if len(items) > 0:
+items = []
+if items:  # False for empty list
+    print("Has items")
+else:
+    print("Empty")  # This will print`}
+                language="python"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* Ternary Operator */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Ternary Operator (Conditional Expression)</h2>
+          <p className="text-muted-foreground mb-4">
+            A one-liner for simple if-else assignments.
+          </p>
+
+          <div className="bg-card border border-border rounded-lg overflow-hidden">
+            <div className="bg-muted px-4 py-2 border-b border-border">
+              <h4 className="font-semibold text-foreground">Syntax: value_if_true if condition else value_if_false</h4>
+            </div>
+            <div className="p-4">
+              <CodeBlock 
+                code={`age = 20
+status = "Adult" if age >= 18 else "Minor"
+print(status)  # Adult
+
+# Nested ternary (use sparingly for readability)
+score = 85
+result = "A" if score >= 90 else "B" if score >= 80 else "C"
+print(result)  # B`}
+                language="python"
+              />
+            </div>
+          </div>
+        </section>
+
+        {/* match/case Statement */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">match/case Statement (Python 3.10+)</h2>
+          <p className="text-muted-foreground mb-4">
+            A powerful pattern matching feature that goes beyond traditional switch statements.
+          </p>
+
+          <div className="space-y-6">
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="bg-muted px-4 py-2 border-b border-border">
+                <h4 className="font-semibold text-foreground">Basic Pattern Matching</h4>
+              </div>
+              <div className="p-4">
+                <CodeBlock 
+                  code={`command = "start"
 match command:
     case "start":
         print("Starting...")
@@ -189,18 +485,18 @@ match command:
         print("Restarting...")
     case _:  # Default case (underscore)
         print("Unknown command")`}
-                </pre>
+                  language="python"
+                />
               </div>
             </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Matching with guards:</span> Add conditions to patterns.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Guards (if conditions)</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`value = 10
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="bg-muted px-4 py-2 border-b border-border">
+                <h4 className="font-semibold text-foreground">Matching with Guards (Conditions)</h4>
+              </div>
+              <div className="p-4">
+                <CodeBlock 
+                  code={`value = 10
 match value:
     case x if x < 0:
         print(f"Negative: {x}")
@@ -208,18 +504,18 @@ match value:
         print("Zero")
     case x if x > 0:
         print(f"Positive: {x}")`}
-                </pre>
+                  language="python"
+                />
               </div>
             </div>
 
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Matching sequences:</span> Match against tuples or lists.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">Sequence patterns</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`point = (2, 3)
+            <div className="bg-card border border-border rounded-lg overflow-hidden">
+              <div className="bg-muted px-4 py-2 border-b border-border">
+                <h4 className="font-semibold text-foreground">Matching Sequences (Tuples/Lists)</h4>
+              </div>
+              <div className="p-4">
+                <CodeBlock 
+                  code={`point = (2, 3)
 match point:
     case (0, 0):
         print("Origin")
@@ -229,228 +525,132 @@ match point:
         print(f"On X-axis at {x}")
     case (x, y):
         print(f"Point at ({x}, {y})")`}
-                </pre>
-              </div>
-            </div>
-
-            <div>
-              <p className="text-gray-700 dark:text-gray-300 mb-2">
-                <span className="font-semibold">Matching with OR patterns:</span> Multiple patterns for one case.
-              </p>
-              <div className="bg-gray-900 rounded-lg overflow-hidden mt-2">
-                <div className="bg-gray-800 px-4 py-2 text-gray-300 font-mono text-sm">OR patterns (|)</div>
-                <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-                  {`status = 404
-match status:
-    case 200 | 201:
-        print("Success")
-    case 400 | 404:
-        print("Client error")
-    case 500 | 502 | 503:
-        print("Server error")`}
-                </pre>
+                  language="python"
+                />
               </div>
             </div>
           </div>
         </section>
 
-        {/* Truthiness and Falsy Values */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Truthiness and Falsy Values
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Any value can be used as a condition. Some values are considered <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">False</code> (falsy), others are <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded font-mono">True</code> (truthy).
-          </p>
-
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-semibold text-red-600 dark:text-red-400 mb-2">Falsy Values</p>
-              <ul className="text-gray-700 dark:text-gray-300 text-sm space-y-1">
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">False</code></li>
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">None</code></li>
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">0</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">0.0</code></li>
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">""</code> (empty string)</li>
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">[]</code> (empty list)</li>
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{}</code> (empty dict)</li>
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">set()</code> (empty set)</li>
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">range(0)</code></li>
-              </ul>
-            </div>
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4">
-              <p className="font-semibold text-green-600 dark:text-green-400 mb-2">Truthy Values</p>
-              <ul className="text-gray-700 dark:text-gray-300 text-sm space-y-1">
-                <li><code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">True</code></li>
-                <li>Non-zero numbers (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">1</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">-5</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">3.14</code>)</li>
-                <li>Non-empty strings (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">"Hello"</code>)</li>
-                <li>Non-empty containers (<code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">[1, 2]</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{"{'a': 1}"}</code>)</li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="bg-gray-900 rounded-lg overflow-hidden mt-4">
-            <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-              {`# Useful pattern: check if container has items
-items = []
-if items:  # False for empty list
-    print("Has items")
-else:
-    print("Empty")`}
-            </pre>
+        {/* Time Complexity */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Time Complexity</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse">
+              <thead>
+                <tr className="bg-muted">
+                  <th className="border border-border p-3 text-left text-foreground">Operation</th>
+                  <th className="border border-border p-3 text-left text-foreground">Time Complexity</th>
+                  <th className="border border-border p-3 text-left text-foreground">Explanation</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="border border-border p-3 text-foreground">Single if/else</td>
+                  <td className="border border-border p-3 font-mono text-primary">O(1)</td>
+                  <td className="border border-border p-3 text-muted-foreground">Constant time - one condition check</td>
+                </tr>
+                <tr>
+                  <td className="border border-border p-3 text-foreground">if-elif-else chain</td>
+                  <td className="border border-border p-3 font-mono text-warning">O(n)</td>
+                  <td className="border border-border p-3 text-muted-foreground">May check up to n conditions</td>
+                </tr>
+                <tr>
+                  <td className="border border-border p-3 text-foreground">match/case</td>
+                  <td className="border border-border p-3 font-mono text-warning">O(n)</td>
+                  <td className="border border-border p-3 text-muted-foreground">Worst-case checks all patterns</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </section>
 
-        {/* Conditional Expressions (Ternary Operator) */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Conditional Expressions (Ternary Operator)
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            One-line if-else expressions for simple assignments.
-          </p>
-
-          <div className="bg-gray-900 rounded-lg overflow-hidden">
-            <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-              {`# Syntax: value_if_true if condition else value_if_false
-age = 20
-status = "Adult" if age >= 18 else "Minor"
-print(status)  # Adult
-
-# Nested ternary (use sparingly)
-score = 85
-result = "A" if score >= 90 else "B" if score >= 80 else "C"
-print(result)  # B`}
-            </pre>
-          </div>
+        {/* Code Examples */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Code Examples (Multiple Languages)</h2>
+          <MultiLanguageCode codes={codeExamples} />
         </section>
 
-        {/* Chained Comparisons */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Chained Comparisons
-          </h2>
-          <p className="text-gray-700 dark:text-gray-300 mb-4">
-            Python allows chaining comparison operators for cleaner code.
-          </p>
-
-          <div className="bg-gray-900 rounded-lg overflow-hidden">
-            <pre className="p-4 text-green-400 font-mono text-sm overflow-x-auto">
-              {`# Instead of: if x > 5 and x < 10:
-x = 7
-if 5 < x < 10:
-    print("x is between 5 and 10")
-
-# Works with other operators too
-y = 15
-if 0 <= y <= 100:
-    print("y is in range")
-
-# Chained comparisons are short-circuited
-a = 5
-if a == a < 10:  # Equivalent to a == a and a < 10
-    print("True")`}
-            </pre>
-          </div>
-        </section>
-
-        {/* Tricky Points */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Tricky Points
-          </h2>
-          <div className="space-y-3">
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Assignment vs Comparison</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">if x = 5:</code> is a syntax error. Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">==</code> for comparison. Python doesn't allow assignment in conditions (unlike C).
-              </p>
+        {/* Common Mistakes */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Common Mistakes to Avoid</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Assignment Instead of Comparison</h4>
+                <p className="text-sm text-muted-foreground">
+                  Using <code className="bg-muted px-1.5 py-0.5 rounded">=</code> instead of <code className="bg-muted px-1.5 py-0.5 rounded">==</code> in conditions. 
+                  <code className="bg-muted px-1.5 py-0.5 rounded">if x = 5:</code> is a syntax error in Python.
+                </p>
+              </div>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Indentation Errors</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Inconsistent indentation within a block raises <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">IndentationError</code>. Always use consistent spaces (4 per level).
-              </p>
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Indentation Errors</h4>
+                <p className="text-sm text-muted-foreground">
+                  Inconsistent spacing within blocks causes <code className="bg-muted px-1.5 py-0.5 rounded">IndentationError</code>. 
+                  Always use 4 spaces consistently.
+                </p>
+              </div>
             </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">Dangling Else</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Python's <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">else</code> attaches to the nearest <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">if</code>. Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">elif</code> for explicit chaining.
-              </p>
-            </div>
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border-l-4 border-yellow-500 p-4">
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">match/case is not switch</p>
-              <p className="text-gray-700 dark:text-gray-300 text-sm">
-                Unlike C-style switch, Python's <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">match/case</code> doesn't fall through. No <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">break</code> needed. It supports structural pattern matching.
-              </p>
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Dangling Else</h4>
+                <p className="text-sm text-muted-foreground">
+                  <code className="bg-muted px-1.5 py-0.5 rounded">else</code> attaches to the nearest <code className="bg-muted px-1.5 py-0.5 rounded">if</code>. 
+                  Use <code className="bg-muted px-1.5 py-0.5 rounded">elif</code> for explicit chaining.
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Interview Questions */}
-        <section className="mb-10">
-          <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mb-4 border-b border-gray-200 dark:border-gray-700 pb-2">
-            Interview Questions
-          </h2>
-          <div className="space-y-5">
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What is short-circuit evaluation?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                In <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">and</code>, if the first operand is False, the second isn't evaluated. In <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">or</code>, if the first is True, the second isn't evaluated. Useful for avoiding errors: <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">if x is not None and x &gt; 0:</code>
-              </p>
+        {/* Interview Patterns */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Interview Tips & Patterns</h2>
+          <div className="space-y-4">
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Short-circuit Evaluation</h4>
+                <p className="text-sm text-muted-foreground">
+                  Use <code className="bg-muted px-1.5 py-0.5 rounded">and</code> for safe property access: 
+                  <code className="bg-muted px-1.5 py-0.5 rounded ml-2">if obj is not None and obj.value &gt; 0:</code>
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                Difference between <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">==</code> and <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">is</code>?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">==</code> compares values. <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">is</code> compares identity (memory address). Use <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">is</code> with <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">None</code>, True, False.
-              </p>
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Truthiness for Clean Code</h4>
+                <p className="text-sm text-muted-foreground">
+                  Use implicit truthiness checks: <code className="bg-muted px-1.5 py-0.5 rounded">if items:</code> instead of 
+                  <code className="bg-muted px-1.5 py-0.5 rounded">if len(items) &gt; 0:</code>
+                </p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                What values are falsy in Python?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">False</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">None</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">0</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">0.0</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">""</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">[]</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">{}</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">set()</code>, <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">range(0)</code>. Everything else is truthy.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                How does <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">match/case</code> differ from switch in C/Java?
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                No fall-through (no break needed). Supports destructuring, guards, and complex pattern matching on any data structure, not just primitive values.
-              </p>
-            </div>
-            <div>
-              <p className="font-semibold text-gray-900 dark:text-white mb-1">
-                Write a ternary operator equivalent of <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">if x &gt; 0: y = 1 else: y = -1</code>
-              </p>
-              <p className="text-gray-700 dark:text-gray-300">
-                <code className="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">y = 1 if x &gt; 0 else -1</code>
-              </p>
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Chained Comparisons</h4>
+                <p className="text-sm text-muted-foreground">
+                  Write cleaner range checks: <code className="bg-muted px-1.5 py-0.5 rounded">if 0 &lt;= x &lt;= 100:</code> instead of 
+                  <code className="bg-muted px-1.5 py-0.5 rounded">if x &gt;= 0 and x &lt;= 100:</code>
+                </p>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Navigation */}
-        <div className="flex justify-between items-center pt-6 border-t border-gray-200 dark:border-gray-700 mt-4">
-          <Link
-            href="/learn/programming-fundamentals/basic-io"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
-          >
-            ← Previous: Basic I/O
-          </Link>
-          <Link
-            href="/learn/programming-fundamentals/loops"
-            className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-6 rounded-lg transition duration-200"
-          >
-            Next: Loops →
-          </Link>
-        </div>
+        {/* Quiz */}
+        <section>
+          <h2 className="text-2xl font-bold mb-4 text-foreground">Test Your Knowledge</h2>
+          <Quiz questions={quizQuestions} title="Control Flow Quiz" />
+        </section>
       </div>
-    </div>
+    </TopicContent>
   );
 }
