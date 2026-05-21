@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   ChevronDown,
   ChevronRight,
@@ -50,23 +50,20 @@ interface SidebarProps {
 export function Sidebar({
   className,
   onNavigate,
-  isMobileOpen,
+  isMobileOpen = false,
   onMobileClose,
 }: SidebarProps) {
   const pathname = usePathname();
 
-  const [expandedTopics, setExpandedTopics] = React.useState<string[]>(
-    () => {
-      const currentTopic = topics.find((topic) =>
-        pathname.includes(`/learn/${topic.id}`)
-      );
-      return currentTopic ? [currentTopic.id] : [];
-    }
-  );
+  const [expandedTopics, setExpandedTopics] = React.useState<string[]>(() => {
+    const currentTopic = topics.find((topic) =>
+      pathname.includes(`/learn/${topic.id}`)
+    );
 
-  // =========================
-  // AUTO EXPAND CURRENT TOPIC
-  // =========================
+    return currentTopic ? [currentTopic.id] : [];
+  });
+
+  // AUTO OPEN CURRENT TOPIC
   React.useEffect(() => {
     const currentTopic = topics.find((topic) =>
       pathname.includes(`/learn/${topic.id}`)
@@ -80,33 +77,7 @@ export function Sidebar({
     }
   }, [pathname]);
 
-  // =========================
-  // TOGGLE TOPIC
-  // =========================
-  const toggleTopic = (topicId: string, e?: React.MouseEvent) => {
-    if (e) {
-      e.preventDefault();
-      e.stopPropagation();
-    }
-
-    setExpandedTopics((prev) =>
-      prev.includes(topicId)
-        ? prev.filter((id) => id !== topicId)
-        : [...prev, topicId]
-    );
-  };
-
-  // =========================
-  // FIXED NAVIGATION HANDLER
-  // =========================
-  const handleNavigate = () => {
-    onNavigate?.();
-    onMobileClose?.();
-  };
-
-  // =========================
-  // BODY SCROLL LOCK (mobile)
-  // =========================
+  // LOCK BODY SCROLL
   React.useEffect(() => {
     if (isMobileOpen) {
       document.body.style.overflow = "hidden";
@@ -119,36 +90,63 @@ export function Sidebar({
     };
   }, [isMobileOpen]);
 
+  const toggleTopic = (
+    topicId: string,
+    e?: React.MouseEvent
+  ) => {
+    e?.preventDefault();
+    e?.stopPropagation();
+
+    setExpandedTopics((prev) =>
+      prev.includes(topicId)
+        ? prev.filter((id) => id !== topicId)
+        : [...prev, topicId]
+    );
+  };
+
+  const handleNavigate = () => {
+    onNavigate?.();
+    onMobileClose?.();
+  };
+
   return (
     <>
-      {/* MOBILE BACKDROP (FIXED) */}
-      {isMobileOpen && (
-        <div
-          className="fixed inset-0 top-14 bg-black/50 z-30 lg:hidden"
-          onClick={onMobileClose}
-        />
-      )}
+      {/* MOBILE OVERLAY */}
+      <div
+        onClick={onMobileClose}
+        className={cn(
+          "fixed inset-0 z-40 bg-black/50 transition-opacity duration-300 lg:hidden",
+          isMobileOpen
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none"
+        )}
+      />
 
       {/* SIDEBAR */}
       <aside
         className={cn(
-          "fixed lg:sticky top-14 lg:top-auto left-0 h-[calc(100vh-3.5rem)] bg-sidebar border-r border-border overflow-y-auto transition-transform duration-300 z-40",
-          "lg:translate-x-0 lg:relative lg:h-[calc(100vh-3.5rem)]",
-          isMobileOpen ? "translate-x-0" : "-translate-x-full",
+          "fixed top-14 left-0 z-50 h-[calc(100vh-56px)] w-72",
+          "bg-background border-r border-border",
+          "overflow-y-auto",
+          "transition-transform duration-300 ease-in-out",
+          "lg:sticky lg:top-14 lg:translate-x-0",
+          isMobileOpen
+            ? "translate-x-0"
+            : "-translate-x-full",
           className
         )}
       >
         <div className="p-4">
 
-          {/* CLOSE BUTTON (FIXED) */}
-          <div className="lg:hidden flex justify-end mb-4">
+          {/* MOBILE CLOSE BUTTON */}
+          <div className="flex justify-end mb-4 lg:hidden">
             <Button
               variant="ghost"
-              size="sm"
+              size="icon"
               onClick={onMobileClose}
-              className="h-8 w-8 p-0"
+              className="h-9 w-9"
             >
-              <X className="h-4 w-4" />
+              <X className="h-5 w-5" />
             </Button>
           </div>
 
@@ -156,11 +154,12 @@ export function Sidebar({
 
             {/* MAIN */}
             <div>
-              <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase mb-2">
+              <h3 className="px-3 mb-2 text-xs font-semibold uppercase text-muted-foreground">
                 Main
               </h3>
 
               <div className="space-y-1">
+
                 <NavItem
                   href="/"
                   icon={<Home className="h-4 w-4" />}
@@ -192,26 +191,31 @@ export function Sidebar({
                   pathname={pathname}
                   onClick={handleNavigate}
                 />
+
               </div>
             </div>
 
             {/* TOPICS */}
             <div>
-              <h3 className="px-3 text-xs font-semibold text-muted-foreground uppercase mb-2">
+              <h3 className="px-3 mb-2 text-xs font-semibold uppercase text-muted-foreground">
                 Topics
               </h3>
 
               <div className="space-y-1">
+
                 {topics.map((topic) => (
                   <TopicItem
                     key={topic.id}
                     topic={topic}
-                    isExpanded={expandedTopics.includes(topic.id)}
-                    onToggle={(e) => toggleTopic(topic.id, e)}
                     pathname={pathname}
+                    isExpanded={expandedTopics.includes(topic.id)}
+                    onToggle={(e) =>
+                      toggleTopic(topic.id, e)
+                    }
                     onNavigate={handleNavigate}
                   />
                 ))}
+
               </div>
             </div>
 
@@ -222,9 +226,10 @@ export function Sidebar({
   );
 }
 
-/* =========================
+/* ========================================
    NAV ITEM
-========================= */
+======================================== */
+
 function NavItem({
   href,
   icon,
@@ -247,10 +252,10 @@ function NavItem({
       href={href}
       onClick={onClick}
       className={cn(
-        "flex items-center gap-3 px-3 py-2 text-sm rounded-md transition-all",
+        "flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
         isActive
           ? "bg-primary text-primary-foreground"
-          : "text-muted-foreground hover:text-foreground hover:bg-muted"
+          : "text-muted-foreground hover:bg-muted hover:text-foreground"
       )}
     >
       {icon}
@@ -259,69 +264,88 @@ function NavItem({
   );
 }
 
-/* =========================
+/* ========================================
    TOPIC ITEM
-========================= */
+======================================== */
+
 function TopicItem({
   topic,
+  pathname,
   isExpanded,
   onToggle,
-  pathname,
   onNavigate,
 }: {
   topic: Topic;
+  pathname: string;
   isExpanded: boolean;
   onToggle: (e: React.MouseEvent) => void;
-  pathname: string;
   onNavigate?: () => void;
 }) {
   const isActive = pathname.includes(`/learn/${topic.id}`);
 
   return (
     <div className="space-y-1">
+
+      {/* TOPIC BUTTON */}
       <button
         onClick={onToggle}
         className={cn(
-          "w-full flex items-center gap-3 px-3 py-2 text-sm rounded-md",
+          "flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm transition-all",
           isActive
-            ? "bg-sidebar-accent font-medium"
-            : "text-muted-foreground hover:bg-muted"
+            ? "bg-muted text-foreground font-medium"
+            : "text-muted-foreground hover:bg-muted hover:text-foreground"
         )}
       >
-        {iconMap[topic.icon] || <Layers className="h-4 w-4" />}
-        <span className="flex-1 text-left">{topic.title}</span>
+        {iconMap[topic.icon] || (
+          <Layers className="h-4 w-4" />
+        )}
+
+        <span className="flex-1 text-left">
+          {topic.title}
+        </span>
 
         {isExpanded ? (
-          <ChevronDown className="h-3 w-3" />
+          <ChevronDown className="h-4 w-4 shrink-0" />
         ) : (
-          <ChevronRight className="h-3 w-3" />
+          <ChevronRight className="h-4 w-4 shrink-0" />
         )}
       </button>
 
-      {isExpanded && (
-        <div className="ml-6 pl-2 border-l space-y-1">
-          {topic.subtopics.map((sub) => {
-            const href = `/learn/${topic.id}/${sub.slug}`;
+      {/* SUBTOPICS */}
+      <div
+        className={cn(
+          "overflow-hidden transition-all duration-300",
+          isExpanded
+            ? "max-h-[1000px] opacity-100"
+            : "max-h-0 opacity-0"
+        )}
+      >
+        <div className="ml-6 border-l pl-3 space-y-1 py-1">
+
+          {topic.subtopics.map((subtopic) => {
+            const href = `/learn/${topic.id}/${subtopic.slug}`;
+
             const active = pathname === href;
 
             return (
               <Link
-                key={sub.id}
+                key={subtopic.id}
                 href={href}
                 onClick={onNavigate}
                 className={cn(
-                  "block px-3 py-1.5 text-sm rounded-md",
+                  "block rounded-md px-3 py-1.5 text-sm transition-all",
                   active
                     ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:bg-muted"
+                    : "text-muted-foreground hover:bg-muted hover:text-foreground"
                 )}
               >
-                {sub.title}
+                {subtopic.title}
               </Link>
             );
           })}
+
         </div>
-      )}
+      </div>
     </div>
   );
 }
