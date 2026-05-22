@@ -12,6 +12,15 @@ import {
   AlertTriangle,
   Code,
   Target,
+  FileQuestion,
+  GitBranch,
+  Diamond,
+  Lock,
+  Shield,
+  Layers,
+  Zap,
+  ArrowUp,
+  ArrowDown,
 } from "lucide-react";
 
 const pythonCode = `# Inheritance in Python
@@ -319,6 +328,558 @@ const quizQuestions: QuizQuestion[] = [
   },
 ];
 
+// Additional code examples for practice questions
+
+const inheritanceTypesCode = `// C++ - Types of Inheritance
+#include <iostream>
+#include <string>
+using namespace std;
+
+// 1. SINGLE INHERITANCE
+class Animal {
+protected:
+    string name;
+public:
+    Animal(string n) : name(n) {}
+    void eat() { cout << name << " is eating" << endl; }
+};
+
+class Dog : public Animal {
+public:
+    Dog(string n) : Animal(n) {}
+    void bark() { cout << name << " is barking" << endl; }
+};
+
+// 2. MULTILEVEL INHERITANCE
+class Mammal : public Animal {
+public:
+    Mammal(string n) : Animal(n) {}
+    void breathe() { cout << name << " is breathing" << endl; }
+};
+
+class Cat : public Mammal {
+public:
+    Cat(string n) : Mammal(n) {}
+    void meow() { cout << name << " says meow" << endl; }
+};
+
+// 3. MULTIPLE INHERITANCE
+class Flying {
+public:
+    void fly() { cout << "Flying in the sky" << endl; }
+};
+
+class Swimming {
+public:
+    void swim() { cout << "Swimming in water" << endl; }
+};
+
+class Duck : public Flying, public Swimming {
+public:
+    void quack() { cout << "Duck says quack" << endl; }
+};
+
+// 4. HIERARCHICAL INHERITANCE
+class Shape {
+protected:
+    string color;
+public:
+    Shape(string c) : color(c) {}
+    virtual void draw() = 0;
+};
+
+class Circle : public Shape {
+public:
+    Circle(string c) : Shape(c) {}
+    void draw() override { cout << "Drawing " << color << " circle" << endl; }
+};
+
+class Rectangle : public Shape {
+public:
+    Rectangle(string c) : Shape(c) {}
+    void draw() override { cout << "Drawing " << color << " rectangle" << endl; }
+};
+
+int main() {
+    cout << "=== SINGLE INHERITANCE ===" << endl;
+    Dog dog("Buddy");
+    dog.eat();
+    dog.bark();
+    
+    cout << "\\n=== MULTILEVEL INHERITANCE ===" << endl;
+    Cat cat("Whiskers");
+    cat.eat();
+    cat.breathe();
+    cat.meow();
+    
+    cout << "\\n=== MULTIPLE INHERITANCE ===" << endl;
+    Duck duck;
+    duck.fly();
+    duck.swim();
+    duck.quack();
+    
+    cout << "\\n=== HIERARCHICAL INHERITANCE ===" << endl;
+    Circle circle("Red");
+    Rectangle rect("Blue");
+    circle.draw();
+    rect.draw();
+    
+    return 0;
+}`;
+
+const javaMultipleInheritanceCode = `// WHY JAVA DOESN'T SUPPORT MULTIPLE INHERITANCE
+
+// DIAMOND PROBLEM DEMONSTRATION
+/* 
+class A {
+    void display() { System.out.println("A's display"); }
+}
+
+class B extends A {
+    void display() { System.out.println("B's display"); }
+}
+
+class C extends A {
+    void display() { System.out.println("C's display"); }
+}
+
+// DIAMOND PROBLEM - Which display() would D inherit?
+class D extends B, C {  // NOT ALLOWED IN JAVA
+    // Ambiguity: B's display() or C's display()?
+}
+*/
+
+// Java's Solution: Single Inheritance + Multiple Interface Implementation
+interface Drawable {
+    void draw();
+}
+
+interface Colorable {
+    void setColor(String color);
+}
+
+class Circle implements Drawable, Colorable {
+    private String color;
+    
+    @Override
+    public void draw() {
+        System.out.println("Drawing circle");
+    }
+    
+    @Override
+    public void setColor(String color) {
+        this.color = color;
+        System.out.println("Circle color set to: " + color);
+    }
+}
+
+interface Vehicle {
+    default void start() {
+        System.out.println("Vehicle starting");
+    }
+}
+
+interface Electric {
+    default void start() {
+        System.out.println("Electric vehicle starting silently");
+    }
+}
+
+class ElectricCar implements Vehicle, Electric {
+    @Override
+    public void start() {
+        Vehicle.super.start();
+        Electric.super.start();
+        System.out.println("ElectricCar started");
+    }
+}
+
+public class MultipleInheritanceDemo {
+    public static void main(String[] args) {
+        System.out.println("=== WHY JAVA DOESN'T SUPPORT MULTIPLE INHERITANCE ===");
+        System.out.println("1. DIAMOND PROBLEM - Ambiguity in method inheritance");
+        System.out.println("2. Complexity - Makes code harder to understand");
+        
+        Circle circle = new Circle();
+        circle.draw();
+        circle.setColor("Red");
+        
+        ElectricCar eCar = new ElectricCar();
+        eCar.start();
+    }
+}`;
+
+const accessSpecifiersCode = `// C++ - Inheritance Access Specifiers
+#include <iostream>
+using namespace std;
+
+class Base {
+private:
+    int privateVar = 1;
+protected:
+    int protectedVar = 2;
+public:
+    int publicVar = 3;
+};
+
+// 1. PUBLIC INHERITANCE
+class PublicDerived : public Base {
+public:
+    void show() {
+        // cout << privateVar;  // ERROR! Private not accessible
+        cout << "Protected: " << protectedVar << endl;
+        cout << "Public: " << publicVar << endl;
+    }
+};
+
+// 2. PROTECTED INHERITANCE
+class ProtectedDerived : protected Base {
+public:
+    void show() {
+        cout << "Protected: " << protectedVar << endl;
+        cout << "Public (now protected): " << publicVar << endl;
+    }
+};
+
+// 3. PRIVATE INHERITANCE
+class PrivateDerived : private Base {
+public:
+    void show() {
+        cout << "Protected (now private): " << protectedVar << endl;
+        cout << "Public (now private): " << publicVar << endl;
+    }
+};
+
+int main() {
+    cout << "=== PUBLIC INHERITANCE ===" << endl;
+    PublicDerived pub;
+    pub.show();
+    pub.publicVar = 100;  // Accessible
+    
+    cout << "\\n=== PROTECTED INHERITANCE ===" << endl;
+    ProtectedDerived prot;
+    prot.show();
+    // prot.publicVar;  // NOT accessible
+    
+    cout << "\\n=== PRIVATE INHERITANCE ===" << endl;
+    PrivateDerived priv;
+    priv.show();
+    
+    return 0;
+}`;
+
+const multilevelInheritanceCode = `// C++ - Multilevel Inheritance Program
+#include <iostream>
+#include <string>
+using namespace std;
+
+// LEVEL 1: Base class
+class Student {
+protected:
+    string name;
+    int rollNumber;
+    string course;
+    
+public:
+    Student(string n, int r, string c) : name(n), rollNumber(r), course(c) {
+        cout << "Student constructor called for: " << name << endl;
+    }
+    
+    void displayBasicInfo() {
+        cout << "\\n=== STUDENT INFORMATION ===" << endl;
+        cout << "Name: " << name << endl;
+        cout << "Roll Number: " << rollNumber << endl;
+        cout << "Course: " << course << endl;
+    }
+};
+
+// LEVEL 2: Intermediate class
+class Exam : public Student {
+protected:
+    int marksTheory;
+    int marksPractical;
+    float internalAssessment;
+    
+public:
+    Exam(string n, int r, string c, int theory, int practical, float internal)
+        : Student(n, r, c), marksTheory(theory), marksPractical(practical), internalAssessment(internal) {
+        cout << "Exam constructor called for: " << name << endl;
+    }
+    
+    float calculateTotal() {
+        return marksTheory + marksPractical + internalAssessment;
+    }
+};
+
+// LEVEL 3: Derived class
+class Result : public Exam {
+private:
+    float totalMarks;
+    char grade;
+    string status;
+    
+public:
+    Result(string n, int r, string c, int theory, int practical, float internal)
+        : Exam(n, r, c, theory, practical, internal), totalMarks(0), grade('F'), status("Fail") {
+        cout << "Result constructor called for: " << name << endl;
+        calculateResult();
+    }
+    
+    void calculateResult() {
+        totalMarks = calculateTotal();
+        float percentage = (totalMarks / 200) * 100;
+        
+        if (percentage >= 90) grade = 'A';
+        else if (percentage >= 75) grade = 'B';
+        else if (percentage >= 60) grade = 'C';
+        else if (percentage >= 40) grade = 'D';
+        else grade = 'F';
+    }
+    
+    void displayResult() {
+        displayBasicInfo();
+        cout << "\\n=== FINAL RESULT ===" << endl;
+        cout << "Total Marks: " << totalMarks << "/200" << endl;
+        cout << "Grade: " << grade << endl;
+    }
+};
+
+int main() {
+    cout << "=== MULTILEVEL INHERITANCE: Student → Exam → Result ===" << endl;
+    Result student("Alice Johnson", 2024001, "CS", 85, 45, 42);
+    student.displayResult();
+    return 0;
+}`;
+
+const methodOverridingCode = `// C++ - Method Overriding vs Overloading
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Animal {
+public:
+    virtual void makeSound() {
+        cout << "Animal makes a generic sound" << endl;
+    }
+    
+    void eat() { cout << "Animal is eating" << endl; }
+    void eat(string food) { cout << "Animal is eating " << food << endl; }
+};
+
+class Dog : public Animal {
+public:
+    void makeSound() override {
+        cout << "Dog barks: Woof! Woof!" << endl;
+    }
+    
+    void eat() { cout << "Dog is eating dog food" << endl; }
+};
+
+class Calculator {
+public:
+    int add(int a, int b) { return a + b; }
+    double add(double a, double b) { return a + b; }
+    int add(int a, int b, int c) { return a + b + c; }
+};
+
+int main() {
+    cout << "=== METHOD OVERRIDING ===" << endl;
+    Animal* ptr;
+    Dog dog;
+    ptr = &dog;
+    ptr->makeSound();  // Calls Dog's version
+    
+    cout << "\\n=== METHOD OVERLOADING ===" << endl;
+    Calculator calc;
+    cout << calc.add(5, 10) << endl;
+    cout << calc.add(5.5, 10.5) << endl;
+    cout << calc.add(5, 10, 15) << endl;
+    
+    return 0;
+}`;
+
+const superVsBaseCode = `// C++ - Accessing Base Class Members (No 'base' keyword)
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Base {
+protected:
+    string name;
+    int value;
+    
+public:
+    Base() : name("Base"), value(0) {}
+    Base(string n, int v) : name(n), value(v) {}
+    
+    void display() {
+        cout << "Base::display() - Name: " << name << ", Value: " << value << endl;
+    }
+    
+    virtual void show() { cout << "Base::show()" << endl; }
+};
+
+class Derived : public Base {
+private:
+    string extra;
+    
+public:
+    // C++: Call base constructor in initializer list
+    Derived(string n, int v, string e) : Base(n, v), extra(e) {}
+    
+    void display() {
+        Base::display();  // Call base class version
+        cout << "Derived::display() - Extra: " << extra << endl;
+    }
+    
+    void show() override {
+        cout << "Derived::show()" << endl;
+        Base::show();  // Call base class version
+    }
+    
+    void accessBaseMembers() {
+        cout << "Accessing base name: " << name << endl;
+        cout << "Accessing base value: " << value << endl;
+    }
+};
+
+int main() {
+    cout << "=== C++ HAS NO 'base' KEYWORD ===" << endl;
+    cout << "C++ uses: BaseClass::member or initializer list : Base(args)\\n" << endl;
+    
+    Derived d("DerivedObj", 100, "ExtraData");
+    d.display();
+    d.show();
+    d.accessBaseMembers();
+    
+    cout << "\\n=== COMPARISON ===" << endl;
+    cout << "Java 'super()' → C++ : Base(args)" << endl;
+    cout << "Java 'super.method()' → C++ : Base::method()" << endl;
+    
+    return 0;
+}`;
+
+// Question Card Component
+interface QuestionCardProps {
+  number: number;
+  title: string;
+  question: string;
+  answer: string;
+  marks: number;
+  children: React.ReactNode;
+  icon?: React.ReactNode;
+}
+
+const QuestionCard: React.FC<QuestionCardProps> = ({ 
+  number, 
+  title, 
+  question, 
+  answer, 
+  marks, 
+  children,
+  icon 
+}) => {
+  return (
+    <div className="mb-8 rounded-lg border border-border bg-card overflow-hidden">
+      <div className="bg-primary/10 p-4 border-b border-border">
+        <div className="flex items-center justify-between flex-wrap gap-2">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
+              {number}
+            </div>
+            <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+          </div>
+          <div className="bg-primary/20 text-primary px-3 py-1 rounded-full text-sm font-medium">
+            {marks} Marks
+          </div>
+        </div>
+      </div>
+      
+      <div className="p-5">
+        <div className="mb-4">
+          <div className="flex items-start gap-2">
+            <FileQuestion className="h-5 w-5 text-primary mt-0.5 shrink-0" />
+            <div>
+              <span className="text-sm font-medium text-muted-foreground">Question:</span>
+              <p className="text-foreground font-medium mt-1">{question}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mb-4">
+          <div className="flex items-start gap-2">
+            <div className="w-5 h-5 rounded-full bg-green-500/20 text-green-500 flex items-center justify-center text-xs font-bold mt-0.5 shrink-0">
+              ✓
+            </div>
+            <div className="flex-1">
+              <span className="text-sm font-medium text-muted-foreground">Answer:</span>
+              <div className="text-foreground mt-1 space-y-2">
+                <p>{answer}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div>
+          <div className="flex items-center gap-2 mb-3">
+            <Code className="h-4 w-4 text-muted-foreground" />
+            <span className="text-sm font-medium text-muted-foreground">Example:</span>
+          </div>
+          <div className="rounded-lg overflow-hidden border border-border">
+            {children}
+          </div>
+        </div>
+        
+        {icon && (
+          <div className="mt-4 pt-3 border-t border-border flex justify-end">
+            <div className="text-xs text-muted-foreground flex items-center gap-1">
+              {icon}
+              <span>Key Concept Highlighted</span>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+// Difference Table Component
+const DifferenceTable: React.FC<{
+  title: string;
+  headers: string[];
+  rows: Array<Array<string | React.ReactNode>>;
+}> = ({ title, headers, rows }) => {
+  return (
+    <div className="mb-6">
+      <h4 className="font-medium text-foreground mb-3">{title}</h4>
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border-collapse">
+          <thead>
+            <tr className="bg-muted">
+              {headers.map((header, idx) => (
+                <th key={idx} className="border border-border p-2 text-left font-semibold text-foreground">
+                  {header}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {rows.map((row, idx) => (
+              <tr key={idx} className="even:bg-muted/30">
+                {row.map((cell, cellIdx) => (
+                  <td key={cellIdx} className="border border-border p-2 text-muted-foreground">
+                    {cell}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
 export default function InheritancePage() {
   const result = getSubtopicBySlug("oop", "inheritance");
 
@@ -543,6 +1104,256 @@ for animal in animals:
           Test Your Knowledge
         </h2>
         <Quiz questions={quizQuestions} title="Inheritance Quiz" />
+      </section>
+
+      {/* Practice Questions Section - 5 Mark Questions */}
+      <section className="mb-12">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 rounded-lg bg-primary/10">
+            <Target className="h-5 w-5 text-primary" />
+          </div>
+          <h2 className="text-2xl font-bold text-foreground">
+            Practice Questions (5 Marks Each)
+          </h2>
+        </div>
+        <p className="text-muted-foreground mb-6">
+          These questions are commonly asked in university examinations and technical interviews. 
+          Each question carries 5 marks and includes a complete answer with code example.
+        </p>
+
+        {/* Question 14: Inheritance & Types */}
+        <QuestionCard
+          number={14}
+          title="Inheritance & Its Types"
+          question="What is inheritance? Explain different types of inheritance with examples."
+          answer="Inheritance is an OOP mechanism where a class (derived class) acquires properties and behaviors from another class (base class). Types include: (1) Single - one base, one derived, (2) Multilevel - chain of inheritance, (3) Multiple - derived from multiple bases (C++ only), (4) Hierarchical - multiple derived from one base, (5) Hybrid - combination of types. Inheritance promotes code reuse, establishes relationships, and enables polymorphism."
+          marks={5}
+          icon={<GitBranch className="h-3 w-3" />}
+        >
+          <DifferenceTable
+            title="Types of Inheritance - Comparison"
+            headers={["Type", "Diagram", "# of Base Classes", "# of Derived Classes", "Supported in Java"]}
+            rows={[
+              ["Single", "A → B", "1", "1", "✓"],
+              ["Multilevel", "A → B → C", "1 (chain)", "1", "✓"],
+              ["Multiple", "A,B → C", "2+", "1", "✗ (use interfaces)"],
+              ["Hierarchical", "A → B,C,D", "1", "Multiple", "✓"],
+              ["Hybrid", "Combination", "Multiple", "Multiple", "✗ (use interfaces)"],
+            ]}
+          />
+          <MultiLanguageCode
+            codes={[
+              { language: "cpp", label: "C++", code: inheritanceTypesCode },
+              { language: "java", label: "Java", code: javaMultipleInheritanceCode },
+            ]}
+          />
+        </QuestionCard>
+
+        {/* Question 15: Java Multiple Inheritance */}
+        <QuestionCard
+          number={15}
+          title="Java & Multiple Inheritance"
+          question="Does Java support multiple inheritance? Why or why not?"
+          answer="No, Java does not support multiple inheritance with classes to avoid the Diamond Problem. Diamond Problem occurs when a class inherits from two classes that have a common ancestor, causing ambiguity about which parent's method to inherit. Java's designers prioritized simplicity and clarity over flexibility. Instead, Java supports multiple inheritance through interfaces, which provide abstraction without implementation ambiguity (until default methods in Java 8+, which require explicit resolution)."
+          marks={5}
+          icon={<Diamond className="h-3 w-3" />}
+        >
+          <div className="p-4 bg-muted/30 rounded-lg mb-4">
+            <h4 className="font-medium text-foreground mb-2">Diamond Problem Visualization:</h4>
+            <pre className="text-xs text-muted-foreground font-mono">
+{`      A
+     / \\
+    B   C
+     \\ /
+      D
+      
+If B and C override a method from A,
+which version should D inherit?`}
+            </pre>
+          </div>
+          <CodeBlock code={javaMultipleInheritanceCode} language="java" />
+        </QuestionCard>
+
+        {/* Question 16: Interfaces & Diamond Problem */}
+        <QuestionCard
+          number={16}
+          title="Interfaces & The Diamond Problem"
+          question="What are interfaces in Java? How do they solve the diamond problem?"
+          answer="Interfaces are contracts that declare methods without implementation (before Java 8). A class can implement multiple interfaces. Interfaces solve the diamond problem because: (1) Before Java 8, interfaces had no implementation, so no ambiguity, (2) Class provides the actual implementation, (3) Java 8+ default methods require explicit resolution if conflict occurs. Interfaces provide multiple inheritance of type (not implementation), achieving polymorphism without complexity."
+          marks={5}
+          icon={<Zap className="h-3 w-3" />}
+        >
+          <div className="p-4 bg-muted/30 rounded-lg mb-4">
+            <h4 className="font-medium text-foreground mb-2">Key Interface Features:</h4>
+            <ul className="space-y-1 text-sm text-muted-foreground list-disc list-inside">
+              <li>100% abstraction (before Java 8)</li>
+              <li>Multiple inheritance of TYPE</li>
+              <li>Loose coupling between components</li>
+              <li>Contract for implementing classes</li>
+              <li>Default/static methods (Java 8+)</li>
+            </ul>
+          </div>
+          <CodeBlock code={javaMultipleInheritanceCode} language="java" />
+        </QuestionCard>
+
+        {/* Question 17: Access Specifiers in C++ */}
+        <QuestionCard
+          number={17}
+          title="Inheritance Access Specifiers (C++)"
+          question="Explain different inheritance access specifiers: public, private, protected inheritance in C++."
+          answer="C++ provides three inheritance access specifiers that determine how base class members are inherited: (1) public inheritance - public remains public, protected remains protected; (2) protected inheritance - public and protected become protected in derived; (3) private inheritance - public and protected become private in derived. Private members are never accessible directly regardless of inheritance type. The specifier controls access for further derived classes and outside code."
+          marks={5}
+          icon={<Lock className="h-3 w-3" />}
+        >
+          <DifferenceTable
+            title="Inheritance Access Specifiers Effect"
+            headers={["Base Member Access", "public Inheritance", "protected Inheritance", "private Inheritance"]}
+            rows={[
+              ["public → becomes", "public", "protected", "private"],
+              ["protected → becomes", "protected", "protected", "private"],
+              ["private → becomes", "inaccessible", "inaccessible", "inaccessible"],
+            ]}
+          />
+          <CodeBlock code={accessSpecifiersCode} language="cpp" />
+        </QuestionCard>
+
+        {/* Question 18: Access Modifiers */}
+        <QuestionCard
+          number={18}
+          title="Public, Protected, Private Members"
+          question="What is the difference between public, protected, and private members in a class?"
+          answer="Access modifiers control visibility: (1) public - accessible from anywhere (inside class, derived classes, and outside code), (2) protected - accessible inside the class and derived classes, but not outside, (3) private - accessible only inside the class itself. This provides encapsulation - hiding internal details while exposing necessary interfaces. Private members offer strongest protection, protected enables inheritance while maintaining some control, public provides the interface."
+          marks={5}
+          icon={<Shield className="h-3 w-3" />}
+        >
+          <DifferenceTable
+            title="Access Modifiers Comparison"
+            headers={["Access Level", "Same Class", "Derived Class", "Outside Class"]}
+            rows={[
+              ["public", "✓", "✓", "✓"],
+              ["protected", "✓", "✓", "✗"],
+              ["private", "✓", "✗", "✗"],
+            ]}
+          />
+          <CodeBlock code={accessSpecifiersCode} language="cpp" />
+        </QuestionCard>
+
+        {/* Question 19: Multilevel Inheritance */}
+        <QuestionCard
+          number={19}
+          title="Multilevel Inheritance Program"
+          question="Write a C++ program showing multilevel inheritance."
+          answer="Multilevel inheritance involves a chain of inheritance where a derived class inherits from another derived class. Example: Student → Exam → Result. Each level adds more specific functionality. Benefits include code reuse at multiple levels, logical hierarchy representation, and progressive specialization. The program demonstrates constructors calling order (base to derived), member access across levels, and destructor order (reverse)."
+          marks={5}
+          icon={<Layers className="h-3 w-3" />}
+        >
+          <div className="p-4 bg-muted/30 rounded-lg mb-4">
+            <h4 className="font-medium text-foreground mb-2">Construction/Destruction Order:</h4>
+            <ul className="space-y-1 text-sm text-muted-foreground list-disc list-inside">
+              <li><strong>Constructor Order:</strong> Student → Exam → Result</li>
+              <li><strong>Destructor Order:</strong> Result → Exam → Student (reverse)</li>
+              <li>Each level initializes its own members</li>
+            </ul>
+          </div>
+          <CodeBlock code={multilevelInheritanceCode} language="cpp" />
+        </QuestionCard>
+
+        {/* Question 20: Overriding vs Overloading */}
+        <QuestionCard
+          number={20}
+          title="Method Overriding vs Overloading"
+          question="What is method overriding? How does it differ from method overloading?"
+          answer="Method Overriding is redefining a base class method in a derived class with same signature (name, parameters, return type). It enables runtime polymorphism. Method Overloading is defining multiple methods with same name but different parameters within the same class, enabling compile-time polymorphism. Key differences: Overriding requires inheritance, same parameters; Overloading within same class, different parameters. Overriding is runtime binding; Overloading is compile-time binding."
+          marks={5}
+          icon={<ArrowUp className="h-3 w-3" />}
+        >
+          <DifferenceTable
+            title="Overriding vs Overloading - Detailed Comparison"
+            headers={["Feature", "Overriding", "Overloading"]}
+            rows={[
+              ["Relationship", "Parent-child classes", "Same class"],
+              ["Parameters", "Must be identical", "Must be different"],
+              ["Return type", "Same or covariant", "Can be different"],
+              ["Polymorphism", "Runtime (dynamic)", "Compile-time (static)"],
+              ["Keyword", "virtual, override (C++)", "None needed"],
+              ["Inheritance", "Required", "Not required"],
+            ]}
+          />
+          <CodeBlock code={methodOverridingCode} language="cpp" />
+        </QuestionCard>
+
+        {/* Question 21: super vs base */}
+        <QuestionCard
+          number={21}
+          title="super (Java) vs Base (C++)"
+          question="What is the difference between super (Java) and Base (C++) keywords?"
+          answer="Java has 'super' keyword to refer to parent class; C++ does NOT have a 'base' keyword. In C++, base class members are accessed using BaseClass::member syntax. Java 'super()' calls parent constructor; C++ uses member initializer list (: BaseClass(args)). Java 'super.method()' calls overridden parent method; C++ uses BaseClass::method(). The difference reflects design philosophy: Java provides dedicated keyword for clarity, C++ uses scope resolution operator for flexibility with multiple inheritance."
+          marks={5}
+          icon={<ArrowDown className="h-3 w-3" />}
+        >
+          <DifferenceTable
+            title="Java super vs C++ Base Access"
+            headers={["Operation", "Java (super)", "C++ (no base keyword)"]}
+            rows={[
+              ["Call parent constructor", "super(args)", ": Base(args)"],
+              ["Call parent method", "super.method()", "Base::method()"],
+              ["Access parent member", "super.member", "Base::member or direct"],
+              ["Must be first?", "Yes (constructor)", "Yes (initializer list)"],
+              ["Multiple inheritance", "N/A (not allowed)", "Can specify multiple: Base1, Base2"],
+            ]}
+          />
+          <CodeBlock code={superVsBaseCode} language="cpp" />
+        </QuestionCard>
+
+        {/* Summary Section */}
+        <div className="mt-10 p-6 bg-primary/5 rounded-lg border border-primary/20">
+          <div className="flex items-center gap-3 mb-4">
+            <Target className="h-5 w-5 text-primary" />
+            <h3 className="text-lg font-bold text-foreground">Quick Revision Summary</h3>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q14:</span>
+              <span className="text-muted-foreground ml-1">5 inheritance types</span>
+            </div>
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q15:</span>
+              <span className="text-muted-foreground ml-1">Java no multiple inheritance (Diamond Problem)</span>
+            </div>
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q16:</span>
+              <span className="text-muted-foreground ml-1">Interfaces = multiple inheritance of type</span>
+            </div>
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q17:</span>
+              <span className="text-muted-foreground ml-1">public/protected/private inheritance (C++)</span>
+            </div>
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q18:</span>
+              <span className="text-muted-foreground ml-1">public (everywhere) → protected (+derived) → private (only class)</span>
+            </div>
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q19:</span>
+              <span className="text-muted-foreground ml-1">Multilevel: Student→Exam→Result</span>
+            </div>
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q20:</span>
+              <span className="text-muted-foreground ml-1">Override (runtime) vs Overload (compile-time)</span>
+            </div>
+            <div className="p-2 bg-background rounded-lg text-sm">
+              <span className="font-bold text-primary">Q21:</span>
+              <span className="text-muted-foreground ml-1">Java: super | C++: Base:: or :Base()</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Marks Distribution */}
+        <div className="mt-6 flex justify-between items-center text-sm text-muted-foreground border-t border-border pt-4">
+          <span>Total Questions: 8</span>
+          <span>Marks per Question: 5</span>
+          <span>Total Marks: 40</span>
+          <span>Time Suggested: 2 hours</span>
+        </div>
       </section>
     </TopicContent>
   );

@@ -51,6 +51,61 @@ export const topics: Topic[] = [
     ],
   },
   {
+  id: "blind-75",
+  title: "LeetCode 75 (Blind 75)",
+  description: "Master coding interview patterns with the most frequently asked LeetCode problems",
+  icon: "code-2",
+  subtopics: [
+    // Array
+    { id: "two-sum", title: "Two Sum", slug: "two-sum" },
+    { id: "best-time-buy-sell", title: "Best Time to Buy and Sell Stock", slug: "best-time-buy-sell" },
+    { id: "contains-duplicate", title: "Contains Duplicate", slug: "contains-duplicate" },
+    { id: "product-except-self", title: "Product of Array Except Self", slug: "product-except-self" },
+    { id: "maximum-subarray", title: "Maximum Subarray", slug: "maximum-subarray" },
+    { id: "maximum-product-subarray", title: "Maximum Product Subarray", slug: "maximum-product-subarray" },
+    { id: "min-rotated-sorted", title: "Find Minimum in Rotated Sorted Array", slug: "min-rotated-sorted" },
+    { id: "search-rotated-sorted", title: "Search in Rotated Sorted Array", slug: "search-rotated-sorted" },
+    { id: "three-sum", title: "3Sum", slug: "three-sum" },
+    { id: "container-most-water", title: "Container With Most Water", slug: "container-most-water" },
+    
+    // String
+    { id: "longest-substring", title: "Longest Substring Without Repeating Characters", slug: "longest-substring" },
+    { id: "longest-repeating", title: "Longest Repeating Character Replacement", slug: "longest-repeating" },
+    { id: "min-window-substring", title: "Minimum Window Substring", slug: "min-window-substring" },
+    { id: "valid-anagram", title: "Valid Anagram", slug: "valid-anagram" },
+    { id: "group-anagrams", title: "Group Anagrams", slug: "group-anagrams" },
+    { id: "valid-parentheses", title: "Valid Parentheses", slug: "valid-parentheses" },
+    { id: "valid-palindrome", title: "Valid Palindrome", slug: "valid-palindrome" },
+    { id: "longest-palindromic", title: "Longest Palindromic Substring", slug: "longest-palindromic" },
+    { id: "palindromic-substrings", title: "Palindromic Substrings", slug: "palindromic-substrings" },
+    
+    // Linked List
+    { id: "reverse-linked-list", title: "Reverse a Linked List", slug: "reverse-linked-list" },
+    { id: "detect-cycle", title: "Detect Cycle in a Linked List", slug: "detect-cycle" },
+    { id: "merge-two-lists", title: "Merge Two Sorted Lists", slug: "merge-two-lists" },
+    { id: "merge-k-lists", title: "Merge K Sorted Lists", slug: "merge-k-lists" },
+    { id: "remove-nth-node", title: "Remove Nth Node From End of List", slug: "remove-nth-node" },
+    { id: "reorder-list", title: "Reorder List", slug: "reorder-list" },
+    
+    // Binary
+    { id: "sum-two-integers", title: "Sum of Two Integers", slug: "sum-two-integers" },
+    { id: "number-of-1-bits", title: "Number of 1 Bits", slug: "number-of-1-bits" },
+    { id: "counting-bits", title: "Counting Bits", slug: "counting-bits" },
+    { id: "missing-number", title: "Missing Number", slug: "missing-number" },
+    { id: "reverse-bits", title: "Reverse Bits", slug: "reverse-bits" },
+    
+    // Matrix
+    { id: "set-matrix-zeroes", title: "Set Matrix Zeroes", slug: "set-matrix-zeroes" },
+    { id: "spiral-matrix", title: "Spiral Matrix", slug: "spiral-matrix" },
+    { id: "rotate-image", title: "Rotate Image", slug: "rotate-image" },
+    { id: "word-search", title: "Word Search", slug: "word-search" },
+    
+    // Interval
+    { id: "insert-interval", title: "Insert Interval", slug: "insert-interval" },
+    { id: "merge-intervals", title: "Merge Intervals", slug: "merge-intervals" },
+  ],
+},
+  {
     id: "programming-fundamentals",
     title: "Programming Fundamentals",
     description: "Core programming concepts every developer should know",
@@ -83,6 +138,7 @@ export const topics: Topic[] = [
     { "id": "oop", "title": "oop-python", "slug": "oop" },
     { "id": "execution", "title": " Execution", "slug": "execution" },
     { "id": "jsonn", "title": "Json handle-python", "slug": "jsonn" },
+     { "id": "two-sum", "title": "two-sum", "slug": "two-sum" },
    
    
     
@@ -94,11 +150,28 @@ export const topics: Topic[] = [
     description: "Master OOP principles with practical examples",
     icon: "box",
     subtopics: [
+      
       { id: "classes", title: "Classes & Objects", slug: "classes" },
+      { id: "constructors-destructors", title: "Constructors & Destructors", slug: "constructors-destructors" },
       { id: "inheritance", title: "Inheritance", slug: "inheritance" },
+
       { id: "polymorphism", title: "Polymorphism", slug: "polymorphism" },
       { id: "encapsulation", title: "Encapsulation", slug: "encapsulation" },
       { id: "abstraction", title: "Abstraction", slug: "abstraction" },
+   
+      { id: "static-members", title: "static-members", slug: "static-members" },
+      { id: "inner-classes", title: "inner-classes", slug: "inner-classes" },
+      
+      { id: "exception-handling", title: "Exception-Handling", slug: "exception-handling" },
+        { id: "solid-principles", title: "solid-principles", slug: "solid-principles" },
+      { id: "design-patterns", title: "design-patterns", slug: "design-patterns" },
+      { id: "uml-ooad", title: "uml-ooad", slug: "uml-ooad" },
+      { id: "advanced-concepts", title: "advanced-concepts", slug: "advanced-concepts" },
+      { id: "java-cpp-specific", title: "java-cpp-specific", slug: "java-cpp-specific" },
+      { id: "quick-reference", title: "quick-reference", slug: "quick-reference" },
+      
+      { id: "most-important", title: "Most-important(i)", slug: "most-important" },
+      { id: "most-important2", title: "Most-importan(ii)", slug: "most-important2" },
     ],
   },
   {
