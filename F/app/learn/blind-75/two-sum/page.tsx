@@ -1,6 +1,6 @@
 "use client";
 import Link from "next/link";
-import { AlertCircle, CheckCircle2, Lightbulb, Code, Clock, HardDrive, Target, Eye, Play, RefreshCw, ArrowRight, Hash, Github, Star, TrendingUp, Battery, Zap, Shield, Sparkles, Layers, GitBranch, Braces, FileCheck, Sliders, Wand2 } from "lucide-react";
+import { AlertCircle, CheckCircle2, Lightbulb, Code, Clock, HardDrive, Target, Eye, Play, RefreshCw, ArrowRight, Hash, Github, Star, TrendingUp, Battery, Zap, Shield, Sparkles, Layers, GitBranch, Braces, FileCheck, Sliders, Wand2, Plus, Trash2 } from "lucide-react";
 import { TopicContent } from "@/components/topic-content";
 import { getSubtopicBySlug } from "@/lib/topics-data";
 import { useState, useEffect, useCallback, useMemo } from "react";
@@ -28,7 +28,286 @@ interface TestCase {
   description: string;
 }
 
-// Enhanced Interactive Two Sum Visualizer with Speed Control
+// Flowchart Component
+function TwoSumFlowchart() {
+  return (
+    <div className="bg-card border border-border rounded-lg p-6 mb-6">
+      <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center gap-2">
+        <GitBranch className="h-5 w-5 text-primary" />
+        Algorithm Flowchart
+      </h3>
+      
+      <div className="w-full rounded-4xl border border-border bg-background p-4 sm:p-6 lg:p-8">
+
+  {/* Header */}
+  <div className="mb-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+
+    <div>
+      <div className="inline-flex items-center rounded-full border px-3 py-1 text-xs font-medium text-muted-foreground">
+        LeetCode #1
+      </div>
+
+      <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl">
+        Two Sum Flowchart
+      </h2>
+
+      <p className="mt-3 max-w-2xl text-sm leading-6 text-muted-foreground sm:text-base">
+        Visual breakdown of the optimal HashMap approach with O(n) time complexity.
+      </p>
+    </div>
+
+    <div className="grid grid-cols-2 gap-3 sm:flex">
+
+      <div className="rounded-2xl border bg-card px-5 py-4">
+        <p className="text-xs text-muted-foreground">
+          Time
+        </p>
+
+        <p className="mt-1 text-xl font-black text-green-500">
+          O(n)
+        </p>
+      </div>
+
+      <div className="rounded-2xl border bg-card px-5 py-4">
+        <p className="text-xs text-muted-foreground">
+          Space
+        </p>
+
+        <p className="mt-1 text-xl font-black text-blue-500">
+          O(n)
+        </p>
+      </div>
+
+    </div>
+  </div>
+
+  {/* Flowchart */}
+  <div className="relative flex flex-col items-center">
+
+    {/* STEP 1 */}
+    <div className="w-full max-w-xl rounded-3xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+
+      <div className="flex items-start gap-4">
+
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-green-500 text-lg font-black text-white">
+          1
+        </div>
+
+        <div className="flex-1">
+
+          <p className="text-sm font-medium text-green-500">
+            START
+          </p>
+
+          <h3 className="mt-1 text-xl font-bold">
+            Initialize HashMap
+          </h3>
+
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Create an empty HashMap to store previously visited numbers and their indices.
+          </p>
+
+          <div className="mt-5 overflow-x-auto rounded-2xl bg-muted px-4 py-3">
+            <code className="font-mono text-sm">
+              const seen = new Map()
+            </code>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    {/* Connector */}
+    <div className="flex h-16 items-center justify-center">
+      <div className="h-full w-0.75 rounded-full bg-border" />
+    </div>
+
+    {/* STEP 2 */}
+    <div className="w-full max-w-xl rounded-3xl border bg-card p-6 shadow-sm transition-all hover:shadow-md">
+
+      <div className="flex items-start gap-4">
+
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-blue-500 text-lg font-black text-white">
+          2
+        </div>
+
+        <div className="flex-1">
+
+          <p className="text-sm font-medium text-blue-500">
+            ITERATE
+          </p>
+
+          <h3 className="mt-1 text-xl font-bold">
+            Traverse Array
+          </h3>
+
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Visit each number only once while checking if its complement already exists.
+          </p>
+
+          <div className="mt-5 overflow-x-auto rounded-2xl bg-muted px-4 py-3">
+            <code className="font-mono text-sm">
+              for (let i = 0; i &lt; nums.length; i++)
+            </code>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    {/* Connector */}
+    <div className="flex h-16 items-center justify-center">
+      <div className="h-full w-0.75 rounded-full bg-border" />
+    </div>
+
+    {/* STEP 3 DECISION */}
+    <div className="relative w-full max-w-xl overflow-hidden rounded-3xl border-2 border-amber-500/30 bg-amber-500/5 p-6">
+
+      <div className="absolute right-0 top-0 h-32 w-32 rounded-full bg-amber-500/10 blur-3xl" />
+
+      <div className="relative flex items-start gap-4">
+
+        <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-amber-500 text-lg font-black text-white">
+          ?
+        </div>
+
+        <div className="flex-1">
+
+          <p className="text-sm font-medium text-amber-600">
+            DECISION
+          </p>
+
+          <h3 className="mt-1 text-xl font-bold">
+            Does Complement Exist?
+          </h3>
+
+          <p className="mt-2 text-sm leading-6 text-muted-foreground">
+            Calculate complement and check whether it already exists inside the HashMap.
+          </p>
+
+          <div className="mt-5 overflow-x-auto rounded-2xl bg-background px-4 py-3">
+            <code className="font-mono text-sm">
+              complement = target - nums[i]
+            </code>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    {/* Connector */}
+    <div className="flex h-16 items-center justify-center">
+      <div className="h-full w-0.75 rounded-full bg-border" />
+    </div>
+
+    {/* Branches */}
+    <div className="grid w-full max-w-6xl gap-6 lg:grid-cols-2">
+
+      {/* YES */}
+      <div className="relative overflow-hidden rounded-3xl border-2 border-green-500/30 bg-green-500/5 p-6">
+
+        <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-green-500/10 blur-3xl" />
+
+        <div className="relative">
+
+          <div className="inline-flex items-center rounded-full bg-green-500 px-3 py-1 text-xs font-bold text-white">
+            YES PATH
+          </div>
+
+          <h3 className="mt-4 text-2xl font-black">
+            Return Answer
+          </h3>
+
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Complement already exists, meaning we found the two indices.
+          </p>
+
+          <div className="mt-6 overflow-x-auto rounded-2xl bg-background px-4 py-3">
+            <code className="font-mono text-sm">
+              return [seen.get(complement), i]
+            </code>
+          </div>
+
+        </div>
+      </div>
+
+      {/* NO */}
+      <div className="relative overflow-hidden rounded-3xl border-2 border-rose-500/30 bg-rose-500/5 p-6">
+
+        <div className="absolute right-0 top-0 h-28 w-28 rounded-full bg-rose-500/10 blur-3xl" />
+
+        <div className="relative">
+
+          <div className="inline-flex items-center rounded-full bg-rose-500 px-3 py-1 text-xs font-bold text-white">
+            NO PATH
+          </div>
+
+          <h3 className="mt-4 text-2xl font-black">
+            Store Current Number
+          </h3>
+
+          <p className="mt-3 text-sm leading-6 text-muted-foreground">
+            Save current value inside the HashMap and continue traversal.
+          </p>
+
+          <div className="mt-6 overflow-x-auto rounded-2xl bg-background px-4 py-3">
+            <code className="font-mono text-sm">
+              seen.set(nums[i], i)
+            </code>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+    {/* Final Connector */}
+    <div className="mt-10 flex h-16 items-center justify-center">
+      <div className="h-full w-0.75 rounded-full bg-border" />
+    </div>
+
+    {/* END */}
+    <div className="w-full max-w-xl rounded-3xl bg-linear-to-br from-emerald-500 to-green-600 p-6 text-white shadow-lg">
+
+      <div className="flex items-center gap-4">
+
+        <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/20 text-2xl font-black">
+          ✓
+        </div>
+
+        <div>
+
+          <p className="text-sm font-medium text-white/80">
+            COMPLETED
+          </p>
+
+          <h3 className="mt-1 text-2xl font-black">
+            Two Sum Solved Efficiently
+          </h3>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+      
+      <div className="mt-4 p-3 bg-primary/10 rounded-lg">
+        <p className="text-sm text-foreground">
+          💡 <span className="font-semibold">Flow Explanation:</span> The algorithm makes a single pass through the array. 
+          For each element, it calculates the complement needed to reach the target, checks if that complement has been seen before,
+          and either returns the pair or stores the current element for future lookups.
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// Enhanced Interactive Two Sum Visualizer with Custom Data Support
 function TwoSumVisualizer() {
   const [nums, setNums] = useState<number[]>([2, 7, 11, 15]);
   const [target, setTarget] = useState<number>(9);
@@ -38,6 +317,12 @@ function TwoSumVisualizer() {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [speed, setSpeed] = useState<number>(1000);
   const [animationFrame, setAnimationFrame] = useState<NodeJS.Timeout | null>(null);
+  
+  // Custom input states
+  const [customNumsInput, setCustomNumsInput] = useState<string>("");
+  const [customTargetInput, setCustomTargetInput] = useState<string>("");
+  const [savedDataSets, setSavedDataSets] = useState<{ id: string; name: string; nums: number[]; target: number }[]>([]);
+  const [selectedDataSet, setSelectedDataSet] = useState<string>("");
 
   const defaultExamples: Record<string, Example> = {
     "Example 1": { nums: [2, 7, 11, 15], target: 9 },
@@ -48,6 +333,23 @@ function TwoSumVisualizer() {
     "Custom": { nums: [1, 8, 10, 14], target: 9 }
   };
 
+  // Load saved data sets from localStorage on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("twoSumDataSets");
+    if (saved) {
+      try {
+        setSavedDataSets(JSON.parse(saved));
+      } catch (e) {
+        console.error("Failed to load saved data sets");
+      }
+    }
+  }, []);
+
+  // Save data sets to localStorage whenever they change
+  useEffect(() => {
+    localStorage.setItem("twoSumDataSets", JSON.stringify(savedDataSets));
+  }, [savedDataSets]);
+
   const loadExample = (exampleName: string) => {
     const example = defaultExamples[exampleName];
     if (example) {
@@ -57,12 +359,67 @@ function TwoSumVisualizer() {
     }
   };
 
+  const loadSavedDataSet = (dataSetId: string) => {
+    const dataSet = savedDataSets.find(ds => ds.id === dataSetId);
+    if (dataSet) {
+      setNums([...dataSet.nums]);
+      setTarget(dataSet.target);
+      setSelectedDataSet(dataSetId);
+      resetVisualization();
+    }
+  };
+
+  const addCustomDataSet = () => {
+    if (!customNumsInput.trim() || !customTargetInput.trim()) {
+      alert("Please enter both numbers array and target value");
+      return;
+    }
+
+    const numsArray = customNumsInput.split(",").map(n => {
+      const parsed = parseInt(n.trim());
+      if (isNaN(parsed)) throw new Error("Invalid number");
+      return parsed;
+    });
+    
+    const targetValue = parseInt(customTargetInput.trim());
+    
+    if (isNaN(targetValue)) {
+      alert("Please enter a valid target number");
+      return;
+    }
+
+    const newDataSet = {
+      id: Date.now().toString(),
+      name: `Custom: [${numsArray.join(", ")}], target=${targetValue}`,
+      nums: numsArray,
+      target: targetValue
+    };
+
+    setSavedDataSets(prev => [...prev, newDataSet]);
+    setNums(numsArray);
+    setTarget(targetValue);
+    setSelectedDataSet(newDataSet.id);
+    resetVisualization();
+    
+    // Clear inputs
+    setCustomNumsInput("");
+    setCustomTargetInput("");
+  };
+
+  const deleteSavedDataSet = (id: string) => {
+    setSavedDataSets(prev => prev.filter(ds => ds.id !== id));
+    if (selectedDataSet === id) {
+      setSelectedDataSet("");
+    }
+  };
+
   const resetVisualization = () => {
     if (animationFrame) clearInterval(animationFrame);
     setCurrentStep(-1);
     setSeen({});
     setResult(null);
     setIsPlaying(false);
+    setAnimationFrame(null);
   };
 
   const stepThrough = useCallback(() => {
@@ -147,7 +504,7 @@ function TwoSumVisualizer() {
 
   const getCellColor = (index: number, value: number): string => {
     if (result?.found && result.indices?.includes(index)) {
-      return "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg";
+      return "bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-lg ring-2 ring-green-300 dark:ring-green-700";
     }
     if (currentStep >= index) {
       return seen[value] !== undefined || (result?.found && result.indices?.[0] === index) 
@@ -164,6 +521,75 @@ function TwoSumVisualizer() {
         Interactive Two Sum Visualizer
       </h3>
       
+      {/* Custom Data Input Section */}
+      <div className="mb-6 p-4 bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
+        <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+          <Plus className="h-4 w-4 text-primary" />
+          Add Your Own Data
+        </h4>
+        <div className="grid md:grid-cols-2 gap-4 mb-3">
+          <div>
+            <label className="text-xs text-muted-foreground block mb-1">Numbers Array (comma-separated)</label>
+            <input
+              type="text"
+              value={customNumsInput}
+              onChange={(e) => setCustomNumsInput(e.target.value)}
+              placeholder="e.g., 5, 10, 15, 20"
+              className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+          <div>
+            <label className="text-xs text-muted-foreground block mb-1">Target Value</label>
+            <input
+              type="text"
+              value={customTargetInput}
+              onChange={(e) => setCustomTargetInput(e.target.value)}
+              placeholder="e.g., 25"
+              className="w-full px-3 py-2 bg-background border border-border rounded-lg text-foreground font-mono text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+          </div>
+        </div>
+        <button
+          onClick={addCustomDataSet}
+          className="w-full px-4 py-2 bg-primary/20 text-primary rounded-lg hover:bg-primary/30 transition-all flex items-center justify-center gap-2 text-sm font-medium"
+        >
+          <Plus className="h-4 w-4" />
+          Add & Visualize
+        </button>
+      </div>
+
+      {/* Saved Data Sets Section */}
+      {savedDataSets.length > 0 && (
+        <div className="mb-6">
+          <h4 className="text-sm font-semibold text-foreground mb-2 flex items-center gap-2">
+            <HardDrive className="h-4 w-4 text-primary" />
+            Saved Data Sets
+          </h4>
+          <div className="flex flex-wrap gap-2">
+            {savedDataSets.map(ds => (
+              <div key={ds.id} className="flex items-center gap-1 bg-muted rounded-lg overflow-hidden">
+                <button
+                  onClick={() => loadSavedDataSet(ds.id)}
+                  className={`px-3 py-1.5 text-xs transition-colors ${
+                    selectedDataSet === ds.id 
+                      ? "bg-primary text-primary-foreground" 
+                      : "text-foreground hover:bg-primary/20"
+                  }`}
+                >
+                  {ds.name.length > 30 ? ds.name.slice(0, 27) + "..." : ds.name}
+                </button>
+                <button
+                  onClick={() => deleteSavedDataSet(ds.id)}
+                  className="px-2 py-1.5 text-red-500 hover:bg-red-500/10 transition-colors"
+                >
+                  <Trash2 className="h-3 w-3" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+      
       {/* Controls */}
       <div className="flex flex-wrap gap-3 mb-6">
         <select 
@@ -171,13 +597,13 @@ function TwoSumVisualizer() {
           className="px-3 py-2 bg-muted border border-border rounded-lg text-foreground text-sm cursor-pointer hover:bg-muted/80 transition-colors"
           defaultValue=""
         >
-          <option value="" disabled>📚 Load Example</option>
-          <option value="Example 1">🎯 Example 1: [2,7,11,15], target=9</option>
-          <option value="Example 2">🎯 Example 2: [3,2,4], target=6</option>
-          <option value="Example 3">🎯 Example 3: [3,3], target=6</option>
-          <option value="Edge Case: Negatives">⚠️ Edge: Negatives [-1,-2,-3,-4,-5], target=-8</option>
-          <option value="Edge Case: Zero">⚠️ Edge: Zeros [0,4,3,0], target=0</option>
-          <option value="Custom">⚙️ Custom: [1,8,10,14], target=9</option>
+          <option value="" disabled>📋 Load Example</option>
+          <option value="Example 1">Example 1: [2,7,11,15], target=9</option>
+          <option value="Example 2">Example 2: [3,2,4], target=6</option>
+          <option value="Example 3">Example 3: [3,3], target=6</option>
+          <option value="Edge Case: Negatives">Edge: Negatives [-1,-2,-3,-4,-5], target=-8</option>
+          <option value="Edge Case: Zero">Edge: Zeros [0,4,3,0], target=0</option>
+          <option value="Custom">Custom: [1,8,10,14], target=9</option>
         </select>
         
         <div className="flex items-center gap-2 px-3 py-2 bg-muted rounded-lg">
@@ -399,7 +825,7 @@ function CodePlayground() {
         setOutput(`✗ No solution found for target ${target} in [${nums.join(", ")}]`);
       }
     } catch (error) {
-      setOutput("❌ Invalid input format. Please use comma-separated numbers (e.g., 2,7,11,15)");
+      setOutput(" Invalid input format. Please use comma-separated numbers (e.g., 2,7,11,15)");
     }
   };
   
@@ -520,19 +946,19 @@ function MultipleSolutions() {
           onClick={() => setActiveTab("brute")}
           className={`px-4 py-2 transition-all ${activeTab === "brute" ? "border-b-2 border-primary text-primary" : "text-muted-foreground hover:text-foreground"}`}
         >
-          🐌 Brute Force
+           Brute Force
         </button>
         <button
           onClick={() => setActiveTab("twoPass")}
           className={`px-4 py-2 transition-all ${activeTab === "twoPass" ? "border-b-2 border-primary text-primary" : "text-muted-foreground hover:text-foreground"}`}
         >
-          📝 Two-Pass Hash
+           Two-Pass Hash
         </button>
         <button
           onClick={() => setActiveTab("onePass")}
           className={`px-4 py-2 transition-all ${activeTab === "onePass" ? "border-b-2 border-primary text-primary" : "text-muted-foreground hover:text-foreground"}`}
         >
-          ⚡ One-Pass Hash
+           One-Pass Hash
         </button>
       </div>
       
@@ -593,7 +1019,7 @@ function InterviewTips() {
       </div>
       
       <div className="mt-4 p-3 bg-primary/10 rounded-lg">
-        <p className="text-sm font-semibold text-primary mb-1">🎯 Common Follow-up Questions:</p>
+        <p className="text-sm font-semibold text-primary mb-1"> Common Follow-up Questions:</p>
         <p className="text-sm text-muted-foreground">"What if the array is sorted?" → Use two-pointer technique (O(n) time, O(1) space)</p>
         <p className="text-sm text-muted-foreground mt-1">"What if there are multiple solutions?" → Return all pairs or the first one?</p>
       </div>
@@ -669,13 +1095,10 @@ export default function TwoSumPage() {
             <span className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
               <Layers className="h-3 w-3" /> Array • Hash Table
             </span>
-            <span className="bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-400 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-              <Star className="h-3 w-3" /> Most Liked
-            </span>
-            <span className="bg-orange-100 dark:bg-orange-900/30 text-orange-700 dark:text-orange-400 px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-              <TrendingUp className="h-3 w-3" /> 50+ Solutions
-            </span>
+            
+           
           </div>
+         
           <h1 className="text-4xl font-bold text-foreground mb-3 flex items-center gap-3">
             Two Sum
             <a 
@@ -684,13 +1107,16 @@ export default function TwoSumPage() {
               rel="noopener noreferrer"
               className="text-muted-foreground hover:text-primary transition-colors"
             >
-              <Github className="h-6 w-6" />
+             <Target className="h-5 w-5 text-primary shrink-0 mt-0.5" />
             </a>
           </h1>
           <p className="text-muted-foreground text-lg">
             Given an integer array <code className="bg-muted px-2 py-0.5 rounded font-mono">nums</code> and an integer <code className="bg-muted px-2 py-0.5 rounded font-mono">target</code>, return the indices of two different elements such that their sum is <code className="bg-muted px-2 py-0.5 rounded font-mono">target</code>.
           </p>
         </div>
+
+        {/* Flowchart - NEW COMPONENT ADDED HERE */}
+        <TwoSumFlowchart />
 
         {/* Interactive Visualizer */}
         <TwoSumVisualizer />
@@ -773,15 +1199,23 @@ Explanation: ${ex.explanation}`}
           </h2>
           
           <div className="overflow-x-auto">
-            <table className="min-w-full bg-card border border-border rounded-lg">
-              <thead>
-                <tr className="border-b border-border bg-muted/30">
-                  <th className="text-left p-3 font-semibold text-foreground">Approach</th>
-                  <th className="text-left p-3 font-semibold text-foreground">Time</th>
-                  <th className="text-left p-3 font-semibold text-foreground">Space</th>
-                  <th className="text-left p-3 font-semibold text-foreground">Visual</th>
-                 </tr>
-              </thead>
+           <table className="min-w-200">
+               <thead>
+    <tr className="border-b border-border bg-muted/30">
+      <th className="text-left p-3 font-semibold text-foreground">
+        Approach
+      </th>
+      <th className="text-left p-3 font-semibold text-foreground">
+        Time
+      </th>
+      <th className="text-left p-3 font-semibold text-foreground">
+        Space
+      </th>
+      <th className="text-left p-3 font-semibold text-foreground">
+        Visual
+      </th>
+    </tr>
+  </thead>
               <tbody className="text-muted-foreground text-sm">
                 <tr className="border-b border-border">
                   <td className="p-3 font-semibold text-foreground">Brute Force</td>
@@ -791,8 +1225,8 @@ Explanation: ${ex.explanation}`}
                     <div className="w-32 bg-red-200 rounded h-2">
                       <div className="bg-red-500 h-2 rounded" style={{ width: "100%" }}></div>
                     </div>
-                   </td>
-                 </tr>
+                  </td>
+                </tr>
                 <tr className="border-b border-border">
                   <td className="p-3 font-semibold text-foreground">Two-pass Hash</td>
                   <td className="p-3 font-mono">O(n)</td>
@@ -804,7 +1238,7 @@ Explanation: ${ex.explanation}`}
                    </td>
                  </tr>
                 <tr className="border-b border-border">
-                  <td className="p-3 font-semibold text-foreground">One-pass Hash ✨</td>
+                  <td className="p-3 font-semibold text-foreground">One-pass Hash </td>
                   <td className="p-3 font-mono">O(n)</td>
                   <td className="p-3 font-mono">O(n)</td>
                   <td className="p-3">
@@ -900,7 +1334,7 @@ class Solution:
           {/* Code explanation */}
           <div className="bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mt-3">
             <p className="text-sm text-foreground">
-              💡 <span className="font-semibold">Key Line:</span> <code className="bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded font-mono">if complement in seen:</code> - This O(1) lookup is what makes the solution fast!
+               <span className="font-semibold">Key Line:</span> <code className="bg-blue-100 dark:bg-blue-900/50 px-2 py-0.5 rounded font-mono">if complement in seen:</code> - This O(1) lookup is what makes the solution fast!
             </p>
           </div>
         </section>
@@ -918,7 +1352,7 @@ class Solution:
               <div className="flex gap-3">
                 <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="font-semibold text-foreground mb-2">❌ Using same element twice</p>
+                  <p className="font-semibold text-foreground mb-2"> Using same element twice</p>
                   <pre className="bg-muted/50 p-2 rounded text-sm mb-2 overflow-x-auto"># Wrong: This could use the same element twice!
 if num in seen:  # Checking before calculating complement
     return [seen[num], i]</pre>
@@ -933,7 +1367,7 @@ if num in seen:  # Checking before calculating complement
               <div className="flex gap-3">
                 <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
                 <div className="flex-1">
-                  <p className="font-semibold text-foreground mb-2">❌ Using list for lookups (inefficient)</p>
+                  <p className="font-semibold text-foreground mb-2"> Using list for lookups (inefficient)</p>
                   <pre className="bg-muted/50 p-2 rounded text-sm mb-2 overflow-x-auto"># Wrong: O(n) lookup makes total O(n²)
 for i in range(len(nums)):
     for j in range(i+1, len(nums)):
@@ -951,7 +1385,7 @@ for i in range(len(nums)):
         {/* Practice Tips */}
         <section>
           <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2">
-            💪 Practice Tips
+             Practice Tips
           </h2>
           <div className="grid md:grid-cols-2 gap-4">
             <div className="bg-card border border-border rounded-lg p-4">

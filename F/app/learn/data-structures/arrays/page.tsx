@@ -3,8 +3,8 @@ import { CodeBlock, MultiLanguageCode } from "@/components/code-block";
 import { ArrayVisualizer } from "@/components/visualizations/array-visualizer";
 import { Quiz, QuizQuestion } from "@/components/quiz";
 import { getSubtopicBySlug } from "@/lib/topics-data";
-import { AlertCircle, CheckCircle2, Clock, Lightbulb } from "lucide-react";
-
+import { AlertCircle, CheckCircle2, Clock, Lightbulb, ChevronRight } from "lucide-react";
+import Link from "next/link"; 
 export default function ArraysPage() {
   const result = getSubtopicBySlug("data-structures", "arrays");
   if (!result) return null;
@@ -147,10 +147,102 @@ for (int num : numbers) {
     },
   ];
 
+const arrayProblems = [
+  {
+    id: 1,
+    slug: "two-sum",
+    title: "Two Sum",
+    description: "Find two numbers in an array that add up to a target sum.",
+    difficulty: "Easy",
+    timeComplexity: "O(n)",
+    spaceComplexity: "O(n)",
+  },
+  {
+    id: 2,
+    slug: "maximum-subarray",
+    title: "Maximum Subarray",
+    description: "Find the contiguous subarray with the largest sum.",
+    difficulty: "Medium",
+    timeComplexity: "O(n)",
+    spaceComplexity: "O(1)",
+  },
+  {
+    id: 3,
+    slug: "contains-duplicate",
+    title: "Contains Duplicate",
+    description: "Check if any value appears at least twice in the array.",
+    difficulty: "Easy",
+    timeComplexity: "O(n)",
+    spaceComplexity: "O(n)",
+  },
+  {
+    id: 4,
+    slug: "product-of-array-except-self",
+    title: "Product of Array Except Self",
+    description: "Return an array where each element is the product of all other elements.",
+    difficulty: "Medium",
+    timeComplexity: "O(n)",
+    spaceComplexity: "O(1)",
+  },
+  {
+    id: 5,
+    slug: "best-time-to-buy-sell-stock",
+    title: "Best Time to Buy and Sell Stock",
+    description: "Find the maximum profit from buying and selling stock once.",
+    difficulty: "Easy",
+    timeComplexity: "O(n)",
+    spaceComplexity: "O(1)",
+  },
+  {
+    id: 6,
+    slug: "3sum",
+    title: "3Sum",
+    description: "Find all triplets that sum to zero.",
+    difficulty: "Medium",
+    timeComplexity: "O(n²)",
+    spaceComplexity: "O(n)",
+  },
+  {
+    id: 7,
+    slug: "maximum-product-subarray",
+    title: "Maximum Product Subarray",
+    description: "Find the contiguous subarray with the largest product.",
+    difficulty: "Medium",
+    timeComplexity: "O(n)",
+    spaceComplexity: "O(1)",
+  },
+  {
+    id: 8,
+    slug: "find-minimum-in-rotated-sorted-array",
+    title: "Find Minimum in Rotated Sorted Array",
+    description: "Find the minimum element in a rotated sorted array.",
+    difficulty: "Medium",
+    timeComplexity: "O(log n)",
+    spaceComplexity: "O(1)",
+  },
+  {
+    id: 9,
+    slug: "container-with-most-water",
+    title: "Container With Most Water",
+    description: "Find two lines that together with the x-axis form a container with the most water.",
+    difficulty: "Medium",
+    timeComplexity: "O(n)",
+    spaceComplexity: "O(1)",
+  },
+  {
+    id: 10,
+    slug: "search-in-rotated-sorted-array",
+    title: "Search in Rotated Sorted Array",
+    description: "Search for a target value in a rotated sorted array.",
+    difficulty: "Medium",
+    timeComplexity: "O(log n)",
+    spaceComplexity: "O(1)",
+  },
+];
   return (
     <TopicContent topic={topic} subtopic={subtopic}>
-      <div className="space-y-8">
-        {/* Introduction */}
+     <div className="space-y-8" suppressHydrationWarning>
+     {/* Introduction */}
         <section>
           <h2 className="text-2xl font-bold mb-4 text-foreground">What is an Array?</h2>
           <p className="text-muted-foreground mb-4">
@@ -352,7 +444,56 @@ for (int num : numbers) {
           <h2 className="text-2xl font-bold mb-4 text-foreground">Test Your Knowledge</h2>
           <Quiz questions={quizQuestions} title="Arrays Quiz" />
         </section>
-      </div>
+
+
+{/* Top 10 Array Problems */}
+<section>
+  <h2 className="text-2xl font-bold mb-4 text-foreground">Top 10 Array Problems</h2>
+  <p className="text-muted-foreground mb-4">
+    Practice these essential array problems frequently asked in technical interviews.
+    Each problem has a dedicated page with detailed explanations and solutions.
+  </p>
+  
+  <div className="grid md:grid-cols-2 gap-4">
+    {arrayProblems.map((problem) => (
+      <Link 
+        key={problem.id}
+        href={`/learn/data-structures/arrays/problems/${problem.slug}`}
+    className="group block p-4 bg-card border border-border rounded-lg hover:border-primary/50 transition-all duration-200 hover:shadow-md"
+    >
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-sm font-mono text-primary bg-primary/10 px-2 py-0.5 rounded">
+                #{problem.id}
+              </span>
+              <span className={`text-xs px-2 py-0.5 rounded ${
+                problem.difficulty === 'Easy' ? 'bg-green-500/10 text-green-500' :
+                problem.difficulty === 'Medium' ? 'bg-yellow-500/10 text-yellow-500' :
+                'bg-red-500/10 text-red-500'
+              }`}>
+                {problem.difficulty}
+              </span>
+            </div>
+            <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors mb-1">
+              {problem.title}
+            </h3>
+            <p className="text-sm text-muted-foreground">
+              {problem.description}
+            </p>
+            <div className="flex items-center gap-3 mt-2 text-xs text-muted-foreground">
+              <span> {problem.timeComplexity}</span>
+              <span> {problem.spaceComplexity}</span>
+            </div>
+          </div>
+          <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+        </div>
+      </Link>
+    ))}
+       </div>
+     </section>
+        
+    </div>
     </TopicContent>
   );
 }
