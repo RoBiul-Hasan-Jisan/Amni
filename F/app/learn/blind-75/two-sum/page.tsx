@@ -522,7 +522,7 @@ function TwoSumVisualizer() {
       </h3>
       
       {/* Custom Data Input Section */}
-      <div className="mb-6 p-4 bg-gradient-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
+      <div className="mb-6 p-4 bg-linear-to-r from-primary/5 to-primary/10 rounded-lg border border-primary/20">
         <h4 className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
           <Plus className="h-4 w-4 text-primary" />
           Add Your Own Data
