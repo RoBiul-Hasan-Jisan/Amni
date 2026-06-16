@@ -110,7 +110,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: "/og-image.png",
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: "CSE Learn Preview",
@@ -128,7 +128,7 @@ export const metadata: Metadata = {
 
     creator: "@cselearn_official",
 
-    images: ["/og-image.png"],
+    images: ["/logo.png"],
   },
 
   icons: {
@@ -144,12 +144,12 @@ export const metadata: Metadata = {
       },
 
       {
-        url: "/icon.svg",
+        url: "/logo.png",
         type: "image/svg+xml",
       },
     ],
 
-    apple: "/apple-icon.png",
+   
   },
 };
 
