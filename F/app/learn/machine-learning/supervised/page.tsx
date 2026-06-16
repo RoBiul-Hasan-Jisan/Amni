@@ -1,58 +1,46 @@
-// app/learn/machine-learning/supervised-learning/page.tsx
+import Link from "next/link";
 import { TopicContent } from "@/components/topic-content";
 import { CodeBlock, MultiLanguageCode } from "@/components/code-block";
 import { Quiz, QuizQuestion } from "@/components/quiz";
-import { AlertCircle, CheckCircle2, Clock, Lightbulb, Target, Zap, Network, Layers, Hash, Flame, Brain, Cpu, BarChart, LineChart, PieChart, Database, GitBranch, Code, TestTube, Rocket, Shield, Cloud, TrendingUp, Bot, CpuIcon, Users, ChartBar, ChartLine, Filter } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { getSubtopicBySlug } from "@/lib/topics-data";
+import { 
+  AlertCircle, 
+  CheckCircle2, 
+  Clock, 
+  Lightbulb,
+  Brain,
+  Target,
+  TrendingUp,
+  BarChart3,
+  Layers,
+  GitBranch,
+  Activity,
+  Shield,
+  Sparkles,
+  Database,
+  Cpu,
+  LineChart,
+  PieChart,
+  GraduationCap
+} from "lucide-react";
 
 export default function SupervisedLearningPage() {
-  const supervisedCategories = [
-    {
-      title: "Regression",
-      icon: ChartLine,
-      description: "Predict continuous numerical values",
-      algorithms: ["Linear Regression", "Polynomial Regression", "Ridge/Lasso Regression", "Decision Tree Regressor", "Random Forest Regressor"],
-      examples: ["House price prediction", "Stock price forecasting", "Temperature prediction"]
-    },
-    {
-      title: "Classification",
-      icon: Target,
-      description: "Predict discrete categorical labels",
-      algorithms: ["Logistic Regression", "Decision Trees", "Random Forest", "SVM", "Naive Bayes", "K-NN"],
-      examples: ["Spam detection", "Disease diagnosis", "Image classification"]
-    },
-    {
-      title: "Ensemble Methods",
-      icon: Users,
-      description: "Combine multiple models for better performance",
-      algorithms: ["Random Forest", "Gradient Boosting", "AdaBoost", "XGBoost", "LightGBM"],
-      examples: ["Kaggle competitions", "Fraud detection", "Credit scoring"]
-    },
-    {
-      title: "Neural Networks",
-      icon: Brain,
-      description: "Multi-layer networks for complex patterns",
-      algorithms: ["MLP", "CNN", "RNN", "Transformer", "GAN"],
-      examples: ["Computer vision", "Natural language processing", "Speech recognition"]
-    }
-  ];
+  const result = getSubtopicBySlug("machine-learning", "supervised");
+  if (!result) return null;
 
-  const regressionModels = [
+  const { topic, subtopic } = result;
+
+  const codeExamples = [
     {
-      name: "Linear Regression",
-      complexity: "O(n²p)",
-      assumptions: ["Linearity", "Independence", "Homoscedasticity", "Normality"],
+      language: "python-linear",
+      label: "Linear Regression",
       code: `import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
-from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error, r2_score
 
-# Generate sample data
+# Generate synthetic data
 np.random.seed(42)
 X = 2 * np.random.rand(100, 1)
 y = 4 + 3 * X + np.random.randn(100, 1)
@@ -60,1274 +48,1045 @@ y = 4 + 3 * X + np.random.randn(100, 1)
 # Split data
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Create and train model
+# Train model
 model = LinearRegression()
 model.fit(X_train, y_train)
 
-# Make predictions
+# Predict and evaluate
 y_pred = model.predict(X_test)
 
-# Model coefficients
-print(f"Intercept: {model.intercept_[0]:.4f}")
-print(f"Coefficient: {model.coef_[0][0]:.4f}")
-
-# Evaluation metrics
-mse = mean_squared_error(y_test, y_pred)
-rmse = np.sqrt(mse)
-r2 = r2_score(y_test, y_pred)
-
-print(f"\\nMean Squared Error: {mse:.4f}")
-print(f"Root Mean Squared Error: {rmse:.4f}")
-print(f"R² Score: {r2:.4f}")
-
-# Visualization
-plt.figure(figsize=(10, 6))
-plt.scatter(X_test, y_test, color='blue', label='Actual', alpha=0.6)
-plt.plot(X_test, y_pred, color='red', linewidth=2, label='Predicted')
-plt.xlabel('Feature X')
-plt.ylabel('Target y')
-plt.title('Linear Regression: Actual vs Predicted')
-plt.legend()
-plt.grid(True, alpha=0.3)
-plt.show()`
+print(f"Coefficient: {model.coef_[0][0]:.2f}")
+print(f"Intercept: {model.intercept_[0]:.2f}")
+print(f"MSE: {mean_squared_error(y_test, y_pred):.2f}")
+print(f"R2 Score: {r2_score(y_test, y_pred):.3f}")`,
     },
     {
-      name: "Ridge Regression (L2 Regularization)",
-      complexity: "O(n²p)",
-      assumptions: ["Same as Linear Regression", "Adds penalty for large coefficients"],
+      language: "python-logistic",
+      label: "Logistic Regression",
       code: `import numpy as np
-from sklearn.linear_model import Ridge
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_squared_error
-from sklearn.preprocessing import StandardScaler
-
-# Generate sample data with multiple features
-np.random.seed(42)
-n_samples, n_features = 100, 10
-X = np.random.randn(n_samples, n_features)
-# True coefficients
-true_coef = np.array([4, 2, 0, 0, -1, 0, 0, 0, 0, 0])
-y = X.dot(true_coef) + np.random.randn(n_samples) * 0.5
-
-# Split and scale data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
-
-# Ridge Regression with cross-validation
-ridge = Ridge()
-parameters = {'alpha': [0.001, 0.01, 0.1, 1, 10, 100, 1000]}
-ridge_cv = GridSearchCV(ridge, parameters, cv=5, scoring='neg_mean_squared_error')
-ridge_cv.fit(X_train_scaled, y_train)
-
-# Best model
-best_ridge = ridge_cv.best_estimator_
-y_pred = best_ridge.predict(X_test_scaled)
-
-print(f"Best alpha: {ridge_cv.best_params_['alpha']}")
-print(f"Best CV score: {-ridge_cv.best_score_:.4f}")
-
-# Compare coefficients
-print("\\nFeature Coefficients:")
-print("Feature | True Coef | Ridge Coef")
-print("-" * 35)
-for i, (true, ridge) in enumerate(zip(true_coef, best_ridge.coef_)):
-    print(f"{i:7d} | {true:9.4f} | {ridge:10.4f}")
-
-# Evaluation
-mse = mean_squared_error(y_test, y_pred)
-print(f"\\nTest MSE: {mse:.4f}")
-print(f"Ridge Intercept: {best_ridge.intercept_:.4f}")`
-    },
-    {
-      name: "Decision Tree Regressor",
-      complexity: "O(n log n * p)",
-      assumptions: ["None (non-parametric)"],
-      code: `import numpy as np
-from sklearn.tree import DecisionTreeRegressor, plot_tree
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import mean_squared_error, mean_absolute_error
-import matplotlib.pyplot as plt
-
-# Generate non-linear data
-np.random.seed(42)
-X = np.sort(5 * np.random.rand(200, 1), axis=0)
-y = np.sin(X).ravel() + np.random.randn(200) * 0.1
-
-# Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-
-# Decision Tree with hyperparameter tuning
-tree = DecisionTreeRegressor(random_state=42)
-param_grid = {
-    'max_depth': [3, 5, 7, 10],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4]
-}
-grid_search = GridSearchCV(tree, param_grid, cv=5, scoring='neg_mean_squared_error')
-grid_search.fit(X_train, y_train)
-
-# Best model
-best_tree = grid_search.best_estimator_
-y_pred = best_tree.predict(X_test)
-
-print(f"Best Parameters: {grid_search.best_params_}")
-print(f"Best CV Score (MSE): {-grid_search.best_score_:.4f}")
-
-# Evaluation
-mse = mean_squared_error(y_test, y_pred)
-mae = mean_absolute_error(y_test, y_pred)
-print(f"\\nTest MSE: {mse:.4f}")
-print(f"Test MAE: {mae:.4f}")
-
-# Visualize tree
-plt.figure(figsize=(20, 10))
-plot_tree(best_tree, filled=True, feature_names=['X'], rounded=True)
-plt.title("Decision Tree Regressor")
-plt.show()
-
-# Visualize predictions
-X_grid = np.arange(0, 5, 0.01)[:, np.newaxis]
-y_grid = best_tree.predict(X_grid)
-
-plt.figure(figsize=(12, 6))
-plt.scatter(X_test, y_test, color='blue', label='Actual', alpha=0.6)
-plt.plot(X_grid, y_grid, color='red', linewidth=2, label='Predicted')
-plt.xlabel('Feature X')
-plt.ylabel('Target y')
-plt.title('Decision Tree Regression: Actual vs Predicted')
-plt.legend()
-plt.grid(True, alpha=0.3)
-plt.show()`
-    }
-  ];
-
-  const classificationModels = [
-    {
-      name: "Logistic Regression",
-      complexity: "O(n*p)",
-      assumptions: ["Binary outcome", "Linearity of log-odds", "No multicollinearity"],
-      code: `import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.datasets import make_classification
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import (accuracy_score, confusion_matrix, 
-                           classification_report, roc_curve, auc)
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report
 
-# Generate binary classification data
-X, y = make_classification(n_samples=1000, n_features=20, n_informative=15,
-                          n_redundant=5, n_clusters_per_class=2,
-                          random_state=42)
+# Generate synthetic data
+X, y = make_classification(
+    n_samples=1000, 
+    n_features=20, 
+    n_informative=15,
+    n_redundant=5,
+    random_state=42
+)
 
 # Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Scale features
 scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
-# Logistic Regression
-log_reg = LogisticRegression(random_state=42, max_iter=1000)
-log_reg.fit(X_train_scaled, y_train)
+# Train model
+model = LogisticRegression(max_iter=1000, random_state=42)
+model.fit(X_train, y_train)
 
-# Predictions
-y_pred = log_reg.predict(X_test_scaled)
-y_pred_proba = log_reg.predict_proba(X_test_scaled)[:, 1]
-
-# Evaluation
-accuracy = accuracy_score(y_test, y_pred)
-conf_matrix = confusion_matrix(y_test, y_pred)
-class_report = classification_report(y_test, y_pred)
-
-print(f"Accuracy: {accuracy:.4f}")
-print("\\nConfusion Matrix:")
-print(conf_matrix)
+# Predict and evaluate
+y_pred = model.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
 print("\\nClassification Report:")
-print(class_report)
-
-# Coefficients
-print("\\nTop 5 Feature Coefficients:")
-coef_df = pd.DataFrame({
-    'Feature': [f'Feature_{i}' for i in range(X.shape[1])],
-    'Coefficient': log_reg.coef_[0]
-})
-coef_df['Abs_Coefficient'] = np.abs(coef_df['Coefficient'])
-print(coef_df.nlargest(5, 'Abs_Coefficient')[['Feature', 'Coefficient']])
-
-# ROC Curve
-fpr, tpr, thresholds = roc_curve(y_test, y_pred_proba)
-roc_auc = auc(fpr, tpr)
-
-plt.figure(figsize=(10, 6))
-plt.plot(fpr, tpr, color='darkorange', lw=2, 
-         label=f'ROC curve (AUC = {roc_auc:.2f})')
-plt.plot([0, 1], [0, 1], color='navy', lw=2, linestyle='--', label='Random')
-plt.xlim([0.0, 1.0])
-plt.ylim([0.0, 1.05])
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('Receiver Operating Characteristic (ROC) Curve')
-plt.legend(loc="lower right")
-plt.grid(True, alpha=0.3)
-plt.show()`
+print(classification_report(y_test, y_pred))`,
     },
     {
-      name: "Random Forest Classifier",
-      complexity: "O(n log n * p * trees)",
-      assumptions: ["None (non-parametric)"],
-      code: `import numpy as np
-import pandas as pd
-from sklearn.ensemble import RandomForestClassifier
+      language: "python-decision",
+      label: "Decision Tree",
+      code: `from sklearn.tree import DecisionTreeClassifier, plot_tree
 from sklearn.datasets import load_iris
-from sklearn.model_selection import train_test_split, cross_val_score, GridSearchCV
-from sklearn.metrics import (accuracy_score, classification_report,
-                           confusion_matrix, ConfusionMatrixDisplay)
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix
 import matplotlib.pyplot as plt
 
-# Load iris dataset
+# Load data
 iris = load_iris()
-X = iris.data
-y = iris.target
-feature_names = iris.feature_names
-class_names = iris.target_names
+X, y = iris.data, iris.target
 
 # Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
-# Random Forest with hyperparameter tuning
-rf = RandomForestClassifier(random_state=42, n_jobs=-1)
+# Train model
+model = DecisionTreeClassifier(
+    max_depth=3,
+    min_samples_split=10,
+    random_state=42
+)
+model.fit(X_train, y_train)
 
-# Parameter grid for tuning
-param_grid = {
-    'n_estimators': [100, 200, 300],
-    'max_depth': [None, 10, 20, 30],
-    'min_samples_split': [2, 5, 10],
-    'min_samples_leaf': [1, 2, 4]
-}
-
-# Grid search with cross-validation
-grid_search = GridSearchCV(rf, param_grid, cv=5, scoring='accuracy', n_jobs=-1)
-grid_search.fit(X_train, y_train)
-
-# Best model
-best_rf = grid_search.best_estimator_
-y_pred = best_rf.predict(X_test)
-y_pred_proba = best_rf.predict_proba(X_test)
-
-print(f"Best Parameters: {grid_search.best_params_}")
-print(f"Best CV Accuracy: {grid_search.best_score_:.4f}")
-
-# Evaluation
-accuracy = accuracy_score(y_test, y_pred)
-print(f"\\nTest Accuracy: {accuracy:.4f}")
-print("\\nClassification Report:")
-print(classification_report(y_test, y_pred, target_names=class_names))
+# Predict and evaluate
+y_pred = model.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
+print("\\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
 
 # Feature importance
-feature_importance = pd.DataFrame({
-    'feature': feature_names,
-    'importance': best_rf.feature_importances_
-}).sort_values('importance', ascending=False)
-
 print("\\nFeature Importance:")
-print(feature_importance)
-
-# Confusion matrix visualization
-fig, axes = plt.subplots(1, 2, figsize=(15, 6))
-
-# Confusion Matrix
-cm = confusion_matrix(y_test, y_pred, labels=best_rf.classes_)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm,
-                             display_labels=class_names)
-disp.plot(ax=axes[0], cmap=plt.cm.Blues)
-axes[0].set_title("Confusion Matrix")
-
-# Feature Importance Plot
-axes[1].barh(range(len(feature_importance)), feature_importance['importance'])
-axes[1].set_yticks(range(len(feature_importance)))
-axes[1].set_yticklabels(feature_importance['feature'])
-axes[1].set_xlabel('Importance')
-axes[1].set_title('Feature Importance')
-axes[1].invert_yaxis()
-
-plt.tight_layout()
-plt.show()
-
-# Cross-validation scores
-cv_scores = cross_val_score(best_rf, X, y, cv=10, scoring='accuracy')
-print(f"\\n10-Fold Cross-Validation Scores: {cv_scores}")
-print(f"Mean CV Accuracy: {cv_scores.mean():.4f} (+/- {cv_scores.std() * 2:.4f})")`
+for name, importance in zip(iris.feature_names, model.feature_importances_):
+    print(f"{name}: {importance:.3f}")`,
     },
     {
-      name: "Support Vector Machine (SVM)",
-      complexity: "O(n² to n³)",
-      assumptions: ["Classes are separable"],
-      code: `import numpy as np
-import matplotlib.pyplot as plt
-from sklearn import svm
-from sklearn.datasets import make_moons
-from sklearn.model_selection import train_test_split, GridSearchCV
-from sklearn.metrics import accuracy_score, classification_report
-from sklearn.preprocessing import StandardScaler
+      language: "python-random",
+      label: "Random Forest",
+      code: `from sklearn.ensemble import RandomForestClassifier
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split, cross_val_score
+from sklearn.metrics import accuracy_score, roc_auc_score
 
-# Generate non-linear data
-X, y = make_moons(n_samples=300, noise=0.2, random_state=42)
+# Generate data
+X, y = make_classification(
+    n_samples=1000,
+    n_features=20,
+    n_informative=15,
+    n_redundant=5,
+    random_state=42
+)
 
 # Split data
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Train model
+model = RandomForestClassifier(
+    n_estimators=100,
+    max_depth=10,
+    min_samples_split=5,
+    random_state=42
+)
+model.fit(X_train, y_train)
+
+# Evaluate
+y_pred = model.predict(X_test)
+y_proba = model.predict_proba(X_test)[:, 1]
+
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
+print(f"ROC-AUC: {roc_auc_score(y_test, y_proba):.3f}")
+
+# Cross-validation
+cv_scores = cross_val_score(model, X_train, y_train, cv=5)
+print(f"CV Mean Accuracy: {cv_scores.mean():.3f}")`,
+    },
+    {
+      language: "python-svm",
+      label: "SVM",
+      code: `from sklearn.svm import SVC
+from sklearn.datasets import load_digits
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import accuracy_score, classification_report
+
+# Load data
+digits = load_digits()
+X, y = digits.data, digits.target
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
 
 # Scale features
 scaler = StandardScaler()
-X_train_scaled = scaler.fit_transform(X_train)
-X_test_scaled = scaler.transform(X_test)
+X_train = scaler.fit_transform(X_train)
+X_test = scaler.transform(X_test)
 
-# SVM with different kernels
-kernels = ['linear', 'poly', 'rbf', 'sigmoid']
-results = {}
+# Train model
+model = SVC(
+    kernel='rbf',
+    C=1.0,
+    gamma='scale',
+    random_state=42
+)
+model.fit(X_train, y_train)
 
-for kernel in kernels:
-    if kernel == 'poly':
-        svc = svm.SVC(kernel=kernel, degree=3, random_state=42)
-    else:
-        svc = svm.SVC(kernel=kernel, random_state=42)
-    
-    svc.fit(X_train_scaled, y_train)
-    y_pred = svc.predict(X_test_scaled)
-    accuracy = accuracy_score(y_test, y_pred)
-    results[kernel] = {'model': svc, 'accuracy': accuracy}
-    
-    print(f"{kernel.upper()} Kernel Accuracy: {accuracy:.4f}")
+# Predict and evaluate
+y_pred = model.predict(X_test)
+print(f"Accuracy: {accuracy_score(y_test, y_pred):.3f}")
+print("\\nClassification Report:")
+print(classification_report(y_test, y_pred))`,
+    },
+    {
+      language: "python-xgboost",
+      label: "XGBoost",
+      code: `import xgboost as xgb
+from sklearn.datasets import make_classification
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, roc_auc_score
 
-# Hyperparameter tuning for RBF kernel
-param_grid = {
-    'C': [0.1, 1, 10, 100],
-    'gamma': ['scale', 'auto', 0.1, 1, 10]
+# Generate data
+X, y = make_classification(
+    n_samples=1000,
+    n_features=20,
+    n_informative=15,
+    n_redundant=5,
+    random_state=42
+)
+
+# Split data
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# Convert to DMatrix
+dtrain = xgb.DMatrix(X_train, label=y_train)
+dtest = xgb.DMatrix(X_test, label=y_test)
+
+# Set parameters
+params = {
+    'max_depth': 6,
+    'eta': 0.1,
+    'objective': 'binary:logistic',
+    'eval_metric': 'logloss',
+    'seed': 42
 }
 
-svc = svm.SVC(kernel='rbf', random_state=42)
-grid_search = GridSearchCV(svc, param_grid, cv=5, scoring='accuracy')
-grid_search.fit(X_train_scaled, y_train)
+# Train model
+model = xgb.train(
+    params,
+    dtrain,
+    num_boost_round=100,
+    evals=[(dtrain, 'train'), (dtest, 'test')],
+    early_stopping_rounds=10,
+    verbose_eval=20
+)
 
-best_svc = grid_search.best_estimator_
-y_pred_best = best_svc.predict(X_test_scaled)
-best_accuracy = accuracy_score(y_test, y_pred_best)
+# Predict and evaluate
+y_pred = model.predict(dtest)
+y_pred_binary = (y_pred > 0.5).astype(int)
 
-print(f"\\nBest RBF Parameters: {grid_search.best_params_}")
-print(f"Best RBF Accuracy: {best_accuracy:.4f}")
-
-# Decision boundary visualization
-def plot_decision_boundary(model, X, y, title):
-    h = 0.02  # step size in mesh
-    x_min, x_max = X[:, 0].min() - 1, X[:, 0].max() + 1
-    y_min, y_max = X[:, 1].min() - 1, X[:, 1].max() + 1
-    xx, yy = np.meshgrid(np.arange(x_min, x_max, h),
-                         np.arange(y_min, y_max, h))
-    
-    Z = model.predict(np.c_[xx.ravel(), yy.ravel()])
-    Z = Z.reshape(xx.shape)
-    
-    plt.figure(figsize=(10, 6))
-    plt.contourf(xx, yy, Z, cmap=plt.cm.coolwarm, alpha=0.8)
-    plt.scatter(X[:, 0], X[:, 1], c=y, cmap=plt.cm.coolwarm, edgecolors='k')
-    plt.xlim(xx.min(), xx.max())
-    plt.ylim(yy.min(), yy.max())
-    plt.xlabel('Feature 1')
-    plt.ylabel('Feature 2')
-    plt.title(f'SVM Decision Boundary ({title})')
-    plt.colorbar()
-    plt.show()
-
-# Plot decision boundary for best model
-plot_decision_boundary(best_svc, X_test_scaled, y_test, 'RBF Kernel')`
-    }
-  ];
-
-  const keyConcepts = [
-    {
-      concept: "Bias-Variance Tradeoff",
-      description: "Balancing underfitting (high bias) and overfitting (high variance)",
-      formula: "Total Error = Bias² + Variance + Irreducible Error",
-      visualization: "U-shaped curve showing optimal model complexity"
-    },
-    {
-      concept: "Regularization",
-      description: "Techniques to prevent overfitting by adding penalty terms",
-      types: ["L1 (Lasso)", "L2 (Ridge)", "Elastic Net (L1 + L2)"],
-      effect: "Shrinks coefficients, reduces model complexity"
-    },
-    {
-      concept: "Gradient Descent",
-      description: "Optimization algorithm to minimize loss function",
-      variants: ["Batch GD", "Stochastic GD", "Mini-batch GD"],
-      learning_rate: "Step size for parameter updates"
-    },
-    {
-      concept: "Cross-Validation",
-      description: "Resampling technique for robust performance estimation",
-      methods: ["k-Fold", "Stratified k-Fold", "Leave-One-Out", "Time Series CV"],
-      purpose: "Better utilization of data, reliable performance estimates"
-    }
-  ];
-
-  const evaluationMetrics = {
-    regression: [
-      { metric: "Mean Absolute Error (MAE)", formula: "Σ|yᵢ - ŷᵢ|/n", interpretation: "Average absolute error" },
-      { metric: "Mean Squared Error (MSE)", formula: "Σ(yᵢ - ŷᵢ)²/n", interpretation: "Penalizes large errors" },
-      { metric: "Root Mean Squared Error (RMSE)", formula: "√MSE", interpretation: "In original units" },
-      { metric: "R² Score", formula: "1 - SS_res/SS_tot", interpretation: "Variance explained" },
-      { metric: "Adjusted R²", formula: "1 - [(1-R²)(n-1)/(n-p-1)]", interpretation: "Accounts for predictors" }
-    ],
-    classification: [
-      { metric: "Accuracy", formula: "(TP+TN)/Total", interpretation: "Overall correctness" },
-      { metric: "Precision", formula: "TP/(TP+FP)", interpretation: "Positive predictive value" },
-      { metric: "Recall", formula: "TP/(TP+FN)", interpretation: "Sensitivity, true positive rate" },
-      { metric: "F1-Score", formula: "2*(Precision*Recall)/(Precision+Recall)", interpretation: "Harmonic mean" },
-      { metric: "ROC-AUC", formula: "Area under ROC curve", interpretation: "Overall performance" },
-      { metric: "Log Loss", formula: "-Σ[yᵢlog(ŷᵢ)+(1-yᵢ)log(1-ŷᵢ)]", interpretation: "Probability-based error" }
-    ]
-  };
-
-  const modelSelectionGuide = [
-    {
-      scenario: "Small dataset, interpretability important",
-      recommended: ["Linear/Logistic Regression", "Decision Trees"],
-      reason: "Simple models prevent overfitting, easy to explain"
-    },
-    {
-      scenario: "Large dataset, high accuracy needed",
-      recommended: ["Random Forest", "Gradient Boosting", "XGBoost"],
-      reason: "Ensemble methods handle complex patterns well"
-    },
-    {
-      scenario: "Text/Image data",
-      recommended: ["Neural Networks", "CNNs", "Transformers"],
-      reason: "Deep learning excels at unstructured data"
-    },
-    {
-      scenario: "Real-time predictions",
-      recommended: ["Logistic Regression", "Naive Bayes", "Small Decision Trees"],
-      reason: "Fast inference time, low computational cost"
-    },
-    {
-      scenario: "Highly imbalanced classes",
-      recommended: ["XGBoost with scale_pos_weight", "SMOTE + Random Forest"],
-      reason: "Special handling needed for minority classes"
+print(f"Accuracy: {accuracy_score(y_test, y_pred_binary):.3f}")
+print(f"ROC-AUC: {roc_auc_score(y_test, y_pred):.3f}")`,
     }
   ];
 
   const quizQuestions: QuizQuestion[] = [
     {
       id: 1,
-      question: "What is the main characteristic of supervised learning?",
+      question: "What is Supervised Learning?",
       options: [
-        "It uses unlabeled data",
-        "It learns from labeled input-output pairs",
-        "It learns through trial and error",
-        "It doesn't require training data"
+        "Learning without labeled data",
+        "Learning with labeled data where inputs have known outputs",
+        "Learning through rewards and punishments",
+        "Learning from unlabeled data"
       ],
       correctAnswer: 1,
-      explanation: "Supervised learning uses labeled datasets to train algorithms that predict outcomes accurately.",
+      explanation: "Supervised learning uses labeled data where each input (X) has a known output (y) to train the model.",
     },
     {
       id: 2,
-      question: "Which algorithm would you use for predicting house prices?",
-      options: ["Logistic Regression", "K-Means", "Linear Regression", "SVM"],
-      correctAnswer: 2,
-      explanation: "Linear regression is used for predicting continuous numerical values like house prices.",
+      question: "What is the difference between Regression and Classification?",
+      options: [
+        "Regression predicts continuous values, Classification predicts categorical labels",
+        "Regression predicts categorical labels, Classification predicts continuous values",
+        "They are the same thing",
+        "Regression uses deep learning, Classification uses traditional ML"
+      ],
+      correctAnswer: 0,
+      explanation: "Regression predicts continuous values (e.g., house prices), while Classification predicts categorical labels (e.g., spam/not spam).",
     },
     {
       id: 3,
-      question: "What does regularization prevent in machine learning models?",
-      options: ["Underfitting", "Overfitting", "Data leakage", "Feature scaling"],
+      question: "What is overfitting in Supervised Learning?",
+      options: [
+        "Model performs well on all data",
+        "Model performs well on training data but poorly on new data",
+        "Model is too simple to capture patterns",
+        "Model has high bias"
+      ],
       correctAnswer: 1,
-      explanation: "Regularization techniques like L1/L2 prevent overfitting by adding penalty terms to the loss function.",
+      explanation: "Overfitting occurs when a model learns training data too well, capturing noise instead of general patterns.",
     },
     {
       id: 4,
-      question: "Which metric is most appropriate for imbalanced classification problems?",
-      options: ["Accuracy", "Precision-Recall Curve", "R² Score", "MSE"],
+      question: "Which algorithm is best for binary classification with linear boundaries?",
+      options: [
+        "Random Forest",
+        "Logistic Regression",
+        "KNN",
+        "Decision Tree"
+      ],
       correctAnswer: 1,
-      explanation: "For imbalanced datasets, precision-recall curve is more informative than accuracy.",
+      explanation: "Logistic Regression is ideal for binary classification with linear decision boundaries.",
     },
     {
       id: 5,
-      question: "What is the purpose of cross-validation?",
+      question: "What is the Bias-Variance Tradeoff?",
       options: [
-        "To increase training speed",
-        "To get more reliable performance estimates",
-        "To reduce model complexity",
-        "To visualize decision boundaries"
+        "Choosing between two algorithms",
+        "Balancing model simplicity and complexity",
+        "Choosing between training and test data",
+        "A technique for feature selection"
       ],
       correctAnswer: 1,
-      explanation: "Cross-validation provides more robust performance estimates by using multiple train-test splits.",
+      explanation: "The Bias-Variance tradeoff balances underfitting (high bias) against overfitting (high variance).",
+    },
+    {
+      id: 6,
+      question: "What does L1 regularization (Lasso) do?",
+      options: [
+        "Adds squared penalty to weights",
+        "Adds absolute value penalty to weights",
+        "Adds no penalty",
+        "Removes all features"
+      ],
+      correctAnswer: 1,
+      explanation: "L1 regularization adds an absolute value penalty to weights, which can drive some weights to zero for feature selection.",
+    },
+    {
+      id: 7,
+      question: "Which metric is NOT used for classification evaluation?",
+      options: [
+        "Accuracy",
+        "F1 Score",
+        "Mean Squared Error (MSE)",
+        "Precision"
+      ],
+      correctAnswer: 2,
+      explanation: "MSE is a regression metric, not a classification metric.",
+    },
+    {
+      id: 8,
+      question: "What is the purpose of Cross-Validation?",
+      options: [
+        "To increase training data",
+        "To better evaluate model performance and prevent overfitting",
+        "To make training faster",
+        "To reduce the number of features"
+      ],
+      correctAnswer: 1,
+      explanation: "Cross-validation provides a more robust evaluation by testing on multiple validation sets.",
+    },
+    {
+      id: 9,
+      question: "Which algorithm is an ensemble method?",
+      options: [
+        "Linear Regression",
+        "Random Forest",
+        "Logistic Regression",
+        "Naive Bayes"
+      ],
+      correctAnswer: 1,
+      explanation: "Random Forest is an ensemble method that combines multiple decision trees.",
+    },
+    {
+      id: 10,
+      question: "What is the difference between parameters and hyperparameters?",
+      options: [
+        "They are the same thing",
+        "Parameters are learned during training, hyperparameters are set before training",
+        "Hyperparameters are learned during training, parameters are set before training",
+        "Parameters are for classification, hyperparameters are for regression"
+      ],
+      correctAnswer: 1,
+      explanation: "Parameters are learned from training data (e.g., weights), while hyperparameters are set before training (e.g., learning rate, max depth).",
     },
   ];
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
+    <TopicContent topic={topic} subtopic={subtopic}>
+      <div className="space-y-12">
         {/* Header */}
-        <header className="mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-4">
-            Supervised Machine Learning
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Supervised Machine Learning — Complete Guide
           </h1>
-          <p className="text-lg text-muted-foreground">
-            Complete guide to supervised learning: Learn how algorithms predict outcomes from labeled training data through regression and classification.
+          <p className="text-muted-foreground text-lg">
+            A comprehensive guide to understanding supervised learning, algorithms, evaluation metrics, and best practices
           </p>
-        </header>
+        </div>
 
-        {/* Hero Section */}
-        <section className="mb-12">
-          <Card className="bg-gradient-to-r from-primary/10 to-blue-500/10 border-primary/20">
-            <CardContent className="p-8">
-              <div className="flex flex-col md:flex-row items-center gap-8">
-                <div className="md:w-2/3">
-                  <h2 className="text-2xl font-bold mb-4 text-foreground">
-                    What is Supervised Learning?
-                  </h2>
-                  <p className="text-muted-foreground mb-4">
-                    Supervised learning is a type of machine learning where models are trained on labeled datasets. 
-                    The algorithm learns the mapping function from input variables (features) to output variables (labels). 
-                    Once trained, it can predict outputs for new, unseen data.
-                  </p>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="bg-background/50 p-4 rounded-lg">
-                      <h4 className="font-semibold mb-2 text-foreground">Training Phase</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Model learns patterns from labeled training data (input → output pairs)
-                      </p>
-                    </div>
-                    <div className="bg-background/50 p-4 rounded-lg">
-                      <h4 className="font-semibold mb-2 text-foreground">Prediction Phase</h4>
-                      <p className="text-sm text-muted-foreground">
-                        Model applies learned patterns to make predictions on new, unseen data
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="md:w-1/3">
-                  <div className="bg-primary/5 p-6 rounded-lg">
-                    <h3 className="font-semibold mb-3 text-foreground">Key Components</h3>
-                    <ul className="space-y-2 text-sm">
-                      <li className="flex items-center gap-2">
-                        <Database className="h-4 w-4 text-primary" />
-                        <span>Labeled training data</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Target className="h-4 w-4 text-primary" />
-                        <span>Input features (X)</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <ChartLine className="h-4 w-4 text-primary" />
-                        <span>Output labels (y)</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Cpu className="h-4 w-4 text-primary" />
-                        <span>Learning algorithm</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <TestTube className="h-4 w-4 text-primary" />
-                        <span>Evaluation metrics</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Categories */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Supervised Learning Categories</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {supervisedCategories.map((category, idx) => (
-              <Card key={idx} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <category.icon className="h-5 w-5 text-primary" />
-                    <h3 className="font-semibold text-foreground">{category.title}</h3>
-                  </div>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {category.description}
-                  </p>
-                  
-                  <div className="space-y-3">
-                    <div>
-                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Common Algorithms:
-                      </h4>
-                      <ul className="space-y-1">
-                        {category.algorithms.map((algo, aIdx) => (
-                          <li key={aIdx} className="flex items-center gap-2 text-sm">
-                            <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>
-                            <span className="text-muted-foreground">{algo}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                    
-                    <div>
-                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Examples:
-                      </h4>
-                      <ul className="space-y-1">
-                        {category.examples.map((example, eIdx) => (
-                          <li key={eIdx} className="text-xs text-muted-foreground">
-                            • {example}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Regression Models */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Regression Algorithms</h2>
-          <Tabs defaultValue="linear" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="linear">Linear Regression</TabsTrigger>
-              <TabsTrigger value="ridge">Ridge Regression</TabsTrigger>
-              <TabsTrigger value="tree">Decision Tree</TabsTrigger>
-            </TabsList>
-            
-            {regressionModels.map((model, idx) => (
-              <TabsContent key={idx} value={model.name.toLowerCase().split(' ')[0]}>
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                      <div className="lg:w-1/3">
-                        <div className="flex items-center gap-3 mb-4">
-                          <Badge variant="outline" className="font-mono">
-                            {model.complexity}
-                          </Badge>
-                          <h3 className="font-semibold text-lg text-foreground">{model.name}</h3>
-                        </div>
-                        
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground mb-2">Key Assumptions:</h4>
-                            <ul className="space-y-1">
-                              {model.assumptions.map((assumption, aIdx) => (
-                                <li key={aIdx} className="flex items-start gap-2 text-sm">
-                                  <AlertCircle className="h-3 w-3 text-warning mt-0.5 shrink-0" />
-                                  <span className="text-muted-foreground">{assumption}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground mb-2">When to Use:</h4>
-                            <p className="text-sm text-muted-foreground">
-                              {model.name === "Linear Regression" && 
-                                "When relationship between features and target is linear, for baseline models"}
-                              {model.name === "Ridge Regression (L2 Regularization)" && 
-                                "When features are correlated, to prevent overfitting"}
-                              {model.name === "Decision Tree Regressor" && 
-                                "For non-linear relationships, when interpretability is important"}
-                            </p>
-                          </div>
-                          
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground mb-2">Pros & Cons:</h4>
-                            <div className="grid grid-cols-2 gap-2">
-                              <div className="bg-green-500/10 p-2 rounded">
-                                <p className="text-xs font-semibold text-green-600">Pros</p>
-                                <ul className="text-xs text-muted-foreground mt-1">
-                                  {model.name === "Linear Regression" && (
-                                    <>
-                                      <li>• Simple & interpretable</li>
-                                      <li>• Fast training & prediction</li>
-                                      <li>• Works well with linear relationships</li>
-                                    </>
-                                  )}
-                                  {model.name === "Ridge Regression (L2 Regularization)" && (
-                                    <>
-                                      <li>• Prevents overfitting</li>
-                                      <li>• Handles multicollinearity</li>
-                                      <li>• More stable than ordinary least squares</li>
-                                    </>
-                                  )}
-                                  {model.name === "Decision Tree Regressor" && (
-                                    <>
-                                      <li>• No assumptions about data</li>
-                                      <li>• Handles non-linear relationships</li>
-                                      <li>• Easy to interpret</li>
-                                    </>
-                                  )}
-                                </ul>
-                              </div>
-                              <div className="bg-red-500/10 p-2 rounded">
-                                <p className="text-xs font-semibold text-red-600">Cons</p>
-                                <ul className="text-xs text-muted-foreground mt-1">
-                                  {model.name === "Linear Regression" && (
-                                    <>
-                                      <li>• Assumes linearity</li>
-                                      <li>• Sensitive to outliers</li>
-                                      <li>• Can't capture complex patterns</li>
-                                    </>
-                                  )}
-                                  {model.name === "Ridge Regression (L2 Regularization)" && (
-                                    <>
-                                      <li>• Doesn't perform feature selection</li>
-                                      <li>• Requires hyperparameter tuning</li>
-                                      <li>• All coefficients remain non-zero</li>
-                                    </>
-                                  )}
-                                  {model.name === "Decision Tree Regressor" && (
-                                    <>
-                                      <li>• Prone to overfitting</li>
-                                      <li>• High variance</li>
-                                      <li>• Poor extrapolation</li>
-                                    </>
-                                  )}
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="lg:w-2/3">
-                        <CodeBlock
-                          language="python"
-                          code={model.code}
-                          filename={`${model.name.toLowerCase().replace(' ', '_')}.py`}
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </section>
-
-        {/* Classification Models */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Classification Algorithms</h2>
-          <Tabs defaultValue="logistic" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="logistic">Logistic Regression</TabsTrigger>
-              <TabsTrigger value="random">Random Forest</TabsTrigger>
-              <TabsTrigger value="svm">Support Vector Machine</TabsTrigger>
-            </TabsList>
-            
-            {classificationModels.map((model, idx) => (
-              <TabsContent key={idx} value={model.name.toLowerCase().split(' ')[0]}>
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex flex-col lg:flex-row lg:items-start gap-6">
-                      <div className="lg:w-1/3">
-                        <div className="flex items-center gap-3 mb-4">
-                          <Badge variant="outline" className="font-mono">
-                            {model.complexity}
-                          </Badge>
-                          <h3 className="font-semibold text-lg text-foreground">{model.name}</h3>
-                        </div>
-                        
-                        <div className="space-y-4">
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground mb-2">Key Assumptions:</h4>
-                            <ul className="space-y-1">
-                              {model.assumptions.map((assumption, aIdx) => (
-                                <li key={aIdx} className="flex items-start gap-2 text-sm">
-                                  <AlertCircle className="h-3 w-3 text-warning mt-0.5 shrink-0" />
-                                  <span className="text-muted-foreground">{assumption}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground mb-2">When to Use:</h4>
-                            <p className="text-sm text-muted-foreground">
-                              {model.name === "Logistic Regression" && 
-                                "For binary classification problems, when you need probability outputs and interpretable coefficients"}
-                              {model.name === "Random Forest Classifier" && 
-                                "For complex classification tasks with non-linear relationships, robust to outliers"}
-                              {model.name === "Support Vector Machine (SVM)" && 
-                                "When classes are separable, especially in high-dimensional spaces"}
-                            </p>
-                          </div>
-                          
-                          <div>
-                            <h4 className="font-medium text-sm text-foreground mb-2">Pros & Cons:</h4>
-                            <div className="grid grid-cols-2 gap-2">
-                              <div className="bg-green-500/10 p-2 rounded">
-                                <p className="text-xs font-semibold text-green-600">Pros</p>
-                                <ul className="text-xs text-muted-foreground mt-1">
-                                  {model.name === "Logistic Regression" && (
-                                    <>
-                                      <li>• Provides probabilities</li>
-                                      <li>• Interpretable coefficients</li>
-                                      <li>• Fast and efficient</li>
-                                    </>
-                                  )}
-                                  {model.name === "Random Forest Classifier" && (
-                                    <>
-                                      <li>• High accuracy</li>
-                                      <li>• Handles non-linearity well</li>
-                                      <li>• Robust to outliers</li>
-                                    </>
-                                  )}
-                                  {model.name === "Support Vector Machine (SVM)" && (
-                                    <>
-                                      <li>• Effective in high dimensions</li>
-                                      <li>• Memory efficient</li>
-                                      <li>• Versatile with different kernels</li>
-                                    </>
-                                  )}
-                                </ul>
-                              </div>
-                              <div className="bg-red-500/10 p-2 rounded">
-                                <p className="text-xs font-semibold text-red-600">Cons</p>
-                                <ul className="text-xs text-muted-foreground mt-1">
-                                  {model.name === "Logistic Regression" && (
-                                    <>
-                                      <li>• Assumes linear decision boundary</li>
-                                      <li>• Sensitive to correlated features</li>
-                                      <li>• Can't capture complex patterns</li>
-                                    </>
-                                  )}
-                                  {model.name === "Random Forest Classifier" && (
-                                    <>
-                                      <li>• Black box model</li>
-                                      <li>• Computationally expensive</li>
-                                      <li>• Can overfit with noisy data</li>
-                                    </>
-                                  )}
-                                  {model.name === "Support Vector Machine (SVM)" && (
-                                    <>
-                                      <li>• Doesn't scale well to large datasets</li>
-                                      <li>• Requires careful tuning</li>
-                                      <li>• Difficult to interpret</li>
-                                    </>
-                                  )}
-                                </ul>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <div className="lg:w-2/3">
-                        <CodeBlock
-                          language="python"
-                          code={model.code}
-                          filename={`${model.name.toLowerCase().replace(' ', '_').replace(/[()]/g, '')}.py`}
-                        />
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </section>
-
-        {/* Key Concepts */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Key Theoretical Concepts</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            {keyConcepts.map((concept, idx) => (
-              <Card key={idx}>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <Brain className="h-5 w-5 text-primary" />
-                    <h3 className="font-semibold text-lg text-foreground">{concept.concept}</h3>
-                  </div>
-                  
-                  <p className="text-sm text-muted-foreground mb-4">
-                    {concept.description}
-                  </p>
-                  
-                  {concept.formula && (
-                    <div className="mb-4">
-                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Formula:
-                      </h4>
-                      <div className="bg-muted/50 p-3 rounded font-mono text-sm">
-                        {concept.formula}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {concept.types && (
-                    <div className="mb-4">
-                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Types:
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {concept.types.map((type, tIdx) => (
-                          <Badge key={tIdx} variant="secondary" className="text-xs">
-                            {type}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {concept.variants && (
-                    <div className="mb-4">
-                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Variants:
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {concept.variants.map((variant, vIdx) => (
-                          <Badge key={vIdx} variant="outline" className="text-xs">
-                            {variant}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {concept.effect && (
-                    <div className="mt-4 p-3 bg-blue-500/5 rounded border border-blue-500/10">
-                      <h4 className="text-xs font-semibold text-blue-600 mb-1">Effect:</h4>
-                      <p className="text-xs text-muted-foreground">{concept.effect}</p>
-                    </div>
-                  )}
-                  
-                  {concept.learning_rate && (
-                    <div className="mt-4 p-3 bg-green-500/5 rounded border border-green-500/10">
-                      <h4 className="text-xs font-semibold text-green-600 mb-1">Learning Rate:</h4>
-                      <p className="text-xs text-muted-foreground">{concept.learning_rate}</p>
-                    </div>
-                  )}
-                  
-                  {concept.methods && (
-                    <div className="mt-4">
-                      <h4 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Methods:
-                      </h4>
-                      <div className="flex flex-wrap gap-2">
-                        {concept.methods.map((method, mIdx) => (
-                          <Badge key={mIdx} variant="secondary" className="text-xs">
-                            {method}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                  
-                  {concept.purpose && (
-                    <div className="mt-4 p-3 bg-purple-500/5 rounded border border-purple-500/10">
-                      <h4 className="text-xs font-semibold text-purple-600 mb-1">Purpose:</h4>
-                      <p className="text-xs text-muted-foreground">{concept.purpose}</p>
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Evaluation Metrics */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Evaluation Metrics</h2>
+        {/* 1. What is Supervised Learning? */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <Brain className="h-5 w-5 text-primary" />
+            1. What is Supervised Learning?
+          </h2>
           
           <div className="grid md:grid-cols-2 gap-6">
-            {/* Regression Metrics */}
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <TrendingUp className="h-5 w-5 text-blue-500" />
-                  <h3 className="font-semibold text-lg text-foreground">Regression Metrics</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  {evaluationMetrics.regression.map((metric, idx) => (
-                    <div key={idx} className="border-b border-border/50 pb-4 last:border-0 last:pb-0">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-sm text-foreground">{metric.metric}</h4>
-                        <Badge variant="outline" className="text-xs">
-                          {metric.formula}
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{metric.interpretation}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-            
-            {/* Classification Metrics */}
-            <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center gap-3 mb-6">
-                  <Target className="h-5 w-5 text-green-500" />
-                  <h3 className="font-semibold text-lg text-foreground">Classification Metrics</h3>
-                </div>
-                
-                <div className="space-y-4">
-                  {evaluationMetrics.classification.map((metric, idx) => (
-                    <div key={idx} className="border-b border-border/50 pb-4 last:border-0 last:pb-0">
-                      <div className="flex justify-between items-start mb-2">
-                        <h4 className="font-medium text-sm text-foreground">{metric.metric}</h4>
-                        <Badge variant="outline" className="text-xs">
-                          {metric.formula}
-                        </Badge>
-                      </div>
-                      <p className="text-xs text-muted-foreground">{metric.interpretation}</p>
-                    </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* Model Selection Guide */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Model Selection Guide</h2>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {modelSelectionGuide.map((scenario, idx) => (
-              <Card key={idx}>
-                <CardContent className="p-6">
-                  <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 bg-primary/10 rounded">
-                      {idx === 0 && <Code className="h-4 w-4 text-primary" />}
-                      {idx === 1 && <CpuIcon className="h-4 w-4 text-primary" />}
-                      {idx === 2 && <Layers className="h-4 w-4 text-primary" />}
-                      {idx === 3 && <Zap className="h-4 w-4 text-primary" />}
-                      {idx === 4 && <Filter className="h-4 w-4 text-primary" />}
-                    </div>
-                    <h3 className="font-semibold text-sm text-foreground">Scenario {idx + 1}</h3>
-                  </div>
-                  
-                  <h4 className="font-medium text-foreground mb-3">{scenario.scenario}</h4>
-                  
-                  <div className="space-y-4">
-                    <div>
-                      <h5 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Recommended Models:
-                      </h5>
-                      <div className="flex flex-wrap gap-2">
-                        {scenario.recommended.map((model, mIdx) => (
-                          <Badge key={mIdx} variant="secondary" className="text-xs">
-                            {model}
-                          </Badge>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <h5 className="text-xs font-semibold text-foreground uppercase tracking-wide mb-2">
-                        Why:
-                      </h5>
-                      <p className="text-sm text-muted-foreground">{scenario.reason}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </section>
-
-        {/* Workflow Steps */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Supervised Learning Workflow</h2>
-          
-          <Card>
-            <CardContent className="p-6">
-              <div className="grid md:grid-cols-5 gap-4">
-                {[
-                  { step: 1, title: "Data Collection", icon: Database, description: "Gather labeled dataset with features and target variable" },
-                  { step: 2, title: "Preprocessing", icon: Filter, description: "Handle missing values, outliers, and feature scaling" },
-                  { step: 3, title: "Model Selection", icon: CpuIcon, description: "Choose appropriate algorithm based on problem type" },
-                  { step: 4, title: "Training", icon: Brain, description: "Fit model to training data and learn patterns" },
-                  { step: 5, title: "Evaluation", icon: ChartBar, description: "Test model on unseen data and measure performance" },
-                ].map((item) => (
-                  <div key={item.step} className="text-center">
-                    <div className="relative mb-4">
-                      <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-                        <item.icon className="h-6 w-6 text-primary" />
-                      </div>
-                      <div className="absolute -top-2 -right-2 w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold text-sm">
-                        {item.step}
-                      </div>
-                    </div>
-                    <h3 className="font-semibold text-foreground mb-2">{item.title}</h3>
-                    <p className="text-xs text-muted-foreground">{item.description}</p>
-                  </div>
-                ))}
+            <div className="bg-card border border-border rounded-lg p-4">
+              <p className="text-muted-foreground mb-3">
+                Supervised learning is a type of machine learning where a model is trained using <span className="font-semibold text-foreground">labeled data</span>, meaning each input (X) has a known output (y).
+              </p>
+              <div className="bg-muted p-3 rounded-lg text-center">
+                <p className="font-mono text-lg text-primary">X → y</p>
+                <p className="text-xs text-muted-foreground">Mapping function learned from data</p>
               </div>
-              
-              <Separator className="my-8" />
-              
-              <div className="grid md:grid-cols-2 gap-6">
+              <p className="text-muted-foreground mt-3">
+                The goal is to learn a mapping function from inputs to outputs that can predict for unseen data.
+              </p>
+            </div>
+            
+            <div className="bg-primary/5 border border-primary/20 rounded-lg p-4">
+              <div className="flex gap-3">
+                <Lightbulb className="h-5 w-5 text-primary shrink-0 mt-0.5" />
                 <div>
-                  <h3 className="font-semibold text-lg text-foreground mb-4">Best Practices</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="font-medium text-sm text-foreground">Always split data</h4>
-                        <p className="text-sm text-muted-foreground">Use train/test/validation splits (70/15/15 or 80/20)</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="font-medium text-sm text-foreground">Feature scaling</h4>
-                        <p className="text-sm text-muted-foreground">Normalize or standardize features for gradient-based algorithms</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckCircle2 className="h-5 w-5 text-green-500 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="font-medium text-sm text-foreground">Cross-validation</h4>
-                        <p className="text-sm text-muted-foreground">Use k-fold CV for reliable performance estimates</p>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                
-                <div>
-                  <h3 className="font-semibold text-lg text-foreground mb-4">Common Pitfalls</h3>
-                  <ul className="space-y-3">
-                    <li className="flex items-start gap-3">
-                      <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="font-medium text-sm text-foreground">Data leakage</h4>
-                        <p className="text-sm text-muted-foreground">Don't use test data during training or preprocessing</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="font-medium text-sm text-foreground">Overfitting</h4>
-                        <p className="text-sm text-muted-foreground">Monitor validation performance, use regularization</p>
-                      </div>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <AlertCircle className="h-5 w-5 text-red-500 mt-0.5 shrink-0" />
-                      <div>
-                        <h4 className="font-medium text-sm text-foreground">Imbalanced data</h4>
-                        <p className="text-sm text-muted-foreground">Use appropriate metrics and sampling techniques</p>
-                      </div>
-                    </li>
+                  <h4 className="font-semibold text-foreground mb-2">Key Analogy</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Think of supervised learning like a student learning with a teacher:
+                  </p>
+                  <ul className="text-sm text-muted-foreground list-disc list-inside mt-2">
+                    <li><span className="font-medium text-foreground">Teacher</span> provides examples (labeled data)</li>
+                    <li><span className="font-medium text-foreground">Student</span> learns patterns (model training)</li>
+                    <li><span className="font-medium text-foreground">Exam</span> tests on new questions (prediction)</li>
                   </ul>
                 </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </section>
 
-        {/* FAQ Section */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Frequently Asked Questions</h2>
+        {/* 2. Training vs Prediction */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <Target className="h-5 w-5 text-primary" />
+            2. Training vs Prediction
+          </h2>
           
-          <Accordion type="single" collapsible className="w-full">
-            <AccordionItem value="item-1">
-              <AccordionTrigger>What's the difference between regression and classification?</AccordionTrigger>
-              <AccordionContent>
-                Regression predicts continuous numerical values (e.g., house prices, temperature), while classification predicts discrete categorical labels (e.g., spam/not spam, disease/no disease). Regression uses algorithms like Linear Regression, while classification uses Logistic Regression, SVM, etc.
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="item-2">
-              <AccordionTrigger>How do I choose between linear and non-linear models?</AccordionTrigger>
-              <AccordionContent>
-                Start with linear models for interpretability and baselines. If performance is poor, try non-linear models. Use feature transformations or polynomial features with linear models for simple non-linearity. Use tree-based models or neural networks for complex non-linear patterns.
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="item-3">
-              <AccordionTrigger>What's the bias-variance tradeoff?</AccordionTrigger>
-              <AccordionContent>
-                Bias is error from overly simplistic assumptions; variance is error from sensitivity to fluctuations in training data. Simple models have high bias (underfit), complex models have high variance (overfit). The goal is to find the sweet spot where total error (bias² + variance) is minimized.
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="item-4">
-              <AccordionTrigger>When should I use regularization?</AccordionTrigger>
-              <AccordionContent>
-                Use regularization when: 1) You have many features relative to samples, 2) Features are correlated, 3) Model shows signs of overfitting (good training performance, poor test performance). L1 (Lasso) for feature selection, L2 (Ridge) for general overfitting prevention, Elastic Net for both.
-              </AccordionContent>
-            </AccordionItem>
-            
-            <AccordionItem value="item-5">
-              <AccordionTrigger>How much data do I need for supervised learning?</AccordionTrigger>
-              <AccordionContent>
-                It depends on problem complexity. Simple linear models: 10-100 samples per feature. Complex models (deep learning): thousands to millions of samples. More data generally improves performance, but quality matters more than quantity. Use techniques like data augmentation for small datasets.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <GraduationCap className="h-4 w-4 text-primary" />
+                <h4 className="font-semibold text-foreground">Training Phase</h4>
+              </div>
+              <ul className="text-sm text-muted-foreground space-y-2">
+                <li>• Model learns patterns from labeled data</li>
+                <li>• Input: Features (X)</li>
+                <li>• Output: Labels (y)</li>
+                <li>• Goal: Minimize loss function</li>
+              </ul>
+              <div className="bg-muted p-2 rounded mt-2 text-center">
+                <p className="font-mono text-xs">(X_train, y_train) → Model</p>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <div className="flex items-center gap-2 mb-2">
+                <Sparkles className="h-4 w-4 text-primary" />
+                <h4 className="font-semibold text-foreground">Prediction Phase</h4>
+              </div>
+              <ul className="text-sm text-muted-foreground space-y-2">
+                <li>• Model predicts output for new unseen inputs</li>
+                <li>• Input: New features (X_test)</li>
+                <li>• Output: Predictions (y_pred)</li>
+                <li>• Goal: Generalize to new data</li>
+              </ul>
+              <div className="bg-muted p-2 rounded mt-2 text-center">
+                <p className="font-mono text-xs">X_test → Model → y_pred</p>
+              </div>
+            </div>
+          </div>
         </section>
 
-        {/* Quiz Section */}
-        <section className="mb-12">
-          <h2 className="text-2xl font-bold mb-6 text-foreground">Test Your Knowledge</h2>
-          <Quiz questions={quizQuestions} />
+        {/* 3. Key Components */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <Layers className="h-5 w-5 text-primary" />
+            3. Key Components
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2">Data</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• <span className="font-medium text-foreground">Features (X)</span>: Input variables</li>
+                <li>• <span className="font-medium text-foreground">Labels (y)</span>: Target variables</li>
+                <li>• <span className="font-medium text-foreground">Dataset</span>: Training/Test/Validation</li>
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2">Model</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• <span className="font-medium text-foreground">Algorithm</span>: Learning method</li>
+                <li>• <span className="font-medium text-foreground">Parameters</span>: Learned from data</li>
+                <li>• <span className="font-medium text-foreground">Loss Function</span>: Measures error</li>
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2">Evaluation</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li>• <span className="font-medium text-foreground">Metrics</span>: Performance measures</li>
+                <li>• <span className="font-medium text-foreground">Cross-Validation</span>: Robust evaluation</li>
+                <li>• <span className="font-medium text-foreground">Testing</span>: Unseen data evaluation</li>
+              </ul>
+            </div>
+          </div>
         </section>
 
-        {/* Next Steps */}
-        <section className="mb-12">
-          <Card className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 border-green-500/20">
-            <CardContent className="p-8">
-              <div className="flex items-center gap-4 mb-6">
-                <Rocket className="h-8 w-8 text-green-500" />
-                <h2 className="text-2xl font-bold text-foreground">Next Steps in Your Journey</h2>
+        {/* 4. Types of Supervised Learning */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <TrendingUp className="h-5 w-5 text-primary" />
+            4. Types of Supervised Learning
+          </h2>
+
+          <div className="space-y-6">
+            {/* Regression */}
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h3 className="font-semibold text-foreground text-lg mb-3 flex items-center gap-2">
+                <LineChart className="h-5 w-5 text-primary" />
+                4.1 Regression
+              </h3>
+              <p className="text-muted-foreground mb-2">
+                Predicts <span className="font-medium text-foreground">continuous values</span>
+              </p>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <h4 className="font-semibold text-foreground text-sm">Examples</h4>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>House price prediction</li>
+                    <li>Temperature forecasting</li>
+                    <li>Stock price prediction</li>
+                  </ul>
+                </div>
+                <div className="md:col-span-2">
+                  <h4 className="font-semibold text-foreground text-sm">Algorithms</h4>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Linear Regression</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Polynomial Regression</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Ridge / Lasso</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Decision Tree Regressor</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Random Forest Regressor</span>
+                  </div>
+                </div>
               </div>
-              
-              <div className="grid md:grid-cols-3 gap-6">
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Shield className="h-5 w-5 text-blue-500" />
-                      <h3 className="font-semibold text-foreground">Unsupervised Learning</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Learn clustering, dimensionality reduction, and association rules for unlabeled data
-                    </p>
-                    <Badge variant="outline" className="text-xs">Clustering • PCA • Anomaly Detection</Badge>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Bot className="h-5 w-5 text-purple-500" />
-                      <h3 className="font-semibold text-foreground">Deep Learning</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Master neural networks, CNNs for images, RNNs for sequences, and transformers for NLP
-                    </p>
-                    <Badge variant="outline" className="text-xs">Neural Networks • TensorFlow • PyTorch</Badge>
-                  </CardContent>
-                </Card>
-                
-                <Card>
-                  <CardContent className="p-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <Cloud className="h-5 w-5 text-orange-500" />
-                      <h3 className="font-semibold text-foreground">MLOps & Deployment</h3>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-4">
-                      Learn to deploy models, create ML pipelines, monitor performance, and scale systems
-                    </p>
-                    <Badge variant="outline" className="text-xs">Docker • Kubernetes • CI/CD</Badge>
-                  </CardContent>
-                </Card>
+            </div>
+
+            {/* Classification */}
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h3 className="font-semibold text-foreground text-lg mb-3 flex items-center gap-2">
+                <PieChart className="h-5 w-5 text-primary" />
+                4.2 Classification
+              </h3>
+              <p className="text-muted-foreground mb-2">
+                Predicts <span className="font-medium text-foreground">categorical labels</span>
+              </p>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div>
+                  <h4 className="font-semibold text-foreground text-sm">Examples</h4>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>Spam detection</li>
+                    <li>Disease diagnosis</li>
+                    <li>Image classification</li>
+                  </ul>
+                </div>
+                <div className="md:col-span-2">
+                  <h4 className="font-semibold text-foreground text-sm">Algorithms</h4>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Logistic Regression</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Decision Trees</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Random Forest</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">SVM</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">KNN</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Naive Bayes</span>
+                  </div>
+                </div>
               </div>
-            </CardContent>
-          </Card>
+            </div>
+
+            {/* Ensemble Methods */}
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h3 className="font-semibold text-foreground text-lg mb-3 flex items-center gap-2">
+                <Layers className="h-5 w-5 text-primary" />
+                4.3 Ensemble Methods
+              </h3>
+              <p className="text-muted-foreground mb-2">
+                Combine multiple models for <span className="font-medium text-foreground">better accuracy</span>
+              </p>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold text-foreground text-sm">Algorithms</h4>
+                  <div className="flex flex-wrap gap-2 mt-1">
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Random Forest</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">Gradient Boosting</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">XGBoost</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">AdaBoost</span>
+                    <span className="bg-muted px-2 py-1 rounded text-xs">LightGBM</span>
+                  </div>
+                </div>
+                <div>
+                  <h4 className="font-semibold text-foreground text-sm">Use Cases</h4>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>Fraud detection</li>
+                    <li>Kaggle competitions</li>
+                    <li>Credit scoring</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            {/* Neural Networks */}
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h3 className="font-semibold text-foreground text-lg mb-3 flex items-center gap-2">
+                <Brain className="h-5 w-5 text-primary" />
+                4.4 Neural Networks
+              </h3>
+              <p className="text-muted-foreground mb-2">
+                Used for <span className="font-medium text-foreground">complex pattern learning</span>
+              </p>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="font-semibold text-foreground text-sm">Types</h4>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>MLP (Tabular data)</li>
+                    <li>CNN (Images)</li>
+                    <li>RNN (Sequences)</li>
+                    <li>Transformers (NLP)</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 5. Regression Algorithms */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <LineChart className="h-5 w-5 text-primary" />
+            5. Regression Algorithms
+          </h2>
+
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h3 className="font-semibold text-foreground text-lg mb-3">Linear Regression</h3>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold text-foreground text-sm">Assumptions</h4>
+                <ul className="text-xs text-muted-foreground list-disc list-inside">
+                  <li>Linear relationship</li>
+                  <li>Independence of errors</li>
+                  <li>Constant variance (homoscedasticity)</li>
+                </ul>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-green-50 border border-green-200 rounded p-2 dark:bg-green-950 dark:border-green-800">
+                  <p className="font-semibold text-foreground text-xs">Pros</p>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>Simple and fast</li>
+                    <li>Highly interpretable</li>
+                  </ul>
+                </div>
+                <div className="bg-destructive/10 border border-destructive/20 rounded p-2">
+                  <p className="font-semibold text-foreground text-xs">Cons</p>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>Sensitive to outliers</li>
+                    <li>Cannot capture complex patterns</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 6. Classification Algorithms */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <PieChart className="h-5 w-5 text-primary" />
+            6. Classification Algorithms
+          </h2>
+
+          <div className="bg-card border border-border rounded-lg p-4">
+            <h3 className="font-semibold text-foreground text-lg mb-3">Logistic Regression</h3>
+            
+            <div className="grid md:grid-cols-2 gap-4">
+              <div>
+                <h4 className="font-semibold text-foreground text-sm">Assumptions</h4>
+                <ul className="text-xs text-muted-foreground list-disc list-inside">
+                  <li>Binary classification</li>
+                  <li>Linear decision boundary</li>
+                </ul>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-green-50 border border-green-200 rounded p-2 dark:bg-green-950 dark:border-green-800">
+                  <p className="font-semibold text-foreground text-xs">Pros</p>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>Outputs probabilities</li>
+                    <li>Easy to interpret</li>
+                  </ul>
+                </div>
+                <div className="bg-destructive/10 border border-destructive/20 rounded p-2">
+                  <p className="font-semibold text-foreground text-xs">Cons</p>
+                  <ul className="text-xs text-muted-foreground list-disc list-inside">
+                    <li>Limited to linear boundaries</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 7. Key Concepts */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <Brain className="h-5 w-5 text-primary" />
+            7. Key Concepts in Supervised Learning
+          </h2>
+
+          <div className="space-y-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h3 className="font-semibold text-foreground mb-2">Bias-Variance Tradeoff</h3>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className="p-3 bg-destructive/10 border border-destructive/20 rounded">
+                  <p className="font-semibold text-foreground text-sm">High Bias → Underfitting</p>
+                  <p className="text-xs text-muted-foreground">Model is too simple, misses patterns</p>
+                </div>
+                <div className="p-3 bg-destructive/10 border border-destructive/20 rounded">
+                  <p className="font-semibold text-foreground text-sm">High Variance → Overfitting</p>
+                  <p className="text-xs text-muted-foreground">Model is too complex, captures noise</p>
+                </div>
+              </div>
+              <div className="mt-3 bg-muted p-3 rounded">
+                <p className="text-sm font-mono text-center">Error = Bias² + Variance + Noise</p>
+              </div>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="bg-card border border-border rounded-lg p-4">
+                <h4 className="font-semibold text-foreground mb-2">Regularization</h4>
+                <p className="text-xs text-muted-foreground">Prevents overfitting:</p>
+                <ul className="text-xs text-muted-foreground list-disc list-inside mt-1">
+                  <li>L1 (Lasso)</li>
+                  <li>L2 (Ridge)</li>
+                  <li>Elastic Net</li>
+                </ul>
+              </div>
+
+              <div className="bg-card border border-border rounded-lg p-4">
+                <h4 className="font-semibold text-foreground mb-2">Gradient Descent</h4>
+                <p className="text-xs text-muted-foreground">Optimization technique:</p>
+                <ul className="text-xs text-muted-foreground list-disc list-inside mt-1">
+                  <li>Batch GD</li>
+                  <li>Stochastic GD</li>
+                  <li>Mini-batch GD</li>
+                </ul>
+              </div>
+
+              <div className="bg-card border border-border rounded-lg p-4">
+                <h4 className="font-semibold text-foreground mb-2">Cross Validation</h4>
+                <p className="text-xs text-muted-foreground">Better evaluation:</p>
+                <ul className="text-xs text-muted-foreground list-disc list-inside mt-1">
+                  <li>K-Fold CV</li>
+                  <li>Stratified CV</li>
+                  <li>Time Series CV</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 8. Evaluation Metrics */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <BarChart3 className="h-5 w-5 text-primary" />
+            8. Evaluation Metrics
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2">Regression Metrics</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li><span className="font-medium text-foreground">MAE</span>: Mean Absolute Error</li>
+                <li><span className="font-medium text-foreground">MSE</span>: Mean Squared Error</li>
+                <li><span className="font-medium text-foreground">RMSE</span>: Root Mean Squared Error</li>
+                <li><span className="font-medium text-foreground">R² Score</span>: Coefficient of determination</li>
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <h4 className="font-semibold text-foreground mb-2">Classification Metrics</h4>
+              <ul className="text-sm text-muted-foreground space-y-1">
+                <li><span className="font-medium text-foreground">Accuracy</span>: Overall correctness</li>
+                <li><span className="font-medium text-foreground">Precision</span>: Quality of positive predictions</li>
+                <li><span className="font-medium text-foreground">Recall</span>: Coverage of positive predictions</li>
+                <li><span className="font-medium text-foreground">F1 Score</span>: Harmonic mean of precision/recall</li>
+                <li><span className="font-medium text-foreground">ROC-AUC</span>: Area under ROC curve</li>
+                <li><span className="font-medium text-foreground">Log Loss</span>: Probability-based loss</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* 9. Model Selection Guide */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <Target className="h-5 w-5 text-primary" />
+            9. Model Selection Guide
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-medium text-foreground">Small dataset</span>
+                    <p className="text-muted-foreground text-xs">→ Linear / Logistic Regression</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-medium text-foreground">Large dataset</span>
+                    <p className="text-muted-foreground text-xs">→ Random Forest / XGBoost</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <ul className="space-y-3 text-sm">
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-medium text-foreground">Images/Text</span>
+                    <p className="text-muted-foreground text-xs">→ Deep Learning</p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-2">
+                  <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                  <div>
+                    <span className="font-medium text-foreground">Real-time</span>
+                    <p className="text-muted-foreground text-xs">→ Simple models (Logistic, Naive Bayes)</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* 10. Common Problems */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <AlertCircle className="h-5 w-5 text-primary" />
+            10. Common Problems
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground text-sm">Overfitting</h4>
+                <p className="text-xs text-muted-foreground">Model too complex</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground text-sm">Underfitting</h4>
+                <p className="text-xs text-muted-foreground">Model too simple</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground text-sm">Data Leakage</h4>
+                <p className="text-xs text-muted-foreground">Test info in training</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground text-sm">Imbalanced Data</h4>
+                <p className="text-xs text-muted-foreground">Unequal class distribution</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-destructive/5 border border-destructive/20 rounded-lg">
+              <AlertCircle className="h-5 w-5 text-destructive shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground text-sm">Missing Data</h4>
+                <p className="text-xs text-muted-foreground">Incomplete records</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 11. Supervised Learning Workflow */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <GitBranch className="h-5 w-5 text-primary" />
+            11. Supervised Learning Workflow
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">1</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Data Collection</h4>
+                    <p className="text-xs text-muted-foreground">Gather relevant data</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">2</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Data Cleaning</h4>
+                    <p className="text-xs text-muted-foreground">Handle missing values and outliers</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">3</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Feature Engineering</h4>
+                    <p className="text-xs text-muted-foreground">Create and transform features</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">4</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Train-Test Split</h4>
+                    <p className="text-xs text-muted-foreground">Separate data for evaluation</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <div className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">5</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Model Training</h4>
+                    <p className="text-xs text-muted-foreground">Train algorithm on training data</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">6</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Evaluation</h4>
+                    <p className="text-xs text-muted-foreground">Assess performance on test data</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">7</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Hyperparameter Tuning</h4>
+                    <p className="text-xs text-muted-foreground">Optimize model configuration</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-2">
+                  <span className="bg-primary text-primary-foreground rounded-full w-5 h-5 flex items-center justify-center text-xs shrink-0">8</span>
+                  <div>
+                    <h4 className="font-semibold text-foreground text-sm">Deployment</h4>
+                    <p className="text-xs text-muted-foreground">Deploy model to production</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 12. Best Practices */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <CheckCircle2 className="h-5 w-5 text-primary" />
+            12. Best Practices
+          </h2>
+
+          <div className="grid md:grid-cols-2 gap-4">
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Always split dataset properly</h4>
+                <p className="text-sm text-muted-foreground">Use 70-80% for training, 20-30% for testing</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Normalize features when needed</h4>
+                <p className="text-sm text-muted-foreground">Scale features for distance-based algorithms</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Use cross-validation</h4>
+                <p className="text-sm text-muted-foreground">K-Fold CV for robust evaluation</p>
+              </div>
+            </div>
+
+            <div className="flex gap-3 p-4 bg-primary/5 border border-primary/20 rounded-lg">
+              <CheckCircle2 className="h-5 w-5 text-primary shrink-0 mt-0.5" />
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Monitor overfitting</h4>
+                <p className="text-sm text-muted-foreground">Compare train vs validation performance</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 13. Applications */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <Activity className="h-5 w-5 text-primary" />
+            13. Applications
+          </h2>
+
+          <div className="grid md:grid-cols-3 gap-4">
+            <div className="bg-card border border-border rounded-lg p-4">
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• <span className="font-medium text-foreground">Fraud detection</span></li>
+                <li>• <span className="font-medium text-foreground">Medical diagnosis</span></li>
+                <li>• <span className="font-medium text-foreground">Recommendation systems</span></li>
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• <span className="font-medium text-foreground">Spam filtering</span></li>
+                <li>• <span className="font-medium text-foreground">Image recognition</span></li>
+                <li>• <span className="font-medium text-foreground">Sentiment analysis</span></li>
+              </ul>
+            </div>
+
+            <div className="bg-card border border-border rounded-lg p-4">
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li>• <span className="font-medium text-foreground">Stock prediction</span></li>
+                <li>• <span className="font-medium text-foreground">Customer churn</span></li>
+                <li>• <span className="font-medium text-foreground">Credit scoring</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Code Examples */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2">
+            Code Examples
+          </h2>
+          <p className="text-muted-foreground mb-4">
+            See supervised learning algorithms in action with these practical code examples:
+          </p>
+          <MultiLanguageCode codes={codeExamples} />
+        </section>
+
+        {/* Quiz */}
+        <section>
+          <h2 className="text-2xl font-bold text-foreground mb-4 border-b border-border pb-2">
+            Test Your Knowledge
+          </h2>
+          <Quiz questions={quizQuestions} title="Supervised Learning Quiz" />
         </section>
       </div>
-    </div>
+    </TopicContent>
   );
 }
