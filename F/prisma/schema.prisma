@@ -1,0 +1,117 @@
+// Amni — database schema
+// Dev default is SQLite (zero-config, file-based). For production, point
+// DATABASE_URL at Postgres (e.g. Supabase, Neon, Vercel Postgres) and this
+// schema works unchanged — just switch the `provider` below to "postgresql".
+// See prisma/README.md for the full migration walkthrough.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// ── Auth.js required models ────────────────────────────────────────────
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  passwordHash  String? // set for credentials sign-up; null for OAuth-only users
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  accounts Account[]
+  sessions Session[]
+
+  progress      Progress[]
+  quizAttempts  QuizAttempt[]
+  bookmarks     Bookmark[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// ── App data ────────────────────────────────────────────────────────────
+
+// One row per (user, lesson) marking completion. topicId/subtopicId map
+// directly to the slugs in src/lib/topics-data.ts.
+model Progress {
+  id         String   @id @default(cuid())
+  userId     String
+  topicId    String
+  subtopicId String
+  completed  Boolean  @default(true)
+  updatedAt  DateTime @updatedAt
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId, subtopicId])
+  @@index([userId])
+}
+
+// One row per quiz submission (kept as a history, not just latest score).
+model QuizAttempt {
+  id         String   @id @default(cuid())
+  userId     String
+  topicId    String
+  subtopicId String
+  score      Int
+  total      Int
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, topicId, subtopicId])
+}
+
+model Bookmark {
+  id         String   @id @default(cuid())
+  userId     String
+  topicId    String
+  subtopicId String
+  createdAt  DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, topicId, subtopicId])
+}
